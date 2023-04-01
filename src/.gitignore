@@ -1,5 +1,0 @@
-# Ignore all regular files which do not have an extension, since they must be
-# compiled executables. See https://stackoverflow.com/a/19023985 for details.
-*
-!/**/
-!*.*
