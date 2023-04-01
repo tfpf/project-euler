@@ -7,4 +7,6 @@ fn main()
     let sum_of_squares = (1..101).fold(0, |s, elem| s + elem * elem);
     let difference = square_of_sum - sum_of_squares;
     println!("{difference}");
+
+    assert_eq!(difference, 25164150);
 }

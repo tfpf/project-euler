@@ -23,4 +23,6 @@ fn main()
         }
     }
     println!("{result}");
+
+    assert_eq!(result, 906609);
 }

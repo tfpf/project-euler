@@ -25,4 +25,6 @@ fn main()
     }
     let product = powers.iter().fold(1, |p, elem| p * elem);
     println!("{product}");
+
+    assert_eq!(product, 232792560);
 }
