@@ -2,6 +2,7 @@ SHELL   = /bin/sh
 RC      = rustc
 RCFLAGS = -O
 RM      = rm -f
+PRINT   = printf
 
 Sources     = $(wildcard */*/*.rs)
 Executables = $(Sources:.rs=)
@@ -11,7 +12,8 @@ Executables = $(Sources:.rs=)
 all: $(Executables)
 
 clean:
-	$(RM) $(Executables)
+	@$(PRINT) "Removing all executables.\n"
+	@$(RM) $(Executables)
 
 %: %.rs
 	$(RC) $(RCFLAGS) -o $@ $<
