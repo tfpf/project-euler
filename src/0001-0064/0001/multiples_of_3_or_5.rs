@@ -11,7 +11,7 @@ fn main()
             sum += i;
         }
     }
-    println!("{sum}");
+    println!("{}", sum);
 
     assert_eq!(sum, 233168);
 }

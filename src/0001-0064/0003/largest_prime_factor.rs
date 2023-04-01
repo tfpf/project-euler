@@ -53,7 +53,7 @@ fn main()
         check_factor(&mut largest_pf, candidate, num);
         check_factor(&mut largest_pf, candidate + 2, num);
     }
-    println!("{largest_pf}");
+    println!("{}", largest_pf);
 
     assert_eq!(largest_pf, 6857);
 }
