@@ -9,7 +9,7 @@ fn main()
     prime[1] = false;
     for num in (2usize..).take_while(|c| c * c <= LIMIT)
     {
-        // If this number if prime, mark its multiples starting from its square
+        // If this number is prime, mark its multiples starting from its square
         // as composite (smaller multiples have already been marked as
         // composite).
         if prime[num]
