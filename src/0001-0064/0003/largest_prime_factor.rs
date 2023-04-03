@@ -3,6 +3,8 @@
 /// differs from 6 by exactly 1.
 ///
 /// * `num` - Number to check for primality.
+///
+/// -> Whether `num` is prime.
 fn is_prime(num: i64) -> bool
 {
     if num % 2 == 0 || num % 3 == 0

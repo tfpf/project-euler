@@ -1,4 +1,6 @@
-/// Find the product of the only Pythagorean triplet with sum 1000.
+/// Search for the only Pythagorean triplet with sum 1000.
+///
+/// -> Product of the triplet.
 fn find_triplet() -> i32
 {
     for a in 1..334

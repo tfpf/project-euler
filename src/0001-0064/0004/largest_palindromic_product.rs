@@ -1,6 +1,8 @@
 /// Check whether a number is a palindrome or not.
 ///
 /// * `num` - Number to check.
+///
+/// -> Whether `num` written using decimal digits is a palindrome.
 fn is_palindrome(num: i32) -> bool
 {
     let num = num.to_string();
