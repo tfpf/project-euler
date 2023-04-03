@@ -1,5 +1,3 @@
-use std::cmp;
-
 /// Main function.
 fn main()
 {
@@ -42,7 +40,7 @@ fn main()
         }
         if zeros == 0
         {
-            result = cmp::max(result, product);
+            result = std::cmp::max(result, product);
         }
     }
     println!("{}", result);
