@@ -1,6 +1,6 @@
 SHELL   = /bin/sh
 RC      = rustc
-RCFLAGS = -O
+RCFLAGS = -C opt-level=2 -C strip=debuginfo
 RM      = rm -f
 PRINT   = printf
 
