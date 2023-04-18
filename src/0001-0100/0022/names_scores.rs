@@ -4,7 +4,7 @@
 /// * `name` - Name of a person.
 ///
 /// -> Score of `name` for 1-indexed position.
-fn score((idx, name): (usize, &str)) -> usize
+fn score((idx, name): (usize, &&str)) -> usize
 {
     // I am fairly sure Rust uses fixed encoding in which `'A'` is encoded as
     // 65, and consecutive letters have consecutive codes. `name` contains only
@@ -27,9 +27,10 @@ fn main()
     let mut names: Vec<&str> = contents.split(",").map(|s| &s[1..s.len() - 1]).collect();
     names.sort();
 
-    // See https://github.com/rust-lang/rust/issues/110447 for the reason why I
-    // used a closure as the argument of `map` rather than just `score`.
-    let result: usize = names.iter().enumerate().map(|(idx, name)| score((idx, name))).sum();
+    // The iterator provides a reference to the contents of the container,
+    // which is a vector of references. That's why the mapped function must
+    // accept a reference to a reference.
+    let result: usize = names.iter().enumerate().map(score).sum();
     println!("{}", result);
 
     assert_eq!(result, 871198282);
