@@ -1,6 +1,4 @@
-/// Main function.
-fn main()
-{
+pub fn solve() {
     let num = "7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843\
                8586156078911294949545950173795833195285320880551112540698747158523863050715693290963295227443043557\
                6689664895044524452316173185640309871112172238311362229893423380308135336276614282806444486645238749\
@@ -18,32 +16,28 @@ fn main()
     // We know that the number has 1000 digits. Slide a window of length 13.
     // Keep track of how many times 0 is present in the window at any time.
     let mut zeros = 0;
-    for i in 0..1000
-    {
+    for i in 0..1000 {
         let incoming = (digits[i] - '0' as u8) as u64;
-        if incoming == 0
-        {
+        if incoming == 0 {
             zeros += 1;
-        }
-        else
-        {
+        } else {
             product *= incoming;
         }
-        let outgoing = if i < 13 { 1 } else { digits[i - 13] - '0' as u8 } as u64;
-        if outgoing == 0
-        {
+        let outgoing = if i < 13 {
+            1
+        } else {
+            digits[i - 13] - '0' as u8
+        } as u64;
+        if outgoing == 0 {
             zeros -= 1;
-        }
-        else
-        {
+        } else {
             product /= outgoing;
         }
-        if zeros == 0
-        {
+        if zeros == 0 {
             result = std::cmp::max(result, product);
         }
     }
-    println!("{}", result);
 
+    println!("{}", result);
     assert_eq!(result, 23514624000);
 }

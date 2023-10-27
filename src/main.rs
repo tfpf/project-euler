@@ -13,6 +13,7 @@ fn solve(problem_number: i32) {
         5 => solutions::smallest_multiple::solve(),
         6 => solutions::sum_square_difference::solve(),
         7 => solutions::ten_thousand_and_first_prime::solve(),
+        8 => solutions::largest_product_in_a_series::solve(),
         _ => {}
     };
 }
