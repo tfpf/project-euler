@@ -16,3 +16,14 @@ pub fn is_prime(num: i64) -> bool {
     }
     true
 }
+
+/// Check whether a number is a palindrome or not.
+///
+/// * `num` - Number to check.
+///
+/// -> Whether `num` written using decimal digits is a palindrome.
+pub fn is_palindrome<T>(num: T) -> bool where T: std::fmt::Display
+{
+    let num = num.to_string();
+    num == num.chars().rev().collect::<String>()
+}
