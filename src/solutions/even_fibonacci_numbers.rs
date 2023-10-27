@@ -1,5 +1,4 @@
-/// Main function.
-fn main()
+pub fn solve()
 {
     let mut a: i32 = 1;
     let mut b: i32 = 1;
