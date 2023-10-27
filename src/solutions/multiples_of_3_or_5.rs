@@ -1,11 +1,12 @@
 pub fn solve() {
-    let mut sum: i32 = 0;
-    for i in 1..1000 {
-        if i % 3 == 0 || i % 5 == 0 {
-            sum += i;
+    let sum = (1..1000).fold(0, |sum, element| {
+        if element % 3 == 0 || element % 5 == 0 {
+            sum + element
+        } else {
+            sum
         }
-    }
-    println!("{}", sum);
+    });
 
+    println!("{}", sum);
     assert_eq!(sum, 233168);
 }
