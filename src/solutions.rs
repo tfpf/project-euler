@@ -4,3 +4,4 @@ pub mod largest_prime_factor;
 pub mod multiples_of_3_or_5;
 pub mod smallest_multiple;
 pub mod sum_square_difference;
+pub mod ten_thousand_and_first_prime;

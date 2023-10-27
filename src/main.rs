@@ -12,6 +12,7 @@ fn solve(problem_number: i32) {
         4 => solutions::largest_palindromic_product::solve(),
         5 => solutions::smallest_multiple::solve(),
         6 => solutions::sum_square_difference::solve(),
+        7 => solutions::ten_thousand_and_first_prime::solve(),
         _ => {}
     };
 }
