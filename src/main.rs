@@ -11,6 +11,7 @@ fn solve(problem_number: i32) {
         3 => solutions::largest_prime_factor::solve(),
         4 => solutions::largest_palindromic_product::solve(),
         5 => solutions::smallest_multiple::solve(),
+        6 => solutions::sum_square_difference::solve(),
         _ => {}
     };
 }
