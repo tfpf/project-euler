@@ -10,6 +10,7 @@ fn solve(problem_number: i32) {
         2 => solutions::even_fibonacci_numbers::solve(),
         3 => solutions::largest_prime_factor::solve(),
         4 => solutions::largest_palindromic_product::solve(),
+        5 => solutions::smallest_multiple::solve(),
         _ => {}
     };
 }
