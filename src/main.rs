@@ -1,12 +1,14 @@
+pub mod utils;
 pub mod solutions;
 
 /// Execute the solution of the specified problem.
 ///
-/// * problem_number
+/// * `problem_number`
 fn solve(problem_number: i32) {
     match problem_number {
         1 => solutions::multiples_of_3_or_5::solve(),
         2 => solutions::even_fibonacci_numbers::solve(),
+        3 => solutions::largest_prime_factor::solve(),
         _ => {}
     };
 }
