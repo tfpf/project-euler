@@ -1,19 +1,14 @@
 /// Search for the only Pythagorean triplet with sum 1000.
 ///
 /// -> Product of the triplet.
-fn find_triplet() -> i32
-{
-    for a in 1..334
-    {
-        for c in 334..998
-        {
+fn find_triplet() -> i32 {
+    for a in 1..334 {
+        for c in 334..998 {
             let b = 1000 - a - c;
-            if a >= b || b >= c
-            {
+            if a >= b || b >= c {
                 continue;
             }
-            if b * b == c * c - a * a
-            {
+            if b * b == c * c - a * a {
                 return a * b * c;
             }
         }
@@ -24,11 +19,9 @@ fn find_triplet() -> i32
     return -1;
 }
 
-/// Main function.
-fn main()
-{
+pub fn solve() {
     let result = find_triplet();
-    println!("{}", result);
 
+    println!("{}", result);
     assert_eq!(result, 31875000);
 }
