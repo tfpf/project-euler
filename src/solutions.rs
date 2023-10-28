@@ -9,3 +9,4 @@ pub mod special_pythagorean_triplet;
 pub mod sum_square_difference;
 pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
+pub mod highly_divisible_triangular_number;

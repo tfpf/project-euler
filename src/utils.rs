@@ -9,7 +9,7 @@ pub fn is_prime(num: i64) -> bool {
     if num % 2 == 0 || num % 3 == 0 {
         return false;
     }
-    for candidate in (5i64..).step_by(6).take_while(|f| f * f <= num) {
+    for candidate in (5i64..).step_by(6).take_while(|candidate| candidate.pow(2) <= num) {
         if num % candidate == 0 || num % (candidate + 2) == 0 {
             return false;
         }
@@ -41,7 +41,7 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
 
 /// Check whether a number is a palindrome or not.
 ///
-/// * `num` - Number to check.
+/// * `num` - Number to check for palindromicity.
 ///
 /// -> Whether `num` written using decimal digits is a palindrome.
 pub fn is_palindrome<T>(num: T) -> bool
@@ -50,4 +50,24 @@ where
 {
     let num = num.to_string();
     num == num.chars().rev().collect::<String>()
+}
+
+/// Count the divisors of the given number.
+///
+/// * `num` - Number to count the divisors of.
+///
+/// -> Number of divisors.
+pub fn count_divisors(num: i32) -> i32 {
+    (1i32..).take_while(|candidate| candidate.pow(2) <= num).map(|candidate| {
+        if num % candidate == 0 {
+            // This number is a divisor, which means we have potentially found
+            // another divisor as well.
+            if num / candidate != candidate {
+                2
+            } else {
+                1
+            }
+        }
+        else { 0 }
+    }).sum()
 }
