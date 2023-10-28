@@ -16,6 +16,7 @@ fn solve(problem_number: i32) {
         8 => solutions::largest_product_in_a_series::solve(),
         9 => solutions::special_pythagorean_triplet::solve(),
         10 => solutions::summation_of_primes::solve(),
+        11 => solutions::largest_product_in_a_grid::solve(),
         _ => {}
     };
 }
