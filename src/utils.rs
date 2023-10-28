@@ -9,7 +9,10 @@ pub fn is_prime(num: i64) -> bool {
     if num % 2 == 0 || num % 3 == 0 {
         return false;
     }
-    for candidate in (5i64..).step_by(6).take_while(|candidate| candidate.pow(2) <= num) {
+    for candidate in (5i64..)
+        .step_by(6)
+        .take_while(|candidate| candidate.pow(2) <= num)
+    {
         if num % candidate == 0 || num % (candidate + 2) == 0 {
             return false;
         }
@@ -58,16 +61,20 @@ where
 ///
 /// -> Number of divisors.
 pub fn count_divisors(num: i32) -> i32 {
-    (1i32..).take_while(|candidate| candidate.pow(2) <= num).map(|candidate| {
-        if num % candidate == 0 {
-            // This number is a divisor, which means we have potentially found
-            // another divisor as well.
-            if num / candidate != candidate {
-                2
+    (1i32..)
+        .take_while(|candidate| candidate.pow(2) <= num)
+        .map(|candidate| {
+            if num % candidate == 0 {
+                // This number is a divisor, which means we have potentially
+                // found another divisor as well.
+                if num / candidate != candidate {
+                    2
+                } else {
+                    1
+                }
             } else {
-                1
+                0
             }
-        }
-        else { 0 }
-    }).sum()
+        })
+        .sum()
 }
