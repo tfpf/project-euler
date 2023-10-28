@@ -17,6 +17,28 @@ pub fn is_prime(num: i64) -> bool {
     true
 }
 
+/// Construct the sieve of Eratosthenes.
+///
+/// * `limit` - Number up to which the sieve should be constructed.
+///
+/// -> Vector in which each element indicates the primality of its index.
+pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
+    let mut prime = vec![true; limit + 1];
+    prime[0] = false;
+    prime[1] = false;
+    for num in (2usize..).take_while(|num| num * num <= limit) {
+        // If this number is prime, mark its multiples starting from its square
+        // as composite. (Smaller multiples have already been marked as
+        // composite.)
+        if prime[num] {
+            for multiple in (num * num..=limit).step_by(num) {
+                prime[multiple] = false;
+            }
+        }
+    }
+    prime
+}
+
 /// Check whether a number is a palindrome or not.
 ///
 /// * `num` - Number to check.
