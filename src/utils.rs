@@ -1,3 +1,7 @@
+/******************************************************************************
+ * Functions.
+ *****************************************************************************/
+
 /// Check whether the given number is prime by searching for any prime factors.
 /// Use the fact that a prime factor, by virtue of being prime, is 2 or 3, or
 /// differs from 6 by exactly 1.
@@ -77,4 +81,27 @@ pub fn count_divisors(num: i32) -> i32 {
             }
         })
         .sum()
+}
+
+/******************************************************************************
+ * Iterators.
+ *****************************************************************************/
+
+pub struct Fibonacci {
+    a: i64,
+    b: i64,
+}
+impl Fibonacci {
+    pub fn new(a: i64, b: i64) -> Self {
+        Fibonacci { a: a, b: b }
+    }
+}
+impl Iterator for Fibonacci {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        let a = self.a;
+        self.a = self.b;
+        self.b += a;
+        Some(a)
+    }
 }
