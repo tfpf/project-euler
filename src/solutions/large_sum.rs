@@ -1,3 +1,5 @@
+use crate::utils;
+
 /// Representation of a positive arbitrary-precision integer.
 ///
 /// * `digits` - Vector in which each element is at most 999_999_999.
@@ -131,12 +133,13 @@ pub fn solve()
         "20849603980134001723930671666823555245252804609722",
     ];
 
-    // The last number is chosen as the initial value.
-    let initial = BigNum::new("53503534226472524250874054075591789781264330331690");
-    let sum = nums.iter().fold(initial, |sum, &num| sum + BigNum::new(num));
-    let result = sum.to_string();
-    let result = &result.trim_start_matches('0')[0..10];
-    println!("{}", result);
+    // // The last number is chosen as the initial value.
+    // let initial = BigNum::new("53503534226472524250874054075591789781264330331690");
+    // let sum = nums.iter().fold(initial, |sum, &num| sum + BigNum::new(num));
+    // let result = sum.to_string();
+    // let result = &result.trim_start_matches('0')[0..10];
+    // println!("{}", result);
 
+    let result = "";
     assert_eq!(result, "5537376230");
 }

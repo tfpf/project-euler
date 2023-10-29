@@ -84,6 +84,41 @@ pub fn count_divisors(num: i32) -> i32 {
 }
 
 /******************************************************************************
+ * Objects.
+ *****************************************************************************/
+pub struct Long {
+    digits: Vec<i32>,
+}
+impl Long {
+    pub fn new(s: &str) -> Self {
+        let mut long = Long { digits: vec![] };
+        for chunk in s.bytes().rev().collect::<Vec<u8>>().chunks(9) {
+            let digit = chunk
+                .iter()
+                .rev()
+                .fold(0i32, |digit, &element| digit * 10 + element as i32 - 0x30);
+            long.digits.push(digit);
+        }
+        long
+    }
+}
+impl std::ops::AddAssign<&Self> for Long {
+    fn add_assign(&mut self, other: &Long) {
+        let mut carry = 0;
+        for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
+            *sd += od;
+            *sd = if *sd >= 1_000_000_000 {
+                carry = 1;
+                *sd - 1_000_000_000
+            } else {
+                carry = 0;
+                *sd
+            }
+        }
+    }
+}
+
+/******************************************************************************
  * Iterators.
  *****************************************************************************/
 
