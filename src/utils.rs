@@ -101,20 +101,37 @@ impl Long {
         }
         long
     }
+    fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
+        let sum = a + b + carry;
+        if sum >= 1_000_000_000 {
+            (sum - 1_000_000_000, 1)
+        } else {
+            (sum, 0)
+        }
+    }
 }
 impl std::ops::AddAssign<&Self> for Long {
     fn add_assign(&mut self, other: &Long) {
         let mut carry = 0;
         for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
-            *sd += od;
-            *sd = if *sd >= 1_000_000_000 {
-                carry = 1;
-                *sd - 1_000_000_000
-            } else {
-                carry = 0;
-                *sd
-            }
+            (*sd, carry) = Self::adc(*sd, *od, carry);
         }
+        for od in other.digits.iter().skip(self.digits.len()) {
+            let sum_carry = Self::adc(0, *od, carry);
+            self.digits.push(sum_carry.0);
+            carry = sum_carry.1;
+        }
+        if carry > 0 {
+            self.digits.push(carry);
+        }
+    }
+}
+impl std::fmt::Display for Long {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        for digit in self.digits.iter().rev() {
+            let _ = write!(f, "{:0>9}", digit);
+        }
+        write!(f, "")
     }
 }
 
