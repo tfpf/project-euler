@@ -20,6 +20,7 @@ fn solve(problem_number: i32) {
         12 => solutions::highly_divisible_triangular_number::solve(),
         13 => solutions::large_sum::solve(),
         14 => solutions::longest_collatz_sequence::solve(),
+        15 => solutions::lattice_paths::solve(),
         _ => {}
     };
 }

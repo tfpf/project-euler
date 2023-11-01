@@ -83,6 +83,22 @@ pub fn count_divisors(num: i32) -> i32 {
         .sum()
 }
 
+/// Calculate the greatest common divisor of two numbers.
+///
+/// * `a`
+/// * `b`
+///
+/// -> GCD of the inputs.
+pub fn gcd(a: i64, b: i64) -> i64 {
+    let (a, b) = if a > b { (a, b) } else { (b, a) };
+    let remainder = a % b;
+    if remainder == 0 {
+        b
+    } else {
+        gcd(b, remainder)
+    }
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/

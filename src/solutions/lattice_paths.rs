@@ -1,35 +1,18 @@
-/// Calculate the greatest common divisor of two positive integers.
-///
-/// * `m`
-/// * `n`
-///
-/// -> GCD of `m` and `n`.
-fn gcd(m: i64, n: i64) -> i64
-{
-    let (m, n) = if m > n { (m, n) } else { (n, m) };
-    let rem = m % n;
-    if rem == 0
-    {
-        return n;
-    }
-    gcd(n, rem)
-}
+use crate::utils;
 
-/// Main function.
-fn main()
-{
-    let mut numerator: i64 = 1;
-    let mut denominator: i64 = 1;
-    for (n, d) in (21..=40).zip(1..=20)
-    {
-        numerator *= n;
-        denominator *= d;
-        let g = gcd(numerator, denominator);
-        numerator /= g;
-        denominator /= g;
-    }
-    let result = numerator / denominator;
+pub fn solve() {
+    // Make 40 movements, out of which 20 are rightwards and 20 are downwards.
+    // The total number of possibilities is the binomial coefficient (40, 20).
+    let result = (21..=40)
+        .zip(1..=20)
+        .fold((1i64, 1i64), |(numerator, denominator), (n, d)| {
+            let numerator = numerator * n;
+            let denominator = denominator * d;
+            let g = utils::gcd(numerator, denominator);
+            (numerator / g, denominator / g)
+        });
+    let result = result.0 / result.1;
+
     println!("{}", result);
-
     assert_eq!(result, 137846528820);
 }
