@@ -104,7 +104,9 @@ pub fn solve() {
         "53503534226472524250874054075591789781264330331690",
     ];
 
-    let sum: utils::Long = nums.map(utils::Long::new).iter().sum();
+    // Must iterate and map (instead of map and iterate) because the summer
+    // expects an iterator containing values rather than references to values.
+    let sum: utils::Long = nums.iter().map(|num| utils::Long::new(num)).sum();
     let result = sum.to_string();
     let result = &result[0..10];
 

@@ -89,7 +89,7 @@ pub fn count_divisors(num: i32) -> i32 {
 
 /// Arbitrary-precision integer type which stores digits of a number in base
 /// 1_000_000_000. Implements addition by reference.
-#[derive(Clone)]
+#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Long {
     digits: Vec<i32>,
 }
@@ -154,12 +154,12 @@ impl std::ops::Add<Self> for &Long {
         result
     }
 }
-impl<'a> std::iter::Sum<&'a Self> for Long {
+impl std::iter::Sum for Long {
     fn sum<I>(iter: I) -> Self
     where
-        I: Iterator<Item = &'a Long>,
+        I: Iterator<Item = Long>,
     {
-        iter.fold(Long::new("0"), |sum, element| &sum + element)
+        iter.fold(Long::new("0"), |sum, element| &sum + &element)
     }
 }
 impl std::fmt::Display for Long {
@@ -184,21 +184,23 @@ impl std::fmt::Display for Long {
  * Iterators.
  *****************************************************************************/
 
+/// Fibonacci sequence iterator which produces items containing the values
+/// rather than references to the values.
 pub struct Fibonacci {
-    a: i64,
-    b: i64,
+    a: Long,
+    b: Long,
 }
 impl Fibonacci {
-    pub fn new(a: i64, b: i64) -> Self {
+    pub fn new(a: Long, b: Long) -> Self {
         Fibonacci { a: a, b: b }
     }
 }
 impl Iterator for Fibonacci {
-    type Item = i64;
-    fn next(&mut self) -> Option<i64> {
-        let a = self.a;
-        self.a = self.b;
-        self.b += a;
+    type Item = Long;
+    fn next(&mut self) -> Option<Long> {
+        let a = self.a.clone();
+        self.a = self.b.clone();
+        self.b += &a;
         Some(a)
     }
 }
