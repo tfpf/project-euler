@@ -135,6 +135,14 @@ impl std::ops::Add<Self> for &Long {
         result
     }
 }
+impl<'a> std::iter::Sum<&'a Self> for Long {
+    fn sum<I>(iter: I) -> Self
+    where
+        I: Iterator<Item = &'a Long>,
+    {
+        iter.fold(Long::new("0"), |sum, element| &sum + element)
+    }
+}
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         self.digits.iter().rev().fold(Ok(()), |result, digit| {
