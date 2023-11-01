@@ -128,10 +128,9 @@ impl std::ops::AddAssign<&Self> for Long {
 }
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        for digit in self.digits.iter().rev() {
-            let _ = write!(f, "{:0>9}", digit);
-        }
-        write!(f, "")
+        self.digits.iter().rev().fold(Ok(()), |result, digit| {
+            result.and_then(|_| write!(f, "{:0>9}", digit))
+        })
     }
 }
 

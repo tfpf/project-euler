@@ -1,83 +1,5 @@
 use crate::utils;
 
-/// Representation of a positive arbitrary-precision integer.
-///
-/// * `digits` - Vector in which each element is at most 999_999_999.
-struct BigNum
-{
-    digits: Vec<i32>,
-}
-
-/// Construct a positive arbitrary-precision integer from a string.
-impl BigNum
-{
-    fn new(s: &str) -> BigNum
-    {
-        let mut digits: Vec<i32> = vec![];
-
-        // Reverse the bytes. Break them into chunks. Reverse each chunk and
-        // parse it as an integer.
-        let r = s.bytes().rev().collect::<Vec<u8>>();
-        for chunk in r.chunks(9)
-        {
-            let digit = chunk.iter().rev().fold(0i32, |digit, &elem| digit * 10 + elem as i32 - 0x30);
-            digits.push(digit);
-        }
-        BigNum
-        {
-            digits: digits,
-        }
-    }
-}
-
-/// Define the sum of two positive arbitrary-precision integers.
-impl std::ops::Add for BigNum
-{
-    type Output = BigNum;
-    fn add(self, other: BigNum) -> BigNum
-    {
-        let mut digits: Vec<i32> = vec![];
-        let mut carry = 0;
-        for (sd, od) in self.digits.iter().zip(other.digits.iter())
-        {
-            let sum_ = sd + od + carry;
-            let sum = if sum_ >= 1_000_000_000
-            {
-                carry = 1;
-                sum_ - 1_000_000_000
-            }
-            else
-            {
-               carry = 0;
-               sum_
-            };
-            digits.push(sum);
-        }
-        if carry > 0
-        {
-            digits.push(carry);
-        }
-        BigNum
-        {
-            digits: digits,
-        }
-    }
-}
-
-/// Display a positive arbitrary-precision integer.
-impl std::fmt::Display for BigNum
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result
-    {
-        for digit in self.digits.iter().rev()
-        {
-            // Assign the result to silence the warning.
-            let _ = write!(f, "{:0>9}", digit);
-        }
-        write!(f, "")
-    }
-}
-
 pub fn solve()
 {
     let nums = [
@@ -130,16 +52,16 @@ pub fn solve()
         "41503128880339536053299340368006977710650566631954", "81234880673210146739058568557934581403627822703280",
         "82616570773948327592232845941706525094512325230608", "22918802058777319719839450180888072429661980811197",
         "77158542502016545090413245809786882778948721859617", "72107838435069186155435662884062257473692284509516",
-        "20849603980134001723930671666823555245252804609722",
+        "20849603980134001723930671666823555245252804609722", "53503534226472524250874054075591789781264330331690",
     ];
 
-    // // The last number is chosen as the initial value.
-    // let initial = BigNum::new("53503534226472524250874054075591789781264330331690");
-    // let sum = nums.iter().fold(initial, |sum, &num| sum + BigNum::new(num));
-    // let result = sum.to_string();
-    // let result = &result.trim_start_matches('0')[0..10];
-    // println!("{}", result);
+    let mut sum = utils::Long::new("0");
+    for num in nums {
+        sum += &utils::Long::new(num);
+    }
+    let result = sum.to_string();
+    let result = &result.trim_start_matches('0')[0..10];
 
-    let result = "";
+    println!("{}", result);
     assert_eq!(result, "5537376230");
 }
