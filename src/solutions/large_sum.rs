@@ -104,10 +104,10 @@ pub fn solve() {
         "53503534226472524250874054075591789781264330331690",
     ];
 
-    let mut sum = utils::Long::new("0");
-    for num in nums {
-        sum += &utils::Long::new(num);
-    }
+    let sum = nums
+        .map(utils::Long::new)
+        .iter()
+        .fold(utils::Long::new("0"), |sum, element| &sum + element);
     let result = sum.to_string();
     let result = &result.trim_start_matches('0')[0..10];
 

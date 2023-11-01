@@ -86,6 +86,7 @@ pub fn count_divisors(num: i32) -> i32 {
 /******************************************************************************
  * Objects.
  *****************************************************************************/
+#[derive(Clone)]
 pub struct Long {
     digits: Vec<i32>,
 }
@@ -124,6 +125,14 @@ impl std::ops::AddAssign<&Self> for Long {
         if carry > 0 {
             self.digits.push(carry);
         }
+    }
+}
+impl std::ops::Add<Self> for &Long {
+    type Output = Long;
+    fn add(self, other: &Long) -> Long {
+        let mut result = self.clone();
+        result += other;
+        result
     }
 }
 impl std::fmt::Display for Long {
