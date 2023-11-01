@@ -10,8 +10,8 @@ pub fn solve() {
             let denominator = denominator * d;
             let g = utils::gcd(numerator, denominator);
             (numerator / g, denominator / g)
-        });
-    let result = result.0 / result.1;
+        })
+        .0;
 
     println!("{}", result);
     assert_eq!(result, 137846528820);
