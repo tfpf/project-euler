@@ -145,6 +145,13 @@ impl Long {
             (sum, 0)
         }
     }
+    fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
+        let product = a as i64 * b as i64 + carry as i64;
+        (
+            (product % 1_000_000_000) as i32,
+            (product / 1_000_000_000) as i32,
+        )
+    }
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
@@ -167,6 +174,25 @@ impl std::ops::Add<&Long> for &Long {
     fn add(self, other: &Long) -> Long {
         let mut result = self.clone();
         result += other;
+        result
+    }
+}
+impl std::ops::MulAssign<i32> for Long {
+    fn mul_assign(&mut self, other: i32) {
+        let mut carry = 0;
+        for sd in self.digits.iter_mut() {
+            (*sd, carry) = Long::mlc(*sd, other, carry);
+        }
+        if carry > 0 {
+            self.digits.push(carry);
+        }
+    }
+}
+impl std::ops::Mul<i32> for &Long {
+    type Output = Long;
+    fn mul(self, other: i32) -> Long {
+        let mut result = self.clone();
+        result *= other;
         result
     }
 }
