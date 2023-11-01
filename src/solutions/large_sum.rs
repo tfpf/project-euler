@@ -106,7 +106,7 @@ pub fn solve() {
 
     let sum: utils::Long = nums.map(utils::Long::new).iter().sum();
     let result = sum.to_string();
-    let result = &result.trim_start_matches('0')[0..10];
+    let result = &result[0..10];
 
     println!("{}", result);
     assert_eq!(result, "5537376230");

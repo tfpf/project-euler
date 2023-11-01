@@ -145,9 +145,19 @@ impl<'a> std::iter::Sum<&'a Self> for Long {
 }
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        self.digits.iter().rev().fold(Ok(()), |result, digit| {
-            result.and_then(|_| write!(f, "{:0>9}", digit))
-        })
+        self.digits
+            .iter()
+            .rev()
+            .enumerate()
+            .fold(Ok(()), |result, (index, digit)| {
+                result.and_then(|_| {
+                    if index == 0 {
+                        write!(f, "{}", digit)
+                    } else {
+                        write!(f, "{:0>9}", digit)
+                    }
+                })
+            })
     }
 }
 
