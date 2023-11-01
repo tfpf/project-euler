@@ -87,8 +87,8 @@ pub fn count_divisors(num: i32) -> i32 {
  * Objects.
  *****************************************************************************/
 
-/// Arbitrary-precision integer type which stores digits of a number in base
-/// 1_000_000_000. Implements addition by reference.
+/// Arbitrary-precision integer type which stores digits of a positive number
+/// in base 1_000_000_000. Implements addition by reference.
 #[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Long {
     digits: Vec<i32>,
@@ -195,7 +195,7 @@ impl std::fmt::Display for Long {
  *****************************************************************************/
 
 /// Fibonacci sequence iterator which produces items containing the values
-/// rather than references to the values.
+/// rather than references to the values. Positive numbers only!
 pub struct Fibonacci {
     a: Long,
     b: Long,
@@ -215,7 +215,8 @@ impl Iterator for Fibonacci {
     }
 }
 
-/// Collatz sequence.
+/// Collatz sequence iterator which produces items containing the values rather
+/// than references to the values. Positive numbers only!
 pub struct Collatz {
     num: i64,
     done: bool,
