@@ -64,8 +64,8 @@ where
 /// * `num` - Number to count the divisors of.
 ///
 /// -> Number of divisors.
-pub fn count_divisors(num: i32) -> i32 {
-    (1i32..)
+pub fn count_divisors(num: i64) -> i64 {
+    (1i64..)
         .take_while(|candidate| candidate.pow(2) <= num)
         .map(|candidate| {
             if num % candidate == 0 {
@@ -228,6 +228,26 @@ impl Iterator for Fibonacci {
         self.a = self.b.clone();
         self.b += &a;
         Some(a)
+    }
+}
+
+/// Triangular number iterator which produces items containing the values
+/// rather than references to the values.
+pub struct Triangular {
+    idx: i64,
+    num: i64,
+}
+impl Triangular {
+    pub fn new() -> Triangular {
+        Triangular { idx: 1, num: 0 }
+    }
+}
+impl Iterator for Triangular {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        self.num += self.idx;
+        self.idx += 1;
+        Some(self.num)
     }
 }
 
