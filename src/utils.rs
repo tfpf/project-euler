@@ -86,6 +86,9 @@ pub fn count_divisors(num: i32) -> i32 {
 /******************************************************************************
  * Objects.
  *****************************************************************************/
+
+/// Arbitrary-precision integer type which stores digits of a number in base
+/// 1_000_000_000. Implements addition by reference.
 #[derive(Clone)]
 pub struct Long {
     digits: Vec<i32>,
@@ -101,6 +104,14 @@ impl Long {
             long.digits.push(digit);
         }
         long
+    }
+    /// Obtain the number of decimal digits in this number.
+    pub fn len(&self) -> usize {
+        match self.digits.len() {
+            0 => 0,
+            1 if self.digits[0] == 0 => 0,
+            len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
+        }
     }
     fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
         let sum = a + b + carry;
