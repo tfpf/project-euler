@@ -22,6 +22,7 @@ fn solve(problem_number: i32) {
         14 => solutions::longest_collatz_sequence::solve(),
         15 => solutions::lattice_paths::solve(),
         16 => solutions::power_digit_sum::solve(),
+        17 => solutions::number_letter_counts::solve(),
         _ => (),
     };
 }
