@@ -110,7 +110,7 @@ pub struct Long {
     digits: Vec<i32>,
 }
 impl Long {
-    pub fn new(s: &str) -> Self {
+    pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
         for chunk in s.bytes().rev().collect::<Vec<u8>>().chunks(9) {
             let digit = chunk
@@ -146,14 +146,14 @@ impl Long {
         }
     }
 }
-impl std::ops::AddAssign<&Self> for Long {
+impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
         let mut carry = 0;
         for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
-            (*sd, carry) = Self::adc(*sd, *od, carry);
+            (*sd, carry) = Long::adc(*sd, *od, carry);
         }
         for od in other.digits.iter().skip(self.digits.len()) {
-            let sum_carry = Self::adc(0, *od, carry);
+            let sum_carry = Long::adc(0, *od, carry);
             self.digits.push(sum_carry.0);
             carry = sum_carry.1;
         }
@@ -162,7 +162,7 @@ impl std::ops::AddAssign<&Self> for Long {
         }
     }
 }
-impl std::ops::Add<Self> for &Long {
+impl std::ops::Add<&Long> for &Long {
     type Output = Long;
     fn add(self, other: &Long) -> Long {
         let mut result = self.clone();
@@ -171,7 +171,7 @@ impl std::ops::Add<Self> for &Long {
     }
 }
 impl std::iter::Sum for Long {
-    fn sum<I>(iter: I) -> Self
+    fn sum<I>(iter: I) -> Long
     where
         I: Iterator<Item = Long>,
     {
@@ -217,7 +217,7 @@ pub struct Fibonacci {
     b: Long,
 }
 impl Fibonacci {
-    pub fn new(a: Long, b: Long) -> Self {
+    pub fn new(a: Long, b: Long) -> Fibonacci {
         Fibonacci { a: a, b: b }
     }
 }
@@ -238,7 +238,7 @@ pub struct Collatz {
     done: bool,
 }
 impl Collatz {
-    pub fn new(num: i64) -> Self {
+    pub fn new(num: i64) -> Collatz {
         Collatz {
             num: num,
             done: false,
