@@ -162,6 +162,16 @@ impl std::iter::Sum for Long {
         iter.fold(Long::new("0"), |sum, element| &sum + &element)
     }
 }
+impl std::cmp::PartialEq<i64> for Long {
+    fn eq(&self, other: &i64) -> bool {
+        self.eq(&Long::new(&other.to_string()))
+    }
+}
+impl std::cmp::PartialOrd<i64> for Long {
+    fn partial_cmp(&self, other: &i64) -> Option<std::cmp::Ordering> {
+        self.partial_cmp(&Long::new(&other.to_string()))
+    }
+}
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         self.digits
