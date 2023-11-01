@@ -113,6 +113,14 @@ impl Long {
             len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
         }
     }
+    /// Obtain the bottom 64 bits of this number as a signed integer.
+    pub fn get(&self) -> i64 {
+        match self.digits.len() {
+            0 => 0,
+            1 => self.digits[0] as i64,
+            _ => self.digits[0] as i64 + 2i64.pow(32) * self.digits[1] as i64,
+        }
+    }
     fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
         let sum = a + b + carry;
         if sum >= 1_000_000_000 {
