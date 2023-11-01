@@ -19,6 +19,7 @@ fn solve(problem_number: i32) {
         11 => solutions::largest_product_in_a_grid::solve(),
         12 => solutions::highly_divisible_triangular_number::solve(),
         13 => solutions::large_sum::solve(),
+        14 => solutions::longest_collatz_sequence::solve(),
         _ => {}
     };
 }
