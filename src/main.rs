@@ -27,6 +27,7 @@ fn solve(problem_number: i32) {
         19 => solutions::counting_sundays::solve(),
         20 => solutions::factorial_digit_sum::solve(),
         21 => solutions::amicable_numbers::solve(),
+        22 => solutions::names_scores::solve(),
         _ => (),
     };
 }

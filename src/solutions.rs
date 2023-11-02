@@ -12,6 +12,7 @@ pub mod lattice_paths;
 pub mod longest_collatz_sequence;
 pub mod maximum_path_sum_i;
 pub mod multiples_of_3_or_5;
+pub mod names_scores;
 pub mod number_letter_counts;
 pub mod power_digit_sum;
 pub mod smallest_multiple;
