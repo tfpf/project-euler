@@ -24,6 +24,7 @@ fn solve(problem_number: i32) {
         16 => solutions::power_digit_sum::solve(),
         17 => solutions::number_letter_counts::solve(),
         18 => solutions::maximum_path_sum_i::solve(),
+        19 => solutions::counting_sundays::solve(),
         _ => (),
     };
 }

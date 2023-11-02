@@ -1,3 +1,4 @@
+pub mod counting_sundays;
 pub mod even_fibonacci_numbers;
 pub mod highly_divisible_triangular_number;
 pub mod large_sum;
