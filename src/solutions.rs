@@ -1,3 +1,4 @@
+pub mod amicable_numbers;
 pub mod counting_sundays;
 pub mod even_fibonacci_numbers;
 pub mod factorial_digit_sum;
