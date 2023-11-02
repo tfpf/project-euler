@@ -1,31 +1,13 @@
+use crate::utils;
+
 /// Implement the `d` function.
 ///
 /// * `num`
 ///
 /// -> Sum of proper divisors of `num`.
 fn sum_of_proper_divisors(num: usize) -> usize {
-    if num == 0 || num == 1 {
-        return 0;
-    }
-
-    // By definition, a number is not its own proper divisor. Hence, exclude 1
-    // (which automatically excludes the number) from the list, then add it
-    // back later.
-    (2usize..)
-        .take_while(|candidate| candidate.pow(2) <= num)
-        .map(|candidate| {
-            if num % candidate == 0 {
-                if num / candidate != candidate {
-                    candidate + num / candidate
-                } else {
-                    candidate
-                }
-            } else {
-                0
-            }
-        })
-        .sum::<usize>()
-        + 1
+    let divisors = utils::Divisors::new(num as i64);
+    (divisors.sum::<i64>() - num as i64) as usize
 }
 
 pub fn solve() {

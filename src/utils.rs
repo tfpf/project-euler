@@ -59,30 +59,6 @@ where
     num == num.chars().rev().collect::<String>()
 }
 
-/// Count the divisors of the given number.
-///
-/// * `num` - Number to count the divisors of.
-///
-/// -> Number of divisors.
-pub fn count_divisors(num: i64) -> i64 {
-    (1i64..)
-        .take_while(|candidate| candidate.pow(2) <= num)
-        .map(|candidate| {
-            if num % candidate == 0 {
-                // This number is a divisor, which means we have potentially
-                // found another divisor as well.
-                if num / candidate != candidate {
-                    2
-                } else {
-                    1
-                }
-            } else {
-                0
-            }
-        })
-        .sum()
-}
-
 /// Calculate the greatest common divisor of two numbers.
 ///
 /// * `a`
@@ -266,8 +242,7 @@ impl std::fmt::Display for Long {
  * Iterators.
  *****************************************************************************/
 
-/// Fibonacci sequence iterator which produces items containing the values
-/// rather than references to the values. Positive numbers only!
+/// Fibonacci sequence iterator. Positive numbers only!
 pub struct Fibonacci {
     a: Long,
     b: Long,
@@ -287,8 +262,7 @@ impl Iterator for Fibonacci {
     }
 }
 
-/// Triangular number iterator which produces items containing the values
-/// rather than references to the values.
+/// Triangular number iterator.
 pub struct Triangular {
     idx: i64,
     num: i64,
@@ -307,8 +281,7 @@ impl Iterator for Triangular {
     }
 }
 
-/// Collatz sequence iterator which produces items containing the values rather
-/// than references to the values. Positive numbers only!
+/// Collatz sequence iterator. Positive numbers only!
 pub struct Collatz {
     num: i64,
     done: bool,
@@ -335,5 +308,47 @@ impl Iterator for Collatz {
         };
         self.done = num == 1;
         Some(num)
+    }
+}
+
+/// Divisors iterator. Generates all divisors of a number in an unspecified
+/// order. Positive numbers only!
+pub struct Divisors {
+    dividend: i64,
+    limit: i64,
+    current: i64,
+    other: i64,
+}
+impl Divisors {
+    pub fn new(dividend: i64) -> Divisors {
+        Divisors {
+            dividend: dividend,
+            limit: (dividend as f64).sqrt() as i64,
+            current: 0,
+            other: 0,
+        }
+    }
+}
+impl Iterator for Divisors {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        if self.other > 0 {
+            let other = self.other;
+            self.other = 0;
+            return Some(other);
+        }
+        loop {
+            self.current += 1;
+            if self.current > self.limit {
+                return None;
+            }
+            if self.dividend % self.current == 0 {
+                let other = self.dividend / self.current;
+                if other != self.current {
+                    self.other = other;
+                }
+                return Some(self.current);
+            }
+        }
     }
 }
