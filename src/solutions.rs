@@ -1,5 +1,6 @@
 pub mod counting_sundays;
 pub mod even_fibonacci_numbers;
+pub mod factorial_digit_sum;
 pub mod highly_divisible_triangular_number;
 pub mod large_sum;
 pub mod largest_palindromic_product;

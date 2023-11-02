@@ -104,7 +104,7 @@ pub fn gcd(a: i64, b: i64) -> i64 {
 /// * `year`
 ///
 /// -> Whether the input is a leap year.
-fn is_leap(year: i64) -> bool {
+pub fn is_leap(year: i64) -> bool {
     year % 4 == 0 && year % 100 != 0 || year % 400 == 0
 }
 
@@ -114,7 +114,7 @@ fn is_leap(year: i64) -> bool {
 /// * `month` - Number from 1 to 12.
 ///
 /// -> Number of days, or 0 if the month is invalid.
-fn days_in(year: i64, month: i64) -> i64 {
+pub fn days_in(year: i64, month: i64) -> i64 {
     match month {
         1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
         4 | 6 | 9 | 11 => 30,
