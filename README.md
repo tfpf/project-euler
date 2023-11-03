@@ -18,4 +18,4 @@ cargo r 0
 ```
 
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
-intent of the code by hiding implementation details.
+intent of the code by hiding confounding implementation details.
