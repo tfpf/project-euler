@@ -28,26 +28,29 @@ fn solve(problem_number: i32) {
         20 => solutions::factorial_digit_sum::solve(),
         21 => solutions::amicable_numbers::solve(),
         22 => solutions::names_scores::solve(),
-        _ => (),
+        _ => std::process::exit(0),
     };
 }
 
 /// Main function.
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
-    let problem_number = match args.get(1) {
-        Some(pn) => pn,
+    if args.len() < 2 {
+        eprintln!("Problem number not specified.");
+        return;
+    }
+    let problem_number = match args[1].parse::<i32>() {
+        Ok(pn) if pn >= 0 => pn,
         _ => {
-            println!("Problem number not specified.");
+            eprintln!("Problem number is invalid.");
             return;
         }
     };
-    let problem_number = match problem_number.parse::<i32>() {
-        Ok(pn) if pn > 0 => pn,
-        _ => {
-            println!("Problem number is invalid.");
-            return;
+    if problem_number == 0 {
+        for pn in 1.. {
+            solve(pn);
         }
-    };
-    solve(problem_number);
+    } else {
+        solve(problem_number);
+    }
 }
