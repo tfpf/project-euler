@@ -28,6 +28,7 @@ fn solve(problem_number: i32) {
         20 => solutions::factorial_digit_sum::solve(),
         21 => solutions::amicable_numbers::solve(),
         22 => solutions::names_scores::solve(),
+        23 => solutions::non_abundant_sums::solve(),
         _ => std::process::exit(0),
     };
 }
