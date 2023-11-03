@@ -30,6 +30,7 @@ fn solve(problem_number: i32) {
         22 => solutions::names_scores::solve(),
         23 => solutions::non_abundant_sums::solve(),
         24 => solutions::lexicographic_permutations::solve(),
+        25 => solutions::thousand_digit_fibonacci_number::solve(),
         _ => std::process::exit(0),
     };
 }
