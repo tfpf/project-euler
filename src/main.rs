@@ -29,6 +29,7 @@ fn solve(problem_number: i32) {
         21 => solutions::amicable_numbers::solve(),
         22 => solutions::names_scores::solve(),
         23 => solutions::non_abundant_sums::solve(),
+        24 => solutions::lexicographic_permutations::solve(),
         _ => std::process::exit(0),
     };
 }

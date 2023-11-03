@@ -8,15 +8,12 @@
 ///   `digits`.
 ///
 /// -> The correct digit of the 1_000_000th permutation.
-fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32
-{
-    for (&prev, &_) in digits.iter().zip(digits.iter().skip(1))
-    {
+fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32 {
+    for (&prev, &_) in digits.iter().zip(digits.iter().skip(1)) {
         // If I set the digit `_`, how many permutations will I have seen
         // before any number containing `_` at this position?
         let count_ = *count + step;
-        if count_ < 1_000_000
-        {
+        if count_ < 1_000_000 {
             *count = count_;
             continue;
         }
@@ -28,9 +25,7 @@ fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32
     -1
 }
 
-/// Main function.
-fn main()
-{
+pub fn solve() {
     // The last number in this vector is a sentinel value. It won't actually be
     // used; it's there just to make the code simpler.
     let mut digits = (0..=10).collect::<Vec<i32>>();
@@ -38,15 +33,14 @@ fn main()
     let mut result: Vec<i32> = vec![];
     let mut count = 0;
     let mut step = 3628800;
-    for position in 0..=9
-    {
+    for position in 0..=9 {
         step /= 10 - position;
         let digit = overshoot(&digits, &mut count, step);
         result.push(digit);
         digits.retain(|&elem| elem != digit);
     }
     let result = result.iter().fold(0, |s, &elem| s * 10 + elem as i64);
-    println!("{}", result);
 
+    println!("{}", result);
     assert_eq!(result, 2783915460);
 }

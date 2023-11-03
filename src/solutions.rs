@@ -9,6 +9,7 @@ pub mod largest_prime_factor;
 pub mod largest_product_in_a_grid;
 pub mod largest_product_in_a_series;
 pub mod lattice_paths;
+pub mod lexicographic_permutations;
 pub mod longest_collatz_sequence;
 pub mod maximum_path_sum_i;
 pub mod multiples_of_3_or_5;
