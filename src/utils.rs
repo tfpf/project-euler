@@ -202,24 +202,6 @@ impl std::ops::Mul<i32> for &Long {
         result
     }
 }
-impl std::iter::Sum for Long {
-    fn sum<I>(iter: I) -> Long
-    where
-        I: Iterator<Item = Long>,
-    {
-        iter.fold(Long::new("0"), |sum, element| &sum + &element)
-    }
-}
-impl std::cmp::PartialEq<i64> for Long {
-    fn eq(&self, other: &i64) -> bool {
-        self.eq(&Long::new(&other.to_string()))
-    }
-}
-impl std::cmp::PartialOrd<i64> for Long {
-    fn partial_cmp(&self, other: &i64) -> Option<std::cmp::Ordering> {
-        self.partial_cmp(&Long::new(&other.to_string()))
-    }
-}
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         self.digits
@@ -242,22 +224,21 @@ impl std::fmt::Display for Long {
  * Iterators.
  *****************************************************************************/
 
-/// Fibonacci sequence iterator. Positive numbers only!
+/// Fibonacci sequence iterator.
 pub struct Fibonacci {
-    a: Long,
-    b: Long,
+    a: i64,
+    b: i64,
 }
 impl Fibonacci {
-    pub fn new(a: Long, b: Long) -> Fibonacci {
+    pub fn new(a: i64, b: i64) -> Fibonacci {
         Fibonacci { a: a, b: b }
     }
 }
 impl Iterator for Fibonacci {
-    type Item = Long;
-    fn next(&mut self) -> Option<Long> {
-        let a = self.a.clone();
-        self.a = self.b.clone();
-        self.b += &a;
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        let a = self.a;
+        (self.a, self.b) = (self.b, self.a + self.b);
         Some(a)
     }
 }
@@ -281,7 +262,7 @@ impl Iterator for Triangular {
     }
 }
 
-/// Collatz sequence iterator. Positive numbers only!
+/// Collatz sequence iterator.
 pub struct Collatz {
     num: i64,
     done: bool,
