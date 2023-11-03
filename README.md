@@ -9,7 +9,7 @@ To solve, say, problem 1, enter the following command.
 cargo r 1
 ```
 
-You can specify 0 to sequentially solve all problems for which solutions are written.
+You can specify 0 to sequentially solve all problems for which I have written solutions.
 
 ```sh
 cargo r 0
