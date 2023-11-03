@@ -1,5 +1,0 @@
-# Ignore everything in all directories containing Rust source files. Then
-# un-ignore the files with suffixes in the same directories. In effect, ignore
-# the executable files, which have no suffix.
-*/*/*
-!*/*/*.*
