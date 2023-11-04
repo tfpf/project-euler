@@ -6,11 +6,11 @@ pub fn solve() {
     // algebra, those numbers can also be expressed as a quadratic function of
     // the sequence of odd numbers. The same can be done for the remaining two
     // diagonals; the effective quadratic function is as seen below.
-    let sum: usize = (3usize..)
+    let sum = (3i32..)
         .step_by(2)
         .take(500)
         .map(|num| 4 * num.pow(2) - 6 * num + 6)
-        .sum::<usize>()
+        .sum::<i32>()
         + 1;
 
     println!("{}", sum);
