@@ -49,3 +49,4 @@ intent of the code by hiding confounding implementation details.
 |[24](https://projecteuler.net/problem=24)|[`lexicographic_permutations.rs`](src/solutions/lexicographic_permutations.rs)|
 |[25](https://projecteuler.net/problem=25)|[`thousand_digit_fibonacci_number.rs`](src/solutions/thousand_digit_fibonacci_number.rs)|
 |[26](https://projecteuler.net/problem=26)|[`reciprocal_cycles.rs`](src/solutions/reciprocal_cycles.rs)|
+|[27](https://projecteuler.net/problem=27)|[`quadratic_primes.rs`](src/solutions/quadratic_primes.rs)|

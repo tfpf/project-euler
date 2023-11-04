@@ -34,6 +34,7 @@ fn solve(problem_number: i32) -> bool {
         24 => solutions::lexicographic_permutations::solve(),
         25 => solutions::thousand_digit_fibonacci_number::solve(),
         26 => solutions::reciprocal_cycles::solve(),
+        27 => solutions::quadratic_primes::solve(),
         _ => return false,
     };
     true

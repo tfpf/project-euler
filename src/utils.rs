@@ -10,7 +10,10 @@
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
-    if num % 2 == 0 || num % 3 == 0 {
+    if num == 2 || num == 3 {
+        return true;
+    }
+    if num < 2 || num % 2 == 0 || num % 3 == 0 {
         return false;
     }
     for candidate in (5i64..)
