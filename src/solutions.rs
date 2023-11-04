@@ -16,6 +16,7 @@ pub mod multiples_of_3_or_5;
 pub mod names_scores;
 pub mod non_abundant_sums;
 pub mod number_letter_counts;
+pub mod number_spiral_diagonals;
 pub mod power_digit_sum;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
