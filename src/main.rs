@@ -36,6 +36,7 @@ fn solve(problem_number: i32) -> bool {
         26 => solutions::reciprocal_cycles::solve(),
         27 => solutions::quadratic_primes::solve(),
         28 => solutions::number_spiral_diagonals::solve(),
+        29 => solutions::distinct_powers::solve(),
         _ => return false,
     };
     true
