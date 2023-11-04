@@ -1,5 +1,6 @@
 pub mod amicable_numbers;
 pub mod counting_sundays;
+pub mod digit_fifth_powers;
 pub mod distinct_powers;
 pub mod even_fibonacci_numbers;
 pub mod factorial_digit_sum;

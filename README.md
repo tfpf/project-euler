@@ -52,3 +52,4 @@ intent of the code by hiding confounding implementation details.
 |[27](https://projecteuler.net/problem=27)|[`quadratic_primes.rs`](src/solutions/quadratic_primes.rs)|
 |[28](https://projecteuler.net/problem=28)|[`number_spiral_diagonals.rs`](src/solutions/number_spiral_diagonals.rs)|
 |[29](https://projecteuler.net/problem=29)|[`distinct_powers.rs`](src/solutions/distinct_powers.rs)|
+|[30](https://projecteuler.net/problem=30)|[`digit_fifth_powers.rs`](src/solutions/digit_fifth_powers.rs)|

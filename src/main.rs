@@ -37,6 +37,7 @@ fn solve(problem_number: i32) -> bool {
         27 => solutions::quadratic_primes::solve(),
         28 => solutions::number_spiral_diagonals::solve(),
         29 => solutions::distinct_powers::solve(),
+        30 => solutions::digit_fifth_powers::solve(),
         _ => return false,
     };
     true
