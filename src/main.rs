@@ -1,10 +1,12 @@
 pub mod solutions;
 pub mod utils;
 
-/// Execute the solution of the specified problem.
+/// Execute the solution (if available) of the specified problem.
 ///
 /// * `problem_number`
-fn solve(problem_number: i32) {
+///
+/// -> Flag indicating whether the solution is available.
+fn solve(problem_number: i32) -> bool {
     match problem_number {
         1 => solutions::multiples_of_3_or_5::solve(),
         2 => solutions::even_fibonacci_numbers::solve(),
@@ -31,11 +33,11 @@ fn solve(problem_number: i32) {
         23 => solutions::non_abundant_sums::solve(),
         24 => solutions::lexicographic_permutations::solve(),
         25 => solutions::thousand_digit_fibonacci_number::solve(),
-        _ => std::process::exit(0),
+        _ => return false,
     };
+    true
 }
 
-/// Main function.
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() < 2 {
@@ -51,7 +53,9 @@ fn main() {
     };
     if problem_number == 0 {
         for pn in 1.. {
-            solve(pn);
+            if !solve(pn) {
+                break;
+            }
         }
     } else {
         solve(problem_number);
