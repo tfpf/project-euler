@@ -35,6 +35,7 @@ fn solve(problem_number: i32) -> bool {
         25 => solutions::thousand_digit_fibonacci_number::solve(),
         26 => solutions::reciprocal_cycles::solve(),
         27 => solutions::quadratic_primes::solve(),
+        28 => solutions::number_spiral_diagonals::solve(),
         _ => return false,
     };
     true
