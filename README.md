@@ -27,3 +27,4 @@ intent of the code by hiding confounding implementation details.
 |[2](https://projecteuler.net/problem=2)|[`even_fibonacci_numbers.rs`](src/solutions/even_fibonacci_numbers.rs)|
 |[3](https://projecteuler.net/problem=3)|[`largest_prime_factor.rs`](src/solutions/largest_prime_factor.rs)|
 |[4](https://projecteuler.net/problem=4)|[`largest_palindromic_product.rs`](src/solutions/largest_palindromic_product.rs)|
+|[5](https://projecteuler.net/problem=5)|<src/solutions/smallest_multiple.rs>
