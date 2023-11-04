@@ -11,7 +11,7 @@ fn solve(problem_number: i32) -> bool {
         1 => solutions::multiples_of_3_or_5::solve(),
         2 => solutions::even_fibonacci_numbers::solve(),
         3 => solutions::largest_prime_factor::solve(),
-        4 => solutions::largest_palindromic_product::solve(),
+        4 => solutions::largest_palindrome_product::solve(),
         5 => solutions::smallest_multiple::solve(),
         6 => solutions::sum_square_difference::solve(),
         7 => solutions::ten_thousand_and_first_prime::solve(),
