@@ -1,17 +1,10 @@
 use crate::utils;
 
 pub fn solve() {
-    // Estimate the largest number using an approximation of the prime-counting
-    // function. Then use the sieve of Eratosthenes.
+    // Start with a generous estimate of the 10000th prime number using the
+    // prime-counting function.
     const LIMIT: usize = 120000;
-    let prime = utils::sieve_of_eratosthenes(LIMIT);
-    let result = prime
-        .iter()
-        .enumerate()
-        .filter(|(_, c)| **c)
-        .nth(10000)
-        .unwrap()
-        .0;
+    let result = utils::primes(LIMIT).nth(10000).unwrap();
 
     println!("{}", result);
     assert_eq!(result, 104743);

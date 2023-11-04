@@ -33,6 +33,7 @@ fn solve(problem_number: i32) -> bool {
         23 => solutions::non_abundant_sums::solve(),
         24 => solutions::lexicographic_permutations::solve(),
         25 => solutions::thousand_digit_fibonacci_number::solve(),
+        26 => solutions::reciprocal_cycles::solve(),
         _ => return false,
     };
     true

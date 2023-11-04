@@ -24,28 +24,6 @@ pub fn is_prime(num: i64) -> bool {
     true
 }
 
-/// Construct the sieve of Eratosthenes.
-///
-/// * `limit` - Number up to which the sieve should be constructed.
-///
-/// -> Vector in which each element indicates the primality of its index.
-pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
-    let mut prime = vec![true; limit + 1];
-    prime[0] = false;
-    prime[1] = false;
-    for num in (2usize..).take_while(|num| num * num <= limit) {
-        // If this number is prime, mark its multiples starting from its square
-        // as composite. (Smaller multiples have already been marked as
-        // composite.)
-        if prime[num] {
-            for multiple in (num * num..=limit).step_by(num) {
-                prime[multiple] = false;
-            }
-        }
-    }
-    prime
-}
-
 /// Check whether a number is a palindrome or not.
 ///
 /// * `num` - Number to check for palindromicity.
@@ -103,6 +81,25 @@ pub fn days_in(year: i64, month: i64) -> i64 {
         }
         _ => 0,
     }
+}
+
+/// Find the length of the repeating part of the decimal representation of the
+/// reciprocal of a prime number.
+///
+/// * `prime` - Prime number.
+///
+/// -> Recurrence cycle length.
+pub fn recurrence_length(prime: i64) -> i64 {
+    // The digits (i.e. the sequence of quotients) will start repeating when
+    // the remainder becomes 1 for the second time.
+    let mut rem = 1;
+    for length in 1.. {
+        rem = rem * 10 % prime;
+        if rem == 1 {
+            return length;
+        }
+    }
+    0
 }
 
 /******************************************************************************
@@ -332,4 +329,33 @@ impl Iterator for Divisors {
             }
         }
     }
+}
+
+/// Primes iterator. Generates prime numbers by internally constructing the
+/// sieve of Eratosthenes.
+///
+/// * `limit` - Number up to which the sieve should be constructed.
+///
+/// -> Iterator over prime numbers.
+pub fn primes(limit: usize) -> std::vec::IntoIter<usize> {
+    let mut prime = vec![true; limit + 1];
+    prime[0] = false;
+    prime[1] = false;
+    for num in (2usize..).take_while(|num| num * num <= limit) {
+        // If this number is prime, mark its multiples starting from its square
+        // as composite. (Smaller multiples have already been marked as
+        // composite.)
+        if prime[num] {
+            for multiple in (num * num..=limit).step_by(num) {
+                prime[multiple] = false;
+            }
+        }
+    }
+    let prime = prime
+        .iter()
+        .enumerate()
+        .filter(|(_, is_prime)| **is_prime)
+        .map(|(num, _)| num)
+        .collect::<Vec<usize>>();
+    prime.into_iter()
 }
