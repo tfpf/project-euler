@@ -17,6 +17,7 @@ pub mod names_scores;
 pub mod non_abundant_sums;
 pub mod number_letter_counts;
 pub mod power_digit_sum;
+pub mod reciprocal_cycles;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
 pub mod sum_square_difference;

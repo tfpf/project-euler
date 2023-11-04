@@ -48,3 +48,4 @@ intent of the code by hiding confounding implementation details.
 |[23](https://projecteuler.net/problem=23)|[`non_abundant_sums.rs`](src/solutions/non_abundant_sums.rs)|
 |[24](https://projecteuler.net/problem=24)|[`lexicographic_permutations.rs`](src/solutions/lexicographic_permutations.rs)|
 |[25](https://projecteuler.net/problem=25)|[`thousand_digit_fibonacci_number.rs`](src/solutions/thousand_digit_fibonacci_number.rs)|
+|[26](https://projecteuler.net/problem=26)|[`reciprocal_cycles.rs`](src/solutions/reciprocal_cycles.rs)|
