@@ -48,6 +48,9 @@ where
 /// -> GCD of the inputs.
 pub fn gcd(a: i64, b: i64) -> i64 {
     let (a, b) = if a > b { (a, b) } else { (b, a) };
+    if b == 0 {
+        return a;
+    }
     let remainder = a % b;
     if remainder == 0 {
         b
@@ -340,7 +343,7 @@ impl Iterator for Divisors {
 /// * `limit` - Number up to which the sieve should be constructed.
 ///
 /// -> Iterator over prime numbers.
-pub fn primes(limit: usize) -> std::vec::IntoIter<usize> {
+pub fn primes(limit: usize) -> std::vec::IntoIter<i64> {
     let mut prime = vec![true; limit + 1];
     prime[0] = false;
     prime[1] = false;
@@ -358,7 +361,7 @@ pub fn primes(limit: usize) -> std::vec::IntoIter<usize> {
         .iter()
         .enumerate()
         .filter(|(_, is_prime)| **is_prime)
-        .map(|(num, _)| num)
-        .collect::<Vec<usize>>();
+        .map(|(num, _)| num as i64)
+        .collect::<Vec<i64>>();
     prime.into_iter()
 }

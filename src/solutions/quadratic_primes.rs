@@ -8,7 +8,7 @@ pub fn solve() {
     // * `a` must be at least `b` (else, the polynomial produces negatives).
     let mut max_primes = 0;
     let mut a_times_b = 0;
-    for b in utils::primes(999).skip(1).map(|b| b as i64) {
+    for b in utils::primes(999).skip(1) {
         for a in (-b..=999).step_by(2) {
             let primes = (0i64..)
                 .map(|n| n.pow(2) + a * n + b)

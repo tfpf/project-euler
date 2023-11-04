@@ -51,3 +51,4 @@ intent of the code by hiding confounding implementation details.
 |[26](https://projecteuler.net/problem=26)|[`reciprocal_cycles.rs`](src/solutions/reciprocal_cycles.rs)|
 |[27](https://projecteuler.net/problem=27)|[`quadratic_primes.rs`](src/solutions/quadratic_primes.rs)|
 |[28](https://projecteuler.net/problem=28)|[`number_spiral_diagonals.rs`](src/solutions/number_spiral_diagonals.rs)|
+|[29](https://projecteuler.net/problem=29)|[`distinct_powers.rs`](src/solutions/distinct_powers.rs)|
