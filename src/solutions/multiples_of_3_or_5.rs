@@ -1,11 +1,5 @@
 pub fn solve() {
-    let sum = (1..1000).fold(0, |sum, element| {
-        if element % 3 == 0 || element % 5 == 0 {
-            sum + element
-        } else {
-            sum
-        }
-    });
+    let sum: i32 = (1..1000).filter(|num| num % 3 == 0 || num % 5 == 0).sum();
 
     println!("{}", sum);
     assert_eq!(sum, 233168);
