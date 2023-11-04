@@ -19,3 +19,11 @@ cargo r 0
 
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
 intent of the code by hiding confounding implementation details.
+
+## Problems and Solutions
+|Problem|Solution|
+|-:|:-:|
+|[1](https://projecteuler.net/problem=1)|[`multiples_of_3_or_5.rs`](src/solutions/multiples_of_3_or_5.rs)|
+|[2](https://projecteuler.net/problem=2)|[`even_fibonacci_numbers.rs`](src/solutions/even_fibonacci_numbers.rs)|
+|[3](https://projecteuler.net/problem=3)|[`largest_prime_factor.rs`](src/solutions/largest_prime_factor.rs)|
+|[4](https://projecteuler.net/problem=4)|[`largest_palindromic_product.rs`](src/solutions/largest_palindromic_product.rs)|
