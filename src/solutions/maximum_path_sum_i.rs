@@ -9,6 +9,12 @@ impl CacheMap {
             triangle: triangle,
         }
     }
+    /// Find the maximum path sum to the bottom, starting from the given row
+    /// and column indices.
+    ///
+    /// * `key` - Tuple of row and column indices.
+    ///
+    /// -> Maximum path sum.
     fn get(&mut self, key: (usize, usize)) -> i32 {
         let (row, col) = key;
         if row >= 15 {

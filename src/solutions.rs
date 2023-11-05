@@ -1,4 +1,5 @@
 pub mod amicable_numbers;
+pub mod coin_sums;
 pub mod counting_sundays;
 pub mod digit_fifth_powers;
 pub mod distinct_powers;
