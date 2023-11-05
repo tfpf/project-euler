@@ -105,7 +105,7 @@ pub fn recurrence_length(prime: i64) -> i64 {
             return length;
         }
     }
-    0
+    unreachable!();
 }
 
 /******************************************************************************
