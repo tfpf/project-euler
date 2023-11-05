@@ -1,5 +1,7 @@
 pub fn solve() {
-    let sum: i32 = (10i32..10000000)
+    // No need to check numbers containing more than 6 digits, because they
+    // will always be less than the sum of the fifth power of their digits.
+    let sum: i32 = (10i32..1000000)
         .filter(|&num| {
             let mut n = num;
             let mut val = 0;
