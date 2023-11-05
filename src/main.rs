@@ -38,6 +38,7 @@ fn solve(problem_number: i32) -> bool {
         28 => solutions::number_spiral_diagonals::solve(),
         29 => solutions::distinct_powers::solve(),
         30 => solutions::digit_fifth_powers::solve(),
+        31 => solutions::coin_sums::solve(),
         _ => return false,
     };
     true
