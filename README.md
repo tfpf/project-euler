@@ -1,7 +1,7 @@
 # Project Euler
-My solutions to some [Project Euler](https://projecteuler.net) problems, written as I stumble along learning Rust. I
-shall only add the solutions to the first hundred problems here with the intention being to showcase whatever useful
-data structures I build along the way. This is permitted according to the Project Euler guidelines.
+Trying my hand at [Project Euler](https://projecteuler.net) as I stumble along learning Rust. I shall only add the
+solutions to the first hundred problems here with the intention being to showcase whatever useful data structures I
+build along the way. This is permitted according to the Project Euler guidelines.
 
 ![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)
 
