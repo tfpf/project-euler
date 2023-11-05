@@ -9,6 +9,12 @@ impl CacheMap {
             denominations: denominations,
         }
     }
+    /// Count the number of ways to obtain the remaining amount of money using
+    /// denominations at the given index and above.
+    ///
+    /// * `key` - Tuple of the index and remaining amount.
+    ///
+    /// -> Number of ways.
     fn get(&mut self, key: (usize, i32)) -> i32 {
         let (index, remaining) = key;
         if index >= 8 || remaining < 0 {
