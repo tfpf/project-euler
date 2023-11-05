@@ -54,3 +54,4 @@ intent of the code by hiding confounding implementation details.
 |[29](https://projecteuler.net/problem=29)|[`distinct_powers.rs`](src/solutions/distinct_powers.rs)|
 |[30](https://projecteuler.net/problem=30)|[`digit_fifth_powers.rs`](src/solutions/digit_fifth_powers.rs)|
 |[31](https://projecteuler.net/problem=31)|[`coin_sums.rs`](src/solutions/coin_sums.rs)|
+|[32](https://projecteuler.net/problem=32)|[`pandigital_products.rs`](src/solutions/pandigital_products.rs)|

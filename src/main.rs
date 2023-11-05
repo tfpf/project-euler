@@ -39,6 +39,7 @@ fn solve(problem_number: i32) -> bool {
         29 => solutions::distinct_powers::solve(),
         30 => solutions::digit_fifth_powers::solve(),
         31 => solutions::coin_sums::solve(),
+        32 => solutions::pandigital_products::solve(),
         _ => return false,
     };
     true
