@@ -1,7 +1,10 @@
 use crate::utils;
 
 pub fn solve() {
-    let product = (0..1000).fold(utils::Long::new("1"), |product, _| &product * 2);
+    let mut product = utils::Long::new("1");
+    for _ in 0..1000 {
+        product *= 2;
+    }
     let result: u32 = product
         .to_string()
         .chars()
