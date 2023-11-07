@@ -16,7 +16,7 @@ pub fn solve() {
             }
         }
     }
-    let product = powers.iter().fold(1, |product, element| product * element);
+    let product: i32 = powers.iter().product();
 
     println!("{}", product);
     assert_eq!(product, 232792560);
