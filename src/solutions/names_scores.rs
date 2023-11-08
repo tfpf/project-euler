@@ -1,5 +1,5 @@
 pub fn solve() {
-    let names = std::fs::read_to_string("resources/names_scores.txt").unwrap();
+    let names = std::fs::read_to_string("res/names_scores.txt").unwrap();
     let mut names: Vec<&str> = names.split(",").map(|s| &s[1..s.len() - 1]).collect();
     names.sort();
     let result: usize = names
