@@ -1,6 +1,7 @@
 pub mod amicable_numbers;
 pub mod coin_sums;
 pub mod counting_sundays;
+pub mod digit_cancelling_fractions;
 pub mod digit_fifth_powers;
 pub mod distinct_powers;
 pub mod even_fibonacci_numbers;
@@ -30,4 +31,3 @@ pub mod sum_square_difference;
 pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
 pub mod thousand_digit_fibonacci_number;
-pub mod digit_cancelling_fractions;
