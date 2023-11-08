@@ -56,7 +56,7 @@ pub fn solve() {
     // For the multiplicand, multiplier and product to have 9 digits in total,
     // we must multiply a 4-digit number with a 1-digit number or a 3-digit
     // number with a 2-digit number. Any other combination, and we are
-    // guaranteed have more than or less than 9 digits.
+    // guaranteed to have more than or less than 9 digits.
     let mut products = std::collections::HashSet::new();
     search(1000, 100000, 1, 10, &mut products);
     search(100, 1000, 10, 100, &mut products);
