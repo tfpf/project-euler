@@ -108,15 +108,6 @@ pub fn recurrence_length(prime: i64) -> i64 {
     unreachable!();
 }
 
-/// Calculate the factorial of a number.
-///
-/// * `num` Positive number.
-///
-/// -> Factorial.
-pub fn factorial(num: i64) -> i64 {
-    (1..=num).product()
-}
-
 /******************************************************************************
  * Objects.
  *****************************************************************************/
