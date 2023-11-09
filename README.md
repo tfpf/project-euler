@@ -56,3 +56,4 @@ intent of the code by hiding confounding implementation details.
 |[31](https://projecteuler.net/problem=31)|[`coin_sums.rs`](src/solutions/coin_sums.rs)|
 |[32](https://projecteuler.net/problem=32)|[`pandigital_products.rs`](src/solutions/pandigital_products.rs)|
 |[33](https://projecteuler.net/problem=33)|[`digit_cancelling_fractions.rs`](src/solutions/digit_cancelling_fractions.rs)|
+|[34](https://projecteuler.net/problem=34)|[`digit_factorials.rs`](src/solutions/digit_factorials.rs)|

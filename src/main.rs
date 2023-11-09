@@ -41,6 +41,7 @@ fn solve(problem_number: i32) -> bool {
         31 => solutions::coin_sums::solve(),
         32 => solutions::pandigital_products::solve(),
         33 => solutions::digit_cancelling_fractions::solve(),
+        34 => solutions::digit_factorials::solve(),
         _ => return false,
     };
     true
