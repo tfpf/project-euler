@@ -8,8 +8,10 @@ pub fn solve() {
             let den = utils::Digits::new(denominator).collect::<Vec<i64>>();
             // The unit's digit must not be 0.
             if num[0] != 0
-                // At least one digit must be common.
-                && (num[0] == den[0] || num[0] == den[1] || num[1] == den[0] || num[1] == den[1])
+                // The ten's digit of one must match the unit's digit of the
+                // other. Their unit's/ten's digits cannot match, because then
+                // the other digits would also match.
+                && (num[0] == den[1] || num[1] == den[0])
                 // The incorrectly-obtained value must be same as the correct
                 // value.
                 && num[0] * num[1] * denominator == den[0] * den[1] * numerator
