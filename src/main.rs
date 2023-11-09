@@ -40,6 +40,7 @@ fn solve(problem_number: i32) -> bool {
         30 => solutions::digit_fifth_powers::solve(),
         31 => solutions::coin_sums::solve(),
         32 => solutions::pandigital_products::solve(),
+        33 => solutions::digit_cancelling_fractions::solve(),
         _ => return false,
     };
     true
