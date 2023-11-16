@@ -1,5 +1,5 @@
-pub mod solutions;
 pub mod utils;
+pub mod solutions;
 
 /// Execute the solution (if available) of the specified problem.
 ///
