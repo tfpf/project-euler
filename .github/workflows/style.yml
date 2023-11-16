@@ -1,0 +1,10 @@
+name: tests
+on: [push, workflow_dispatch]
+
+jobs:
+  style:
+    name: style
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fmt --check
