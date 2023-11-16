@@ -3,6 +3,7 @@ Trying my hand at [Project Euler](https://projecteuler.net) as I stumble along l
 solutions to the first hundred problems here with the intention being to showcase whatever useful data structures I
 build along the way. This is permitted according to the Project Euler guidelines.
 
+![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)
 ![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)
 
 To solve, say, problem 16, enter the following command.
