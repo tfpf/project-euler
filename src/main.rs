@@ -44,6 +44,7 @@ fn solve(problem_number: i32) -> bool {
         34 => solutions::digit_factorials::solve(),
         35 => solutions::circular_primes::solve(),
         36 => solutions::double_base_palindromes::solve(),
+        37 => solutions::truncatable_primes::solve(),
         _ => return false,
     };
     true

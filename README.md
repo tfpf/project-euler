@@ -60,3 +60,4 @@ intent of the code by hiding confounding implementation details.
 |[34](https://projecteuler.net/problem=34)|[`digit_factorials.rs`](src/solutions/digit_factorials.rs)|
 |[35](https://projecteuler.net/problem=35)|[`circular_primes.rs`](src/solutions/circular_primes.rs)|
 |[36](https://projecteuler.net/problem=36)|[`double_base_palindromes.rs`](src/solutions/double_base_palindromes.rs)|
+|[37](https://projecteuler.net/problem=37)|[`truncatable_primes.rs`](src/solutions/truncatable_primes.rs)|
