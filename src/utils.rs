@@ -30,13 +30,16 @@ pub fn is_prime(num: i64) -> bool {
 /// Check whether a number is a palindrome or not.
 ///
 /// * `num` - Number to check for palindromicity.
+/// * `radix` - Base to use to represent the number: 2, 10 or 16.
 ///
-/// -> Whether `num` written using decimal digits is a palindrome.
-pub fn is_palindrome<T>(num: T) -> bool
-where
-    T: std::fmt::Display,
-{
-    let num = num.to_string();
+/// -> Whether `num` is a palindrome in the specified base.
+pub fn is_palindrome(num: i64, radix: i32) -> bool {
+    let num = match radix {
+        2 => format!("{:b}", num),
+        10 => format!("{}", num),
+        16 => format!("{:x}", num),
+        _ => return false,
+    };
     num == num.chars().rev().collect::<String>()
 }
 
