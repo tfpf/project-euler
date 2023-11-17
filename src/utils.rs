@@ -362,6 +362,10 @@ impl Iterator for Divisors {
 /// Primes iterator. Generates prime numbers by internally constructing the
 /// sieve of Eratosthenes.
 ///
+/// TODO If the user wants to use the sieve of Eratosthenes as well as iterate
+/// over prime numbers (see problem 35 for a demonstration), they may end up
+/// generating the former twice. Figure out a way to avoid this.
+///
 /// * `limit` - Number up to which the sieve should be constructed.
 ///
 /// -> Iterator over prime numbers.

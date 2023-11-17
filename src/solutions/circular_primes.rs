@@ -20,11 +20,7 @@ fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
 
 pub fn solve() {
     let sieve = utils::sieve_of_eratosthenes(1000000);
-    let result = sieve
-        .iter()
-        .enumerate()
-        .filter(|(_, is_prime)| **is_prime)
-        .map(|(num, _)| num as i64)
+    let result = utils::primes(1000000)
         .filter(|&num| is_circular_prime(num, &sieve))
         .count();
 
