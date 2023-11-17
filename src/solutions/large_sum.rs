@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let nums = [
         "37107287533902102798797998220837590246510135740250",
         "46376937677490009712648124896970078050417018260538",
@@ -111,6 +111,6 @@ pub fn solve() {
     let result = sum.to_string();
     let result: i64 = result[0..10].parse().unwrap();
 
-    println!("{}", result);
     assert_eq!(result, 5537376230);
+    result
 }

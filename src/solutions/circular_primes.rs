@@ -18,12 +18,12 @@ fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
     true
 }
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let sieve = utils::sieve_of_eratosthenes(1000000);
     let result = utils::primes(1000000)
         .filter(|&num| is_circular_prime(num, &sieve))
         .count();
 
-    println!("{}", result);
     assert_eq!(result, 55);
+    result
 }

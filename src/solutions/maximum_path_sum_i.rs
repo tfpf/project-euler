@@ -33,7 +33,7 @@ impl CacheMap {
     }
 }
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let triangle = [
         vec![75],
         vec![95, 64],
@@ -54,6 +54,6 @@ pub fn solve() {
     let mut cache_map = CacheMap::new(triangle);
     let result = cache_map.get((0, 0));
 
-    println!("{}", result);
     assert_eq!(result, 1074);
+    result
 }

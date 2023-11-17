@@ -1,4 +1,4 @@
-pub fn solve() {
+pub fn solve() -> i64 {
     let names = std::fs::read_to_string("res/names_scores.txt").unwrap();
     let mut names: Vec<&str> = names.split(",").map(|s| &s[1..s.len() - 1]).collect();
     names.sort();
@@ -10,6 +10,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", result);
     assert_eq!(result, 871198282);
+    result
 }

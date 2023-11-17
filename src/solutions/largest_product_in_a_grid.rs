@@ -72,7 +72,7 @@ fn find_largest(
     result
 }
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let grid = [
         [
             08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08,
@@ -151,6 +151,6 @@ pub fn solve() {
     ];
     let result = *maxima.iter().max().unwrap();
 
-    println!("{}", result);
     assert_eq!(result, 70600674);
+    result
 }

@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     // If 1 January 1900 was a Monday, then 1 January 1901 was a Tuesday.
     // Represent each day as an offset from Sunday. (e.g. Tuesday is 2.)
     let mut day = 2;
@@ -14,6 +14,6 @@ pub fn solve() {
         }
     }
 
-    println!("{}", sundays);
     assert_eq!(sundays, 171);
+    sundays
 }
