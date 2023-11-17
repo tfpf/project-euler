@@ -32,3 +32,4 @@ pub mod sum_square_difference;
 pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
 pub mod thousand_digit_fibonacci_number;
+pub mod circular_primes;

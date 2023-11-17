@@ -42,6 +42,7 @@ fn solve(problem_number: i32) -> bool {
         32 => solutions::pandigital_products::solve(),
         33 => solutions::digit_cancelling_fractions::solve(),
         34 => solutions::digit_factorials::solve(),
+        35 => solutions::circular_primes::solve(),
         _ => return false,
     };
     true
