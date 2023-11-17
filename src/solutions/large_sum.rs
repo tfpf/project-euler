@@ -109,8 +109,8 @@ pub fn solve() {
         sum += &utils::Long::new(num);
     }
     let result = sum.to_string();
-    let result = &result[0..10];
+    let result: i64 = result[0..10].parse().unwrap();
 
     println!("{}", result);
-    assert_eq!(result, "5537376230");
+    assert_eq!(result, 5537376230);
 }
