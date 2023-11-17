@@ -42,5 +42,5 @@ pub fn solve() -> i64 {
     let result = cache_map.get((0, 200));
 
     assert_eq!(result, 73682);
-    result
+    result as i64
 }

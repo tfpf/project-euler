@@ -152,5 +152,5 @@ pub fn solve() -> i64 {
     let result = *maxima.iter().max().unwrap();
 
     assert_eq!(result, 70600674);
-    result
+    result as i64
 }

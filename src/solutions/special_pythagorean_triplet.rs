@@ -23,5 +23,5 @@ pub fn solve() -> i64 {
     let result = find_triplet();
 
     assert_eq!(result, 31875000);
-    result
+    result as i64
 }

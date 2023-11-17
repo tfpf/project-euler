@@ -14,5 +14,5 @@ pub fn solve() -> i64 {
         + 1;
 
     assert_eq!(sum, 669171001);
-    sum
+    sum as i64
 }

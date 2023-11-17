@@ -79,5 +79,5 @@ pub fn solve() -> i64 {
     let result: usize = (1..=1000).map(|num| convert(num).len()).sum();
 
     assert_eq!(result, 21124);
-    result
+    result as i64
 }

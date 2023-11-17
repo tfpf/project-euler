@@ -19,5 +19,5 @@ pub fn solve() -> i64 {
     let product: i32 = powers.iter().product();
 
     assert_eq!(product, 232792560);
-    product
+    product as i64
 }

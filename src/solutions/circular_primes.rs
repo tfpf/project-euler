@@ -25,5 +25,5 @@ pub fn solve() -> i64 {
         .count();
 
     assert_eq!(result, 55);
-    result
+    result as i64
 }

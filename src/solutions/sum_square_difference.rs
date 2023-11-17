@@ -6,5 +6,5 @@ pub fn solve() -> i64 {
     let difference = square_of_sum - sum_of_squares;
 
     assert_eq!(difference, 25164150);
-    difference
+    difference as i64
 }

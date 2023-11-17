@@ -39,5 +39,5 @@ pub fn solve() -> i64 {
     }
 
     assert_eq!(result, 23514624000);
-    result
+    result as i64
 }
