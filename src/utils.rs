@@ -108,6 +108,28 @@ pub fn recurrence_length(prime: i64) -> i64 {
     unreachable!();
 }
 
+/// Construct the sieve of Eratosthenes.
+///
+/// * `limit` - Number up to which the sieve should be constructed.
+///
+/// -> Boolean vector indicating the primality of its indices.
+pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
+    let mut sieve = vec![true; limit + 1];
+    sieve[0] = false;
+    sieve[1] = false;
+    for num in (2..).take_while(|num| num * num <= limit) {
+        // If this number is prime, mark its multiples starting from its square
+        // as composite. (Smaller multiples have already been marked as
+        // composite.)
+        if sieve[num] {
+            for multiple in (num * num..=limit).step_by(num) {
+                sieve[multiple] = false;
+            }
+        }
+    }
+    sieve
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
@@ -340,30 +362,19 @@ impl Iterator for Divisors {
 /// Primes iterator. Generates prime numbers by internally constructing the
 /// sieve of Eratosthenes.
 ///
+/// TODO If the user wants to use the sieve of Eratosthenes as well as iterate
+/// over prime numbers (see problem 35 for a demonstration), they may end up
+/// generating the former twice. Figure out a way to avoid this.
+///
 /// * `limit` - Number up to which the sieve should be constructed.
 ///
 /// -> Iterator over prime numbers.
-pub fn primes(limit: usize) -> std::vec::IntoIter<i64> {
-    let mut prime = vec![true; limit + 1];
-    prime[0] = false;
-    prime[1] = false;
-    for num in (2usize..).take_while(|num| num * num <= limit) {
-        // If this number is prime, mark its multiples starting from its square
-        // as composite. (Smaller multiples have already been marked as
-        // composite.)
-        if prime[num] {
-            for multiple in (num * num..=limit).step_by(num) {
-                prime[multiple] = false;
-            }
-        }
-    }
-    let prime = prime
-        .iter()
+pub fn primes(limit: usize) -> impl Iterator<Item = i64> {
+    sieve_of_eratosthenes(limit)
+        .into_iter()
         .enumerate()
-        .filter(|(_, is_prime)| **is_prime)
+        .filter(|(_, is_prime)| *is_prime)
         .map(|(num, _)| num as i64)
-        .collect::<Vec<i64>>();
-    prime.into_iter()
 }
 
 /// Digits iterator. Generates the decimal digits of a number from right to
