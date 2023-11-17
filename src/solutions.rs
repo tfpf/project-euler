@@ -11,6 +11,7 @@ pub mod factorial_digit_sum;
 pub mod highly_divisible_triangular_number;
 pub mod large_sum;
 pub mod largest_palindrome_product;
+pub fn double_base_palindromes;
 pub mod largest_prime_factor;
 pub mod largest_product_in_a_grid;
 pub mod largest_product_in_a_series;
