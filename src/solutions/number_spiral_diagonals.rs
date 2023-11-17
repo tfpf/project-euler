@@ -13,6 +13,6 @@ pub fn solve() {
         .sum::<i32>()
         + 1;
 
-    println!("{}", sum);
+    print!("{}", sum);
     assert_eq!(sum, 669171001);
 }

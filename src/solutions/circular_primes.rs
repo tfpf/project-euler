@@ -24,6 +24,6 @@ pub fn solve() {
         .filter(|&num| is_circular_prime(num, &sieve))
         .count();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 55);
 }

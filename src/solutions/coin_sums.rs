@@ -41,6 +41,6 @@ pub fn solve() {
     let mut cache_map = CacheMap::new(denominations);
     let result = cache_map.get((0, 200));
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 73682);
 }

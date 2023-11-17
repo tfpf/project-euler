@@ -51,9 +51,12 @@ fn solve(problem_number: i32) -> bool {
 /// Execute the solutions of all available problems.
 fn solve_all() {
     for problem_number in 1.. {
+        let now = std::time::Instant::now();
         if !solve(problem_number) {
             break;
         }
+        let elapsed = now.elapsed();
+        println!(" ({:?})", elapsed)
     }
 }
 
@@ -74,5 +77,6 @@ fn main() {
         solve_all();
     } else {
         solve(problem_number);
+        println!();
     }
 }

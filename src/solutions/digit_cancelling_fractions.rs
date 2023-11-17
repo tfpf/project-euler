@@ -23,6 +23,6 @@ pub fn solve() {
     let gcd = utils::gcd(result.0, result.1);
     let denominator = result.1 / gcd;
 
-    println!("{}", denominator);
+    print!("{}", denominator);
     assert_eq!(denominator, 100);
 }

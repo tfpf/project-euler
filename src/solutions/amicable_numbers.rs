@@ -29,6 +29,6 @@ pub fn solve() {
         .map(|(idx, _)| idx)
         .sum();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 31626);
 }

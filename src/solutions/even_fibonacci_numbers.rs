@@ -5,6 +5,6 @@ pub fn solve() {
     let fibonacci = utils::Fibonacci::new(2, 3);
     let sum: i64 = fibonacci.step_by(3).take_while(|num| *num < 4000000).sum();
 
-    println!("{}", sum);
+    print!("{}", sum);
     assert_eq!(sum, 4613732);
 }

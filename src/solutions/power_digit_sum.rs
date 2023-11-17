@@ -11,6 +11,6 @@ pub fn solve() {
         .map(|c| c.to_digit(10).unwrap())
         .sum();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 1366);
 }

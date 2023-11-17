@@ -41,6 +41,6 @@ pub fn solve() {
     }
     let result = result.iter().fold(0, |s, &elem| s * 10 + elem as i64);
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 2783915460);
 }

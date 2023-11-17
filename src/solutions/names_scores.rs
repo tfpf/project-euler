@@ -10,6 +10,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 871198282);
 }

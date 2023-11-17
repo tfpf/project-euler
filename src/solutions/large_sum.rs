@@ -111,6 +111,6 @@ pub fn solve() {
     let result = sum.to_string();
     let result = &result[0..10];
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, "5537376230");
 }

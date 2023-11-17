@@ -54,6 +54,6 @@ pub fn solve() {
     let mut cache_map = CacheMap::new(triangle);
     let result = cache_map.get((0, 0));
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 1074);
 }

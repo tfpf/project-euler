@@ -22,6 +22,6 @@ fn find_triplet() -> i32 {
 pub fn solve() {
     let result = find_triplet();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 31875000);
 }

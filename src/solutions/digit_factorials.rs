@@ -20,6 +20,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", sum);
+    print!("{}", sum);
     assert_eq!(sum, 40730);
 }

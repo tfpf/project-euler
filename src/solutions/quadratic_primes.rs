@@ -20,6 +20,6 @@ pub fn solve() {
         }
     }
 
-    println!("{}", a_times_b);
+    print!("{}", a_times_b);
     assert_eq!(a_times_b, -59231);
 }

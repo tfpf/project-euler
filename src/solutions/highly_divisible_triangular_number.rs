@@ -7,6 +7,6 @@ pub fn solve() {
         .next()
         .unwrap();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 76576500);
 }

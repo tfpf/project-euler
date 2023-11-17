@@ -17,6 +17,6 @@ pub fn solve() {
         .max()
         .unwrap();
 
-    println!("{}", largest_pf);
+    print!("{}", largest_pf);
     assert_eq!(largest_pf, 6857);
 }

@@ -13,6 +13,6 @@ pub fn solve() {
         })
         .0;
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 137846528820);
 }

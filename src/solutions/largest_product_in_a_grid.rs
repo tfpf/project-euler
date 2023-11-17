@@ -151,6 +151,6 @@ pub fn solve() {
     ];
     let result = *maxima.iter().max().unwrap();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 70600674);
 }

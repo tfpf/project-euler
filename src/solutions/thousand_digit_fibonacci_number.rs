@@ -12,6 +12,6 @@ pub fn solve() {
         }
     };
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 4782);
 }

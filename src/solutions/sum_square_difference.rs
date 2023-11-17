@@ -5,6 +5,6 @@ pub fn solve() {
     let sum_of_squares = (1i32..=100).map(|element| element.pow(2)).sum::<i32>();
     let difference = square_of_sum - sum_of_squares;
 
-    println!("{}", difference);
+    print!("{}", difference);
     assert_eq!(difference, 25164150);
 }

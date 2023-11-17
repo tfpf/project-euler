@@ -10,6 +10,6 @@ pub fn solve() {
         .unwrap()
         .1;
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 837799);
 }

@@ -58,6 +58,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 9183);
 }

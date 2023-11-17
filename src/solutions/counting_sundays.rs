@@ -14,6 +14,6 @@ pub fn solve() {
         }
     }
 
-    println!("{}", sundays);
+    print!("{}", sundays);
     assert_eq!(sundays, 171);
 }

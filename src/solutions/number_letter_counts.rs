@@ -78,6 +78,6 @@ fn convert(num: usize) -> String {
 pub fn solve() {
     let result: usize = (1..=1000).map(|num| convert(num).len()).sum();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 21124);
 }

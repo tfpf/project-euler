@@ -18,6 +18,6 @@ pub fn solve() {
     }
     let product: i32 = powers.iter().product();
 
-    println!("{}", product);
+    print!("{}", product);
     assert_eq!(product, 232792560);
 }

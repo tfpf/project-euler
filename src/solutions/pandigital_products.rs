@@ -62,6 +62,6 @@ pub fn solve() {
     search(100, 1000, 10, 100, &mut products);
     let sum: i64 = products.iter().sum();
 
-    println!("{}", sum);
+    print!("{}", sum);
     assert_eq!(sum, 45228);
 }

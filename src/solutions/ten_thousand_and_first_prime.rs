@@ -6,6 +6,6 @@ pub fn solve() {
     const LIMIT: usize = 120000;
     let result = utils::primes(LIMIT).nth(10000).unwrap();
 
-    println!("{}", result);
+    print!("{}", result);
     assert_eq!(result, 104743);
 }
