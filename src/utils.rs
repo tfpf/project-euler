@@ -114,20 +114,20 @@ pub fn recurrence_length(prime: i64) -> i64 {
 ///
 /// -> Boolean vector indicating the primality of its indices.
 pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
-    let mut prime = vec![true; limit + 1];
-    prime[0] = false;
-    prime[1] = false;
+    let mut sieve = vec![true; limit + 1];
+    sieve[0] = false;
+    sieve[1] = false;
     for num in (2..).take_while(|num| num * num <= limit) {
         // If this number is prime, mark its multiples starting from its square
         // as composite. (Smaller multiples have already been marked as
         // composite.)
-        if prime[num] {
+        if sieve[num] {
             for multiple in (num * num..=limit).step_by(num) {
-                prime[multiple] = false;
+                sieve[multiple] = false;
             }
         }
     }
-    prime
+    sieve
 }
 
 /******************************************************************************
