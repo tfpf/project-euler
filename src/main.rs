@@ -48,6 +48,15 @@ fn solve(problem_number: i32) -> bool {
     true
 }
 
+/// Execute the solutions of all available problems.
+fn solve_all() {
+    for problem_number in 1.. {
+        if !solve(problem_number) {
+            break;
+        }
+    }
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() < 2 {
@@ -62,11 +71,7 @@ fn main() {
         }
     };
     if problem_number == 0 {
-        for pn in 1.. {
-            if !solve(pn) {
-                break;
-            }
-        }
+        solve_all();
     } else {
         solve(problem_number);
     }
