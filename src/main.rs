@@ -2,12 +2,12 @@ pub mod solutions;
 pub mod utils;
 
 /// Execute the solution (if available) of the specified problem. Also measure
-/// its execution time.
+/// its running time.
 ///
 /// * `problem_number`
 ///
 /// -> Flag indicating whether the solution is available.
-fn solve(problem_number: i32) -> bool {
+fn solve_and_time_one(problem_number: i32) -> bool {
     let now = std::time::Instant::now();
     let result = match problem_number {
         1 => solutions::multiples_of_3_or_5::solve(),
@@ -57,10 +57,11 @@ fn solve(problem_number: i32) -> bool {
     true
 }
 
-/// Execute the solutions of all available problems.
-fn solve_all() {
+/// Execute the solutions of all available problems, measuring their running
+/// times.
+fn solve_and_time_all() {
     for problem_number in 1.. {
-        if !solve(problem_number) {
+        if !solve_and_time_one(problem_number) {
             break;
         }
     }
@@ -80,8 +81,8 @@ fn main() {
         }
     };
     if problem_number == 0 {
-        solve_all();
+        solve_and_time_all();
     } else {
-        solve(problem_number);
+        solve_and_time_one(problem_number);
     }
 }
