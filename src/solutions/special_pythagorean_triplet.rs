@@ -19,9 +19,9 @@ fn find_triplet() -> i32 {
     return -1;
 }
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let result = find_triplet();
 
-    println!("{}", result);
     assert_eq!(result, 31875000);
+    result as i64
 }
