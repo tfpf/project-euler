@@ -49,7 +49,7 @@ fn solve(problem_number: i32) -> bool {
         _ => return false,
     };
     let elapsed = now.elapsed();
-    println!("[{:>5} ms] {}", elapsed.as_millis(), result);
+    println!("[{:>9.3} ms] {}", elapsed.as_micros() as f64 / 1000.0, result);
     true
 }
 
