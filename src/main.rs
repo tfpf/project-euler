@@ -43,6 +43,7 @@ fn solve(problem_number: i32) -> bool {
         33 => solutions::digit_cancelling_fractions::solve(),
         34 => solutions::digit_factorials::solve(),
         35 => solutions::circular_primes::solve(),
+        36 => solutions::double_base_palindromes::solve(),
         _ => return false,
     };
     true

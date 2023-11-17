@@ -6,6 +6,7 @@ pub mod digit_cancelling_fractions;
 pub mod digit_factorials;
 pub mod digit_fifth_powers;
 pub mod distinct_powers;
+pub mod double_base_palindromes;
 pub mod even_fibonacci_numbers;
 pub mod factorial_digit_sum;
 pub mod highly_divisible_triangular_number;
