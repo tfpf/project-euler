@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     // Cache what we need.
     let factorial = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
 
@@ -20,6 +20,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", sum);
     assert_eq!(sum, 40730);
+    sum
 }

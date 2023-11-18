@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let abundant_numbers = std::collections::BTreeSet::from_iter(
         (0..=28123).filter(|&num| utils::Divisors::new(num).sum::<i64>() > num + num),
     );
@@ -21,6 +21,6 @@ pub fn solve() {
         })
         .sum();
 
-    println!("{}", sum);
     assert_eq!(sum, 4179871);
+    sum
 }

@@ -25,7 +25,7 @@ fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32 {
     -1
 }
 
-pub fn solve() {
+pub fn solve() -> i64 {
     // The last number in this vector is a sentinel value. It won't actually be
     // used; it's there just to make the code simpler.
     let mut digits = (0..=10).collect::<Vec<i32>>();
@@ -41,6 +41,6 @@ pub fn solve() {
     }
     let result = result.iter().fold(0, |s, &elem| s * 10 + elem as i64);
 
-    println!("{}", result);
     assert_eq!(result, 2783915460);
+    result
 }
