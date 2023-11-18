@@ -12,10 +12,10 @@ To solve, say, problem 16, enter the following command.
 cargo r 16
 ```
 
-You can specify 0 to sequentially solve all problems for which I have written solutions.
+Run it without arguments to sequentially solve all problems for which I have written solutions.
 
 ```sh
-cargo r 0
+cargo r
 ```
 
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
