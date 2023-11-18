@@ -21,9 +21,10 @@ fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
 
 pub fn solve() -> i64 {
     let primes = utils::Primes::new(1000000);
+    let sieve = primes.sieve();
     let result = primes
         .iter()
-        .filter(|&num| is_circular_prime(num, &primes.sieve))
+        .filter(|&num| is_circular_prime(num, sieve))
         .count();
 
     assert_eq!(result, 55);

@@ -366,13 +366,16 @@ impl Iterator for Divisors {
 /// sieve of Eratosthenes. Differs from other iterators in that its method must
 /// be called in order to obtain an iterator.
 pub struct Primes {
-    pub sieve: Vec<bool>,
+    sieve: Vec<bool>,
 }
 impl Primes {
     pub fn new(limit: usize) -> Primes {
         Primes {
             sieve: sieve_of_eratosthenes(limit),
         }
+    }
+    pub fn sieve(&self) -> &Vec<bool> {
+        &self.sieve
     }
     pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
         self.sieve
