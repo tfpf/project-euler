@@ -72,19 +72,20 @@ fn solve_and_time_all() {
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() < 2 {
-        eprintln!("Problem number not specified.");
+        solve_and_time_all();
         return;
     }
     let problem_number = match args[1].parse::<i32>() {
-        Ok(pn) if pn >= 0 => pn,
+        Ok(pn) => pn,
         _ => {
             eprintln!("Problem number is invalid.");
             return;
         }
     };
-    if problem_number == 0 {
-        solve_and_time_all();
-    } else {
-        solve_and_time_one(problem_number);
+    if !solve_and_time_one(problem_number) {
+        eprintln!(
+            "Problem {} does not exist or its solution is not implemented.",
+            problem_number
+        );
     }
 }
