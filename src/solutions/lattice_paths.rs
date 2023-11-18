@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     // Make 40 movements, out of which 20 are rightwards and 20 are downwards.
     // The total number of possibilities is the binomial coefficient (40, 20).
     let result = (21..=40)
@@ -13,6 +13,6 @@ pub fn solve() {
         })
         .0;
 
-    println!("{}", result);
     assert_eq!(result, 137846528820);
+    result
 }

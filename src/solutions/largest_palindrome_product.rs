@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     let mut result = -1;
     for i in (100..1000).rev() {
         for j in (100..1000).rev() {
@@ -11,6 +11,6 @@ pub fn solve() {
         }
     }
 
-    println!("{}", result);
     assert_eq!(result, 906609);
+    result
 }

@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     // The polynomial must produce at least 40 primes, so:
     // * `b` (the value of the polynomial at 0) must be prime.
     // * `b` must be odd (else, the polynomial produces at most 2 primes).
@@ -20,6 +20,6 @@ pub fn solve() {
         }
     }
 
-    println!("{}", a_times_b);
     assert_eq!(a_times_b, -59231);
+    a_times_b
 }

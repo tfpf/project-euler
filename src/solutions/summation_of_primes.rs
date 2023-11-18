@@ -1,9 +1,9 @@
 use crate::utils;
 
-pub fn solve() {
+pub fn solve() -> i64 {
     const LIMIT: usize = 2000000;
     let result: i64 = utils::primes(LIMIT).sum();
 
-    println!("{}", result);
     assert_eq!(result, 142913828922);
+    result
 }
