@@ -51,7 +51,8 @@ fn solve_and_time_one(problem_number: i32) -> bool {
     let result = solve();
     let elapsed = now.elapsed();
     println!(
-        "[{:>9.3} ms] {}",
+        "{:>3} [{:>9.3} ms] {}",
+        problem_number,
         elapsed.as_micros() as f64 / 1000.0,
         result
     );
