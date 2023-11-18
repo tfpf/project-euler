@@ -9,8 +9,9 @@ use crate::utils;
 fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
     // Since the number is prime, only its rotations have to be checked.
     let passes = utils::Digits::new(num).count() - 1;
+    let multiplier = 10i64.pow(passes as u32);
     for _ in 0..passes {
-        num = num / 10 + num % 10 * 10i64.pow(passes as u32);
+        num = num / 10 + num % 10 * multiplier;
         if !sieve[num as usize] {
             return false;
         }
@@ -19,9 +20,10 @@ fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
 }
 
 pub fn solve() -> i64 {
-    let sieve = utils::sieve_of_eratosthenes(1000000);
-    let result = utils::primes(1000000)
-        .filter(|&num| is_circular_prime(num, &sieve))
+    let primes = utils::Primes::new(1000000);
+    let result = primes
+        .iter()
+        .filter(|&num| is_circular_prime(num, &primes.sieve))
         .count();
 
     assert_eq!(result, 55);
