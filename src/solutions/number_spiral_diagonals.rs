@@ -1,4 +1,4 @@
-pub fn solve() -> i64 {
+pub fn solve() {
     // Ignore the central 1. The top right diagonal contains the squares of odd
     // numbers (9, 25, 49, 81, and so on), i.e. a quadratic function of the
     // sequence of odd numbers. The bottom left diagonal contains the squares
@@ -13,6 +13,6 @@ pub fn solve() -> i64 {
         .sum::<i32>()
         + 1;
 
+    println!("{}", sum);
     assert_eq!(sum, 669171001);
-    sum as i64
 }

@@ -26,7 +26,7 @@ fn exponent(mut num: i64, primes: &Vec<i64>) -> i64 {
         .fold(gcd, |gcd, exponent| utils::gcd(gcd, *exponent))
 }
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let primes = utils::primes(100).collect::<Vec<i64>>();
     let result: i64 = (2..=100)
         .map(|a| {
@@ -58,6 +58,6 @@ pub fn solve() -> i64 {
         })
         .sum();
 
+    println!("{}", result);
     assert_eq!(result, 9183);
-    result
 }

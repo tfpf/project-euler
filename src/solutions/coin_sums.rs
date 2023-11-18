@@ -36,11 +36,11 @@ impl CacheMap {
     }
 }
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let denominations = [1, 2, 5, 10, 20, 50, 100, 200];
     let mut cache_map = CacheMap::new(denominations);
     let result = cache_map.get((0, 200));
 
+    println!("{}", result);
     assert_eq!(result, 73682);
-    result as i64
 }

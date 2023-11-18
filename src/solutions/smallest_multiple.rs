@@ -1,4 +1,4 @@
-pub fn solve() -> i64 {
+pub fn solve() {
     let primes = [2, 3, 5, 7, 11, 13, 17, 19];
     let mut powers = [1; 8];
     for num in 2..21 {
@@ -18,6 +18,6 @@ pub fn solve() -> i64 {
     }
     let product: i32 = powers.iter().product();
 
+    println!("{}", product);
     assert_eq!(product, 232792560);
-    product as i64
 }

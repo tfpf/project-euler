@@ -10,7 +10,7 @@ fn sum_of_proper_divisors(num: usize) -> usize {
     (divisors.sum::<i64>() - num as i64) as usize
 }
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let mut amicable = [false; 10000];
     for i in 0..10000 {
         if amicable[i] {
@@ -29,6 +29,6 @@ pub fn solve() -> i64 {
         .map(|(idx, _)| idx)
         .sum();
 
+    println!("{}", result);
     assert_eq!(result, 31626);
-    result as i64
 }

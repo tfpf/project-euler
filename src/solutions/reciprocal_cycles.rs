@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+pub fn solve() {
     // It is enough to check only prime numbers. (The recurrence length for a
     // composite number is equal to the greatest recurrence length of its prime
     // factors.) Exclude 2 and 5, because they can divide any number without
@@ -12,6 +12,6 @@ pub fn solve() -> i64 {
         .unwrap()
         .1;
 
+    println!("{}", result);
     assert_eq!(result, 983);
-    result
 }

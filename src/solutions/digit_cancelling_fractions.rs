@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let mut result = (1, 1);
     for denominator in 11..=99 {
         for numerator in 10..denominator {
@@ -23,6 +23,6 @@ pub fn solve() -> i64 {
     let gcd = utils::gcd(result.0, result.1);
     let denominator = result.1 / gcd;
 
+    println!("{}", denominator);
     assert_eq!(denominator, 100);
-    denominator
 }

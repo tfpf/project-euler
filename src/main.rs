@@ -1,15 +1,13 @@
 pub mod solutions;
 pub mod utils;
 
-/// Execute the solution (if available) of the specified problem. Also measure
-/// its running time.
+/// Execute the solution (if available) of the specified problem.
 ///
 /// * `problem_number`
 ///
 /// -> Flag indicating whether the solution is available.
-fn solve_and_time_one(problem_number: i32) -> bool {
-    let now = std::time::Instant::now();
-    let result = match problem_number {
+fn solve(problem_number: i32) -> bool {
+    match problem_number {
         1 => solutions::multiples_of_3_or_5::solve(),
         2 => solutions::even_fibonacci_numbers::solve(),
         3 => solutions::largest_prime_factor::solve(),
@@ -48,20 +46,13 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         36 => solutions::double_base_palindromes::solve(),
         _ => return false,
     };
-    let elapsed = now.elapsed();
-    println!(
-        "[{:>9.3} ms] {}",
-        elapsed.as_micros() as f64 / 1000.0,
-        result
-    );
     true
 }
 
-/// Execute the solutions of all available problems, measuring their running
-/// times.
-fn solve_and_time_all() {
+/// Execute the solutions of all available problems.
+fn solve_all() {
     for problem_number in 1.. {
-        if !solve_and_time_one(problem_number) {
+        if !solve(problem_number) {
             break;
         }
     }
@@ -81,8 +72,8 @@ fn main() {
         }
     };
     if problem_number == 0 {
-        solve_and_time_all();
+        solve_all();
     } else {
-        solve_and_time_one(problem_number);
+        solve(problem_number);
     }
 }

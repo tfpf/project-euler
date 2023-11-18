@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let num: i64 = 600851475143;
     let largest_pf = (3i64..)
         .step_by(2)
@@ -17,6 +17,6 @@ pub fn solve() -> i64 {
         .max()
         .unwrap();
 
+    println!("{}", largest_pf);
     assert_eq!(largest_pf, 6857);
-    largest_pf
 }

@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let result = (1..1_000_000)
         .map(|num| {
             let collatz = utils::Collatz::new(num);
@@ -10,6 +10,6 @@ pub fn solve() -> i64 {
         .unwrap()
         .1;
 
+    println!("{}", result);
     assert_eq!(result, 837799);
-    result
 }

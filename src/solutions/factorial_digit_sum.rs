@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+pub fn solve() {
     let mut product = utils::Long::new("1");
     for num in 2..=100 {
         product *= num;
@@ -11,6 +11,6 @@ pub fn solve() -> i64 {
         .map(|c| c.to_digit(10).unwrap())
         .sum();
 
+    println!("{}", result);
     assert_eq!(result, 648);
-    result as i64
 }
