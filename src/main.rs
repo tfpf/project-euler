@@ -1,7 +1,8 @@
 pub mod solutions;
 pub mod utils;
 
-/// Execute the solution (if available) of the specified problem.
+/// Execute the solution (if available) of the specified problem. Also measure
+/// its running time.
 ///
 /// * `problem_number`
 ///
@@ -53,7 +54,8 @@ fn solve_and_time_one(problem_number: i32) -> bool {
     true
 }
 
-/// Execute the solutions of all available problems.
+/// Execute the solutions of all available problems, measuring their running
+/// times.
 fn solve_and_time_all() {
     for problem_number in 1.. {
         if !solve_and_time_one(problem_number) {
