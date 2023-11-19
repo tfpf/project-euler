@@ -43,7 +43,7 @@ pub fn is_palindrome(num: i64, radix: i32) -> bool {
     num == num.chars().rev().collect::<String>()
 }
 
-/// Calculate the greatest common divisor of two numbers.
+/// Calculate the greatest common divisor of two non-negative numbers.
 ///
 /// * `a`
 /// * `b`
@@ -54,11 +54,21 @@ pub fn gcd(a: i64, b: i64) -> i64 {
     if b == 0 {
         return a;
     }
+    gcd_(a, b)
+}
+
+/// Calculate the greatest common divisor of two positive numbers.
+///
+/// * `a` - Larger number.
+/// * `b` - Smaller number.
+///
+/// -> GCD of the inputs.
+fn gcd_(a: i64, b: i64) -> i64 {
     let remainder = a % b;
     if remainder == 0 {
         b
     } else {
-        gcd(b, remainder)
+        gcd_(b, remainder)
     }
 }
 
