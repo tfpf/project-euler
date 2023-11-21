@@ -46,6 +46,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         35 => solutions::circular_primes::solve,
         36 => solutions::double_base_palindromes::solve,
         37 => solutions::truncatable_primes::solve,
+        38 => solutions::pandigital_multiples::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
