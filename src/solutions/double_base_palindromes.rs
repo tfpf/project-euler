@@ -34,7 +34,7 @@ fn double_base_palindrome_sum(num: i64) -> i64 {
         .filter(|&&palindrome| utils::is_palindrome(palindrome, 10))
         .sum();
 
-    // Continue searching with the augmented numbers geenrated above.
+    // Continue searching with the augmented numbers generated above.
     sum + double_base_palindrome_sum(num_shift_0) + double_base_palindrome_sum(num_shift_1)
 }
 
