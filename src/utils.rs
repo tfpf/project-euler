@@ -386,6 +386,33 @@ impl Primes {
     }
 }
 
+/// Prime divisors iterator. Generates prime numbers and their greatest powers
+/// in a given number. Must be constructed with a number which is greater than
+/// any number it will be queried with.
+pub struct PrimeDivisors {
+    primes: Vec<i64>,
+}
+impl PrimeDivisors {
+    pub fn new(limit: usize) -> PrimeDivisors {
+        PrimeDivisors {
+            primes: Primes::new(limit).iter().collect::<Vec<i64>>(),
+        }
+    }
+    pub fn iter(&self, mut num: i64) -> impl Iterator<Item = (i64, u32)> + '_ {
+        self.primes
+            .iter()
+            .map(move |&prime| {
+                let mut power = 0;
+                while num % prime == 0 {
+                    num /= prime;
+                    power += 1;
+                }
+                (prime, power)
+            })
+            .filter(|&(_, power)| power > 0)
+    }
+}
+
 /// Digits iterator. Generates the decimal digits of a number from least
 /// significant to most significant. Positive numbers only!
 pub struct Digits {
