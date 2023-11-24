@@ -30,6 +30,7 @@ pub fn solve() -> i64 {
                 .take_while(|&&abundant1| abundant1 <= num)
             {
                 let abundant2 = num - abundant1;
+                // If it can be, filter it out.
                 match abundant_numbers.binary_search(&abundant2) {
                     Ok(_) => return false,
                     _ => (),
