@@ -21,7 +21,6 @@ pub fn solve() -> i64 {
             sum_of_divisors > sum_of_divisors_lb
         })
         .collect::<Vec<i64>>();
-
     let sum = (0..28124)
         .filter(|&num| {
             // Can this number be expressed as the sum of two abundant numbers?
