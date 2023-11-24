@@ -401,6 +401,7 @@ impl PrimeDivisors {
     pub fn iter(&self, mut num: i64) -> impl Iterator<Item = (i64, u32)> + '_ {
         self.primes
             .iter()
+            .take_while(move |&&prime| prime < num)
             .map(move |&prime| {
                 let mut power = 0;
                 while num % prime == 0 {
