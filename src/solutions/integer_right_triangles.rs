@@ -9,5 +9,7 @@ pub fn solve() -> i64 {
         .max()
         .unwrap()
         .1;
+
+    assert_eq!(result, 840);
     result as i64
 }
