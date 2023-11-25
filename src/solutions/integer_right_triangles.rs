@@ -1,10 +1,10 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    for p in (12..=130).step_by(2) {
-        println!("{} {:?}", p, utils::PythagoreanTriplets::new(p).collect::<Vec<(i64,i64,i64)>>());
-    }
+    // The perimeter of a right-angled triangle with integral side lengths will
+    // always be even.
     let result = (12..=1000)
+        .step_by(2)
         .map(|p| (utils::PythagoreanTriplets::new(p).count(), p))
         .max()
         .unwrap()
