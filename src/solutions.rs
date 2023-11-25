@@ -6,6 +6,7 @@ pub mod counting_sundays;
 pub mod digit_cancelling_fractions;
 pub mod digit_factorials;
 pub mod digit_fifth_powers;
+pub mod pandigital_prime;
 pub mod distinct_powers;
 pub mod double_base_palindromes;
 pub mod even_fibonacci_numbers;
