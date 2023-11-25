@@ -1,4 +1,5 @@
 pub mod amicable_numbers;
+pub mod champernownes_constant;
 pub mod circular_primes;
 pub mod coin_sums;
 pub mod counting_sundays;
