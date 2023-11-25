@@ -24,7 +24,7 @@ fn digit_at(idx: u32) -> u32 {
 }
 
 pub fn solve() -> i64 {
-    let result: u32 = (1..=6).map(|exp| digit_at(10u32.pow(exp))).product();
+    let result: u32 = (0..=6).map(|exp| digit_at(10u32.pow(exp))).product();
 
     assert_eq!(result, 210);
     result as i64
