@@ -4,20 +4,25 @@
 ///
 /// -> Digit at said index.
 fn digit_at(idx: u32) -> u32 {
-    // Indices 1 to 9 are made of 1-digit numbers; indices 10 to 189, 2-digit
-    // numbers; indices 190 to 2889, 3-digit numbers; etc.
-    let (width, idx) = match idx {
-        1..=9 => (1, idx - 1),
-        10..=189 => (2, idx - 10),
-        190..=2889 => (3, idx - 190),
-        2890..=38889 => (4, idx - 2890),
-        38890..=488889 => (5, idx - 38890),
-        488890..=5888889 => (6, idx - 488890),
-        _ => unreachable!(),
-    };
+    // Obtain a 0-based index.
+    let mut idx = idx - 1;
+
+    // Indices 0 to 8 are made of 1-digit numbers.
+    let mut idx_ub = 9;
+    let mut width = 1;
+    while idx >= idx_ub {
+        idx -= idx_ub;
+        width += 1;
+
+        // How many total digits are present in all `width`-digit numbers? That
+        // tells us the maximum index permitted.
+        let numbers_with_width_digits = 9 * 10u32.pow(width - 1);
+        let digits_count = numbers_with_width_digits * width;
+        idx_ub = digits_count;
+    }
 
     // Find the `idx`th digit of the string formed by concatening all
-    // `width`-digit numbers. Note that `idx` is now a 0-based index.
+    // `width`-digit numbers.
     let num = 10u32.pow(width - 1) + idx / width;
     let idx_in_num_from_right = width - 1 - idx % width;
     num / 10u32.pow(idx_in_num_from_right) % 10
