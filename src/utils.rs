@@ -465,8 +465,11 @@ impl Iterator for PythagoreanTriplets {
             }
             let m = self.m;
             let remaining_term = self.semiperimeter / m;
-            let mut m_plus_n = m + 1 + (m & 1);
-            while m_plus_n < 2 * m {
+            let m_plus_n_lb = m + 1 + (m & 1);
+            for m_plus_n in (m_plus_n_lb..)
+                .step_by(2)
+                .take_while(|&m_plus_n| m_plus_n < 2 * m)
+            {
                 if remaining_term % m_plus_n == 0 && gcd(m_plus_n, m) == 1 {
                     let d = remaining_term / m_plus_n;
                     let n = m_plus_n - m;
@@ -475,7 +478,6 @@ impl Iterator for PythagoreanTriplets {
                     let c = (m.pow(2) + n.pow(2)) * d;
                     return Some((a, b, c));
                 }
-                m_plus_n += 2;
             }
         }
     }
