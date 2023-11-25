@@ -1,1 +1,3 @@
-pub fn solve() -> i64 {0}
+pub fn solve() -> i64 {
+    0
+}
