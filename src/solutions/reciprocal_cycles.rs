@@ -6,7 +6,6 @@ pub fn solve() -> i64 {
     // factors.) Exclude 2 and 5, because they can divide any number without
     // decimal recurrence. Exclude 3 because it is definitely not the answer.
     let result = utils::Primes::new(1000)
-        .iter()
         .skip_while(|prime| *prime <= 5)
         .map(|prime| (utils::recurrence_length(prime), prime))
         .max()

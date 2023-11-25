@@ -363,26 +363,34 @@ impl Iterator for Divisors {
 }
 
 /// Primes iterator. Generates prime numbers by internally constructing the
-/// sieve of Eratosthenes. Differs from other iterators in that its method must
-/// be called in order to obtain an iterator.
+/// sieve of Eratosthenes.
 pub struct Primes {
+    idx: usize,
     sieve: Vec<bool>,
 }
 impl Primes {
     pub fn new(limit: usize) -> Primes {
         Primes {
+            idx: 0,
             sieve: sieve_of_eratosthenes(limit),
         }
     }
     pub fn sieve(&self) -> &Vec<bool> {
         &self.sieve
     }
-    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
-        self.sieve
-            .iter()
-            .enumerate()
-            .filter(|(_, is_prime)| **is_prime)
-            .map(|(num, _)| num as i64)
+}
+impl Iterator for Primes {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        loop {
+            self.idx += 1;
+            if self.idx >= self.sieve.len() {
+                return None;
+            }
+            if self.sieve[self.idx] {
+                return Some(self.idx as i64);
+            }
+        }
     }
 }
 
