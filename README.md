@@ -62,3 +62,4 @@ intent of the code by hiding confounding implementation details.
 |[36](https://projecteuler.net/problem=36)|[`double_base_palindromes.rs`](src/solutions/double_base_palindromes.rs)|
 |[37](https://projecteuler.net/problem=37)|[`truncatable_primes.rs`](src/solutions/truncatable_primes.rs)|
 |[38](https://projecteuler.net/problem=38)|[`pandigital_multiples.rs`](src/solutions/pandigital_multiples.rs)|
+|[39](https://projecteuler.net/problem=39)|[`integer_right_triangles.rs`](src/solutions/integer_right_triangles.rs)|
