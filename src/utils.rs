@@ -363,8 +363,7 @@ impl Iterator for Divisors {
 }
 
 /// Primes iterator. Generates prime numbers by internally constructing the
-/// sieve of Eratosthenes. Differs from other iterators in that its method must
-/// be called in order to obtain an iterator.
+/// sieve of Eratosthenes.
 pub struct Primes {
     sieve: Vec<bool>,
 }
@@ -429,5 +428,48 @@ impl Iterator for Bits {
             self.num >>= 1;
             Some(bit)
         }
+    }
+}
+
+/// Pythagorean triplets iterator. Generates all Pythagorean triplets with the
+/// given sum. The triplets are generated using a well-known parametrisation
+/// which can represent any triplet. Positive numbers only!
+pub struct PythagoreanTriplets {
+    semiperimeter: i64,
+    m_ub: i64,
+    m: i64,
+}
+impl PythagoreanTriplets {
+    pub fn new(perimeter: i64) -> PythagoreanTriplets {
+        let semiperimeter = perimeter / 2;
+        // Strict lower bound for the parameter `m`.
+        let m_lb = (semiperimeter as f64 / 2.0).sqrt() as i64;
+        // Non-strict upper bound for the parameter `m`.
+        let m_ub = (semiperimeter as f64).sqrt() as i64;
+        PythagoreanTriplets {
+            semiperimeter: semiperimeter,
+            m_ub: m_ub,
+            m: m_lb,
+        }
+    }
+}
+impl Iterator for PythagoreanTriplets {
+    type Item = (i64, i64, i64);
+    fn next(&mut self) -> Option<(i64, i64, i64)> {
+        loop {
+            self.m += 1;
+            if self.m > self.m_ub {
+                return None;
+            }
+            if self.semiperimeter % self.m == 0 {
+                break;
+            }
+        }
+        let m = self.m;
+        let n = self.semiperimeter / m - m;
+        let a = m.pow(2) - n.pow(2);
+        let b = 2 * m * n;
+        let c = m.pow(2) + n.pow(2);
+        Some((a, b, c))
     }
 }

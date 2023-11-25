@@ -1,27 +1,9 @@
-/// Search for the only Pythagorean triplet with sum 1000.
-///
-/// -> Product of the triplet.
-fn find_triplet() -> i32 {
-    for a in 1..334 {
-        for c in 334..998 {
-            let b = 1000 - a - c;
-            if a >= b || b >= c {
-                continue;
-            }
-            if b * b == c * c - a * a {
-                return a * b * c;
-            }
-        }
-    }
-
-    // Shouldn't happen, since we are told that a triplet satisfying the given
-    // condition exists.
-    return -1;
-}
+use crate::utils;
 
 pub fn solve() -> i64 {
-    let result = find_triplet();
+    let triplet = utils::PythagoreanTriplets::new(1000).next().unwrap();
+    let result = triplet.0 * triplet.1 * triplet.2;
 
     assert_eq!(result, 31875000);
-    result as i64
+    result
 }
