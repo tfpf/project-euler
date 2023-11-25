@@ -24,6 +24,7 @@ pub fn solve() -> i64 {
     // said integer must have 4 non-repeated digits. This means only two
     // consecutive products need be considered.
     let num_to_find = (9123..=9876)
+        .rev()
         .filter(|num| {
             let mut digits = [false; 10];
             if has_repetition(&mut digits, num * 1) || has_repetition(&mut digits, num * 2) {
@@ -34,11 +35,12 @@ pub fn solve() -> i64 {
                 .skip(1)
                 .fold(true, |pandigital, &elem| pandigital && elem)
         })
-        .last()
+        .take(1)
+        .next()
         .unwrap();
 
     // We have found the integer. Now find the pandigital concatenated product
-    // by sticking twice its value to the right of once its value.
+    // by sticking twice its value to its right.
     let result = num_to_find * 100002;
 
     assert_eq!(result, 932718654);
