@@ -1,4 +1,5 @@
 pub mod amicable_numbers;
+pub mod champernownes_constant;
 pub mod circular_primes;
 pub mod coin_sums;
 pub mod counting_sundays;
@@ -37,4 +38,3 @@ pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
 pub mod thousand_digit_fibonacci_number;
 pub mod truncatable_primes;
-pub mod champernownes_constant;
