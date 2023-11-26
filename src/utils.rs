@@ -242,15 +242,18 @@ impl std::fmt::Display for Long {
     }
 }
 
-/// Check whether a bunch of numbers are pandigital to the given digit.
+/// Check whether a bunch of numbers are pandigital with respect to the given
+/// range.
 pub struct PandigitalChecker {
     seen: [bool; 10],
+    min_digit: usize,
     max_digit: usize,
 }
 impl PandigitalChecker {
-    pub fn new(max_digit: usize) -> PandigitalChecker {
+    pub fn new(min_digit: usize, max_digit: usize) -> PandigitalChecker {
         PandigitalChecker {
             seen: [false; 10],
+            min_digit: min_digit,
             max_digit: max_digit,
         }
     }
@@ -261,27 +264,26 @@ impl PandigitalChecker {
     ///
     /// * `num` - Number to update with.
     ///
-    /// -> Whether all digits of the number were non-zero and not seen before.
+    /// -> Whether all digits of the number were in range and not seen earlier.
     pub fn update(&mut self, num: i64) -> bool {
         for digit in Digits::new(num) {
             let digit = digit as usize;
-            if digit == 0 || digit > self.max_digit || self.seen[digit] {
+            if digit < self.min_digit || digit > self.max_digit || self.seen[digit] {
                 return false;
             }
             self.seen[digit] = true;
         }
         true
     }
-    /// Check whether all digits from 1 to the maximum digit have been seen.
-    /// This indicates pandigitality only if used in tandem with the above
-    /// method.
+    /// Check whether all digits in the range have been seen. This indicates
+    /// pandigitality only if used in tandem with the above method.
     ///
     /// -> Pandigitality.
     pub fn check(&self) -> bool {
         self.seen
             .iter()
-            .skip(1)
-            .take(self.max_digit)
+            .skip(self.min_digit)
+            .take(self.max_digit - self.min_digit + 1)
             .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
     }
 }
