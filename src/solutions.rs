@@ -1,4 +1,5 @@
 pub mod amicable_numbers;
+pub mod sub_string_divisibility;
 pub mod champernownes_constant;
 pub mod circular_primes;
 pub mod coded_triangle_numbers;

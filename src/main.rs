@@ -51,6 +51,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         40 => solutions::champernownes_constant::solve,
         41 => solutions::pandigital_prime::solve,
         42 => solutions::coded_triangle_numbers::solve,
+        43 => solutions::sub_string_divisibility::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();

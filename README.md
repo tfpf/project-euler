@@ -66,3 +66,4 @@ intent of the code by hiding confounding implementation details.
 |[40](https://projecteuler.net/problem=40)|[`champernownes_constant.rs`](src/solutions/champernownes_constant.rs)|
 |[41](https://projecteuler.net/problem=41)|[`pandigital_prime.rs`](src/solutions/pandigital_prime.rs)|
 |[42](https://projecteuler.net/problem=42)|[`coded_triangle_numbers.rs`](src/solutions/coded_triangle_numbers.rs)|
+|[43](https://projecteuler.net/problem=43)|[`sub_string_divisibility.rs`](src/solutions/sub_string_divisibility.rs)|
