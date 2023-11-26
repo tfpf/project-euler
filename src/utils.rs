@@ -155,20 +155,14 @@ impl Long {
         }
         long
     }
-    /// Obtain the number of decimal digits in this number.
+    /// Obtain the number of decimal digits in this number (i.e. its length).
+    ///
+    /// -> Length.
     pub fn len(&self) -> usize {
         match self.digits.len() {
             0 => 0,
             1 if self.digits[0] == 0 => 0,
             len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
-        }
-    }
-    /// Obtain the bottom 64 bits of this number as a signed integer.
-    pub fn get(&self) -> i64 {
-        match self.digits.len() {
-            0 => 0,
-            1 => self.digits[0] as i64,
-            _ => self.digits[0] as i64 + 2i64.pow(32) * self.digits[1] as i64,
         }
     }
     fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
@@ -245,6 +239,46 @@ impl std::fmt::Display for Long {
                     }
                 })
             })
+    }
+}
+
+/// Check whether a bunch of numbers are 1-to-9-pandigital.
+pub struct PandigitalChecker {
+    seen: [bool; 10],
+}
+impl PandigitalChecker {
+    pub fn new() -> PandigitalChecker {
+        PandigitalChecker { seen: [false; 10] }
+    }
+    pub fn renew(&mut self) {
+        self.seen = [false; 10];
+    }
+    /// Update the internal array with the digits of a given number.
+    ///
+    /// * `num` - Number to update with.
+    ///
+    /// -> Whether all digits of the number were seen for the first time.
+    pub fn update(&mut self, num: i64) -> bool {
+        for digit in Digits::new(num) {
+            let digit = digit as usize;
+            if self.seen[digit] {
+                return false;
+            }
+            self.seen[digit] = true;
+        }
+        true
+    }
+    /// Check whether all digits from 1 to 9 (but not 0) have been seen (i.e.
+    /// pandigitality).
+    ///
+    /// -> Pandigitality.
+    pub fn check(&self) -> bool {
+        !self.seen[0]
+            && self
+                .seen
+                .iter()
+                .skip(1)
+                .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
     }
 }
 

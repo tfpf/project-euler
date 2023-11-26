@@ -1,24 +1,5 @@
 use crate::utils;
 
-/// Update the array with the occurrences of each digit of a number. If the
-/// digit 0 is encountered or if any digit occurs more than once, quit.
-///
-/// * `seen` - Array indicating whether an index has already been encountered.
-/// * `num` - Number whose digits to check.
-///
-/// -> `true` if all digits of the number were encountered for the first time
-///     and it contained no zeros, else `false`.
-fn update(seen: &mut [bool; 10], num: i64) -> bool {
-    for digit in utils::Digits::new(num) {
-        let d = digit as usize;
-        if d == 0 || seen[d] {
-            return false;
-        }
-        seen[d] = true;
-    }
-    true
-}
-
 /// Run a nested loop in the given range, looking for pandigital products.
 ///
 /// * `outer_begin`
@@ -33,18 +14,15 @@ fn search(
     inner_end: i64,
     products: &mut std::collections::HashSet<i64>,
 ) {
+    let mut pandigital_checker = utils::PandigitalChecker::new();
     for i in outer_begin..outer_end {
         for j in inner_begin..inner_end {
             let product = i * j;
-            let mut seen = [false; 10];
-            if update(&mut seen, i)
-                && update(&mut seen, j)
-                && update(&mut seen, product)
-                // Check whether each digit (other than 0) was encountered.
-                && seen
-                    .iter()
-                    .skip(1)
-                    .fold(true, |accumulator, &element| accumulator && element)
+            pandigital_checker.renew();
+            if pandigital_checker.update(i)
+                && pandigital_checker.update(j)
+                && pandigital_checker.update(product)
+                && pandigital_checker.check()
             {
                 products.insert(product);
             }

@@ -1,23 +1,8 @@
 use crate::utils;
 
-/// Determine whether the given number has digits we've already seen earlier.
-///
-/// * `digits` - Indicator which specifies the digits already seen earlier.
-/// * `num` - Number to check.
-///
-/// -> Whether any digit is found for the second time.
-fn has_repetition(digits: &mut [bool; 10], num: i64) -> bool {
-    for digit in utils::Digits::new(num) {
-        let digit = digit as usize;
-        if digits[digit] {
-            return true;
-        }
-        digits[digit] = true;
-    }
-    false
-}
-
 pub fn solve() -> i64 {
+    let mut pandigital_checker = utils::PandigitalChecker::new();
+
     // We have to find a concatenated product at least as much as 918273645
     // (which is provided as an example). Hence, the most significant digit of
     // the integer to search for must be 9. Further, to end up with 9 digits,
@@ -26,14 +11,8 @@ pub fn solve() -> i64 {
     let num_to_find = (9123..=9876)
         .rev()
         .filter(|num| {
-            let mut digits = [false; 10];
-            if has_repetition(&mut digits, num * 1) || has_repetition(&mut digits, num * 2) {
-                return false;
-            }
-            digits
-                .iter()
-                .skip(1)
-                .fold(true, |pandigital, &elem| pandigital && elem)
+            pandigital_checker.renew();
+            pandigital_checker.update(num * 1) && pandigital_checker.update(num * 2) && pandigital_checker.check()
         })
         .take(1)
         .next()
