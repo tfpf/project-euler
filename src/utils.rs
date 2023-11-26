@@ -257,28 +257,26 @@ impl PandigitalChecker {
     ///
     /// * `num` - Number to update with.
     ///
-    /// -> Whether all digits of the number were seen for the first time.
+    /// -> Whether all digits of the number were non-zero and not seen before.
     pub fn update(&mut self, num: i64) -> bool {
         for digit in Digits::new(num) {
             let digit = digit as usize;
-            if self.seen[digit] {
+            if digit == 0 || self.seen[digit] {
                 return false;
             }
             self.seen[digit] = true;
         }
         true
     }
-    /// Check whether all digits from 1 to 9 (but not 0) have been seen (i.e.
-    /// pandigitality).
+    /// Check whether all digits from 1 to 9 have been seen. This indicates
+    /// pandigitality only if used in tandem with the above method.
     ///
     /// -> Pandigitality.
     pub fn check(&self) -> bool {
-        !self.seen[0]
-            && self
-                .seen
-                .iter()
-                .skip(1)
-                .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
+        self.seen
+            .iter()
+            .skip(1)
+            .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
     }
 }
 
