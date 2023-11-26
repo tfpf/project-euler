@@ -1,11 +1,11 @@
 pub mod amicable_numbers;
 pub mod champernownes_constant;
 pub mod circular_primes;
+pub mod coded_triangle_numbers;
 pub mod coin_sums;
 pub mod counting_sundays;
 pub mod digit_cancelling_fractions;
 pub mod digit_factorials;
-pub mod coded_triangle_numbers;
 pub mod digit_fifth_powers;
 pub mod distinct_powers;
 pub mod double_base_palindromes;
