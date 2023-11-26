@@ -242,13 +242,17 @@ impl std::fmt::Display for Long {
     }
 }
 
-/// Check whether a bunch of numbers are 1-to-9-pandigital.
+/// Check whether a bunch of numbers are pandigital to the given digit.
 pub struct PandigitalChecker {
     seen: [bool; 10],
+    max_digit: usize,
 }
 impl PandigitalChecker {
-    pub fn new() -> PandigitalChecker {
-        PandigitalChecker { seen: [false; 10] }
+    pub fn new(max_digit: usize) -> PandigitalChecker {
+        PandigitalChecker {
+            seen: [false; 10],
+            max_digit: max_digit,
+        }
     }
     pub fn renew(&mut self) {
         self.seen = [false; 10];
@@ -261,21 +265,23 @@ impl PandigitalChecker {
     pub fn update(&mut self, num: i64) -> bool {
         for digit in Digits::new(num) {
             let digit = digit as usize;
-            if digit == 0 || self.seen[digit] {
+            if digit == 0 || digit > self.max_digit || self.seen[digit] {
                 return false;
             }
             self.seen[digit] = true;
         }
         true
     }
-    /// Check whether all digits from 1 to 9 have been seen. This indicates
-    /// pandigitality only if used in tandem with the above method.
+    /// Check whether all digits from 1 to the maximum digit have been seen.
+    /// This indicates pandigitality only if used in tandem with the above
+    /// method.
     ///
     /// -> Pandigitality.
     pub fn check(&self) -> bool {
         self.seen
             .iter()
             .skip(1)
+            .take(self.max_digit)
             .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
     }
 }

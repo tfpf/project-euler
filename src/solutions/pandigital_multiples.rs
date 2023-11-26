@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut pandigital_checker = utils::PandigitalChecker::new();
+    let mut pandigital_checker = utils::PandigitalChecker::new(9);
 
     // We have to find a concatenated product at least as much as 918273645
     // (which is provided as an example). Hence, the most significant digit of
