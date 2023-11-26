@@ -49,6 +49,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         38 => solutions::pandigital_multiples::solve,
         39 => solutions::integer_right_triangles::solve,
         40 => solutions::champernownes_constant::solve,
+        41 => solutions::pandigital_prime::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();

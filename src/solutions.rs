@@ -27,6 +27,7 @@ pub mod non_abundant_sums;
 pub mod number_letter_counts;
 pub mod number_spiral_diagonals;
 pub mod pandigital_multiples;
+pub mod pandigital_prime;
 pub mod pandigital_products;
 pub mod power_digit_sum;
 pub mod quadratic_primes;
