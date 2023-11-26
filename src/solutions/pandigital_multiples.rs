@@ -16,7 +16,6 @@ pub fn solve() -> i64 {
                 && pandigital_checker.update(num * 2)
                 && pandigital_checker.check()
         })
-        .take(1)
         .next()
         .unwrap();
 
