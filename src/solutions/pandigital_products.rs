@@ -14,7 +14,7 @@ fn search(
     inner_end: i64,
     products: &mut std::collections::HashSet<i64>,
 ) {
-    let mut pandigital_checker = utils::PandigitalChecker::new(9);
+    let mut pandigital_checker = utils::PandigitalChecker::new(1, 9);
     for i in outer_begin..outer_end {
         for j in inner_begin..inner_end {
             let product = i * j;

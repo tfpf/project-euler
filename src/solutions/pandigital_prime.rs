@@ -4,7 +4,7 @@ pub fn solve() -> i64 {
     // A pandigital prime number can have 4 or 7 digits. Any pandigital number
     // with a different number of digits is divisible by 3. We get lucky while
     // searching 7-digit numbers.
-    let mut pandigital_checker = utils::PandigitalChecker::new(7);
+    let mut pandigital_checker = utils::PandigitalChecker::new(1, 7);
     let result = (1234567..=7654321)
         .rev()
         .step_by(2)
