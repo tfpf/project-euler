@@ -12,7 +12,9 @@ pub fn solve() -> i64 {
         .rev()
         .filter(|num| {
             pandigital_checker.renew();
-            pandigital_checker.update(num * 1) && pandigital_checker.update(num * 2) && pandigital_checker.check()
+            pandigital_checker.update(num * 1)
+                && pandigital_checker.update(num * 2)
+                && pandigital_checker.check()
         })
         .take(1)
         .next()
