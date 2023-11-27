@@ -138,7 +138,7 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
 /// * `container` - Object containing the unique items to permute.
 ///
 /// -> Whether the next permutation was generated.
-pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: &mut [T]) -> bool {
+pub fn next_permutation<T: Copy + std::cmp::Ord>(container: &mut [T]) -> bool {
     // Locate an inversion from the right.
     let mut sorted_until: usize = usize::MAX;
     for idx in (1..container.len()).rev() {
@@ -175,7 +175,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
 /// * `container` - Object containing the unique items to permute.
 ///
 /// -> Whether the previous permutation was generated.
-pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: &mut [T]) -> bool {
+pub fn prev_permutation<T: Copy + std::cmp::Ord>(container: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
     let mut sorted_until: usize = usize::MAX;
     for idx in (1..container.len()).rev() {
