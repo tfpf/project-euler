@@ -35,6 +35,7 @@ pub mod quadratic_primes;
 pub mod reciprocal_cycles;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
+pub mod sub_string_divisibility;
 pub mod sum_square_difference;
 pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
