@@ -133,6 +133,74 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
     sieve
 }
 
+/// Generate the next permutation.
+///
+/// * `slice` - Object containing the unique items to permute.
+///
+/// -> Whether the next permutation was generated.
+pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
+    // Locate an inversion from the right.
+    let mut sorted_until: usize = usize::MAX;
+    for idx in (1..slice.len()).rev() {
+        if slice[idx - 1] < slice[idx] {
+            sorted_until = idx;
+            break;
+        }
+    }
+    if sorted_until == usize::MAX {
+        return false;
+    }
+
+    // Find out where it can be placed while maintaining sorted order from the
+    // right. (That means reverse order when looking from the left.)
+    // Decrementing the search result is necessary to reorient ourselves from
+    // looking from the right to looking from the left.
+    let search_key = slice[sorted_until - 1];
+    let target = sorted_until
+        + match slice[sorted_until..].binary_search_by(|element| element.cmp(&search_key).reverse())
+        {
+            Ok(idx) => idx,
+            Err(idx) => idx,
+        }
+        - 1;
+    (slice[sorted_until - 1], slice[target]) = (slice[target], slice[sorted_until - 1]);
+    slice[sorted_until..].reverse();
+    true
+}
+
+/// Generate the previous permutation.
+///
+/// * `slice` - Object containing the unique items to permute.
+///
+/// -> Whether the previous permutation was generated.
+pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
+    // Locate an anti-inversion from the right.
+    let mut sorted_until: usize = usize::MAX;
+    for idx in (1..slice.len()).rev() {
+        if slice[idx - 1] > slice[idx] {
+            sorted_until = idx;
+            break;
+        }
+    }
+    if sorted_until == usize::MAX {
+        return false;
+    }
+
+    // Find out where it can be placed while maintaining reverse order from the
+    // right. (That means sorted order when looking from the left.)
+    // Decrementing the search result is necessary to avoid overshooting.
+    let search_key = slice[sorted_until - 1];
+    let target = sorted_until
+        + match slice[sorted_until..].binary_search(&search_key) {
+            Ok(idx) => idx,
+            Err(idx) => idx,
+        }
+        - 1;
+    (slice[sorted_until - 1], slice[target]) = (slice[target], slice[sorted_until - 1]);
+    slice[sorted_until..].reverse();
+    true
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
