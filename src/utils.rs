@@ -164,8 +164,6 @@ pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
             Err(idx) => idx,
         }
         - 1;
-
-    // Place it there and complete the permutation.
     (container[sorted_until - 1], container[target]) =
         (container[target], container[sorted_until - 1]);
     container[sorted_until..].reverse();
@@ -200,8 +198,6 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
             Err(idx) => idx,
         }
         - 1;
-
-    // Place it there and complete the permutation.
     (container[sorted_until - 1], container[target]) =
         (container[target], container[sorted_until - 1]);
     container[sorted_until..].reverse();
