@@ -156,7 +156,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
     // Decrementing the search result is necessary to reorient ourselves from
     // looking from the right to looking from the left.
     let search_key = container[sorted_until - 1];
-    let upper_bound = sorted_until
+    let target = sorted_until
         + match container[sorted_until..]
             .binary_search_by(|element| element.cmp(&search_key).reverse())
         {
@@ -166,8 +166,8 @@ pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
         - 1;
 
     // Place it there and complete the permutation.
-    (container[sorted_until - 1], container[upper_bound]) =
-        (container[upper_bound], container[sorted_until - 1]);
+    (container[sorted_until - 1], container[target]) =
+        (container[target], container[sorted_until - 1]);
     container[sorted_until..].reverse();
     true
 }
@@ -194,7 +194,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
     // right. (That means sorted order when looking from the left.)
     // Decrementing the search result is necessary to avoid overshooting.
     let search_key = container[sorted_until - 1];
-    let upper_bound = sorted_until
+    let target = sorted_until
         + match container[sorted_until..].binary_search(&search_key) {
             Ok(idx) => idx,
             Err(idx) => idx,
@@ -202,8 +202,8 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: 
         - 1;
 
     // Place it there and complete the permutation.
-    (container[sorted_until - 1], container[upper_bound]) =
-        (container[upper_bound], container[sorted_until - 1]);
+    (container[sorted_until - 1], container[target]) =
+        (container[target], container[sorted_until - 1]);
     container[sorted_until..].reverse();
     true
 }
