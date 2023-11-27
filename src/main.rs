@@ -52,6 +52,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         41 => solutions::pandigital_prime::solve,
         42 => solutions::coded_triangle_numbers::solve,
         43 => solutions::sub_string_divisibility::solve,
+        67 => solutions::maximum_path_sum_ii::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
