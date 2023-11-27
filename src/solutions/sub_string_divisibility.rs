@@ -3,6 +3,9 @@ use crate::utils;
 pub fn solve() -> i64 {
     let mut digits = [1, 0, 2, 3, 4, 5, 6, 7, 8, 9];
     let mut sum = 0;
+
+    // Can afford to skip the first permutation, because we know it does not
+    // have the required property.
     while utils::next_permutation(&mut digits) {
         // Get the easiest divisibility tests (those for 2, 3, 5 and 11) out of
         // the way first.
