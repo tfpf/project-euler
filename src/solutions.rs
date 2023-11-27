@@ -30,6 +30,7 @@ pub mod number_spiral_diagonals;
 pub mod pandigital_multiples;
 pub mod pandigital_prime;
 pub mod pandigital_products;
+pub mod pentagon_numbers;
 pub mod power_digit_sum;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
