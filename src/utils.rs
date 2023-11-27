@@ -138,9 +138,7 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
 /// * `container` - Object containing the unique items to permute.
 ///
 /// -> Whether the next permutation was generated.
-pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(
-    container: &mut [T],
-) -> bool {
+pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: &mut [T]) -> bool {
     // Locate an inversion from the right.
     let mut sorted_until: usize = usize::MAX;
     for idx in (1..container.len()).rev() {
@@ -179,9 +177,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(
 /// * `container` - Object containing the unique items to permute.
 ///
 /// -> Whether the previous permutation was generated.
-pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(
-    container: &mut [T],
-) -> bool {
+pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(container: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
     let mut sorted_until: usize = usize::MAX;
     for idx in (1..container.len()).rev() {
@@ -199,9 +195,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord + std::fmt::Display>(
     // Decrementing the search result is necessary to avoid overshooting.
     let search_key = container[sorted_until - 1];
     let upper_bound = sorted_until
-        + match container[sorted_until..]
-            .binary_search(&search_key)
-        {
+        + match container[sorted_until..].binary_search(&search_key) {
             Ok(idx) => idx,
             Err(idx) => idx,
         }
