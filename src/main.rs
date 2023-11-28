@@ -83,17 +83,18 @@ fn main() {
         solve_and_time_all();
         return;
     }
-    let problem_number = match args[1].parse::<i32>() {
-        Ok(pn) => pn,
-        Err(_) => {
-            eprintln!("Problem number is invalid.");
-            return;
+    for arg in &args[1..] {
+        match arg.parse::<i32>() {
+            Ok(problem_number) => {
+                if solve_and_time_one(problem_number) {
+                    continue;
+                }
+            }
+            Err(_) => (),
         }
-    };
-    if !solve_and_time_one(problem_number) {
         eprintln!(
             "Problem {} does not exist or its solution is not implemented.",
-            problem_number
+            arg
         );
     }
 }
