@@ -12,8 +12,8 @@ To solve, say, problems 16, 31 and 9, enter the following command.
 cargo r 16 31 9
 ```
 
-You can specify any number of arguments. Run it without arguments to sequentially solve all problems for which I have
-written solutions.
+You can specify any number of arguments. Run it without arguments to solve all problems for which I have written
+solutions.
 
 ```sh
 cargo r
