@@ -12,7 +12,7 @@ pub fn solve() -> i64 {
             let value = word.bytes().map(|b| b as i64 - 64).sum::<i64>();
             match triangle_numbers.binary_search(&value) {
                 Ok(_) => true,
-                _ => false,
+                Err(_) => false,
             }
         })
         .count();

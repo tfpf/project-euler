@@ -22,7 +22,7 @@ impl CacheMap {
         }
         match self.map.get(&key) {
             Some(&value) => value,
-            _ => {
+            None => {
                 let left = self.get((row + 1, col));
                 let right = self.get((row + 1, col + 1));
                 let value = self.triangle[row][col] + std::cmp::max(left, right);
