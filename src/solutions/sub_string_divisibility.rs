@@ -19,39 +19,34 @@ impl DigitsSet {
 /// * `ds` - Set of digits which can be used to build the numbers.
 /// * `idx` - Index of the digit of the number to build.
 /// * `value` - Partially-built sub-string divisible number.
+/// * `primes` - Prime numbers, but offset for use with the index.
 ///
 /// -> Sum of all numbers which can be built starting from the given resources.
-fn sub_string_divisible_sum(ds: &mut DigitsSet, idx: usize, value: i64) -> i64 {
+fn sub_string_divisible_sum(ds: &mut DigitsSet, idx: usize, value: i64, primes: &[i64; 10]) -> i64 {
     if idx >= 10 {
         return value;
     }
+
+    let subvalue = value % 100 * 10;
 
     // Try to place each available digit at the current index in turn.
     (0..ds.len)
         .map(|i| {
             let digit = ds.digits[i];
             let value = value * 10 + digit;
-            let subvalue = value % 1000;
+            let subvalue = subvalue + digit;
 
             // Allow any digit to be placed at the first three indices. At any
             // other index, allow a particular digit only if the number formed
             // by taking the three least significant digits of the
             // partially-built number is divisible by the appropriate prime
             // number.
-            if idx <= 2
-                || (idx == 3 && subvalue % 2 == 0)
-                || (idx == 4 && subvalue % 3 == 0)
-                || (idx == 5 && subvalue % 5 == 0)
-                || (idx == 6 && subvalue % 7 == 0)
-                || (idx == 7 && subvalue % 11 == 0)
-                || (idx == 8 && subvalue % 13 == 0)
-                || (idx == 9 && subvalue % 17 == 0)
-            {
+            if idx <= 2 || subvalue % primes[idx] == 0 {
                 // Changing this number here does not affect the range iterator
                 // we are inside, because it received a copy.
                 ds.len -= 1;
                 (ds.digits[i], ds.digits[ds.len]) = (ds.digits[ds.len], ds.digits[i]);
-                let sum = sub_string_divisible_sum(ds, idx + 1, value);
+                let sum = sub_string_divisible_sum(ds, idx + 1, value, primes);
                 (ds.digits[i], ds.digits[ds.len]) = (ds.digits[ds.len], ds.digits[i]);
                 ds.len += 1;
                 return sum;
@@ -63,7 +58,8 @@ fn sub_string_divisible_sum(ds: &mut DigitsSet, idx: usize, value: i64) -> i64 {
 
 pub fn solve() -> i64 {
     let mut ds = DigitsSet::new();
-    let sum = sub_string_divisible_sum(&mut ds, 0, 0);
+    let primes = [0, 0, 0, 2, 3, 5, 7, 11, 13, 17];
+    let sum = sub_string_divisible_sum(&mut ds, 0, 0, &primes);
 
     assert_eq!(sum, 16695334890);
     sum
