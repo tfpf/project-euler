@@ -36,7 +36,7 @@ pub fn solve() -> i64 {
     // number with a 2-digit number. Any other combination, and we are
     // guaranteed to have more than or less than 9 digits.
     let mut products = std::collections::HashSet::new();
-    search(1000, 100000, 1, 10, &mut products);
+    search(1000, 10000, 1, 10, &mut products);
     search(100, 1000, 10, 100, &mut products);
     let sum: i64 = products.iter().sum();
 
