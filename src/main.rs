@@ -85,7 +85,7 @@ fn main() {
     }
     let problem_number = match args[1].parse::<i32>() {
         Ok(pn) => pn,
-        _ => {
+        Err(_) => {
             eprintln!("Problem number is invalid.");
             return;
         }
