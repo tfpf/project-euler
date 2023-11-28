@@ -6,14 +6,13 @@ build along the way. This is permitted according to the Project Euler guidelines
 ![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)
 ![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)
 
-To solve, say, problems 16, 31 and 9, enter the following command.
+To solve, say, problem 16, enter the following command.
 
 ```sh
-cargo r 16 31 9
+cargo r 16
 ```
 
-You can specify any number of arguments. Run it without arguments to solve all problems for which I have written
-solutions.
+Run it without arguments to sequentially solve all problems for which I have written solutions.
 
 ```sh
 cargo r
