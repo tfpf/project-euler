@@ -79,7 +79,7 @@ fn solve_and_time_all() {
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
-    if args.len() < 2 {
+    if args.len() <= 1 {
         solve_and_time_all();
         return;
     }
