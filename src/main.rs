@@ -84,7 +84,7 @@ fn main() {
         return;
     }
     for arg in &args[1..] {
-        match arg.parse::<i32>() {
+        match arg.parse() {
             Ok(problem_number) => {
                 if solve_and_time_one(problem_number) {
                     continue;
