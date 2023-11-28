@@ -42,8 +42,6 @@ fn sub_string_divisible_sum(ds: &mut DigitsSet, idx: usize, value: i64, primes: 
             // partially-built number is divisible by the appropriate prime
             // number.
             if idx <= 2 || subvalue % primes[idx] == 0 {
-                // Changing this number here does not affect the range iterator
-                // we are inside, because it received a copy.
                 ds.len -= 1;
                 (ds.digits[i], ds.digits[ds.len]) = (ds.digits[ds.len], ds.digits[i]);
                 let sum = sub_string_divisible_sum(ds, idx + 1, value, primes);
