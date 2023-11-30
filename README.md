@@ -68,3 +68,4 @@ intent of the code by hiding confounding implementation details.
 |[42](https://projecteuler.net/problem=42)|[`coded_triangle_numbers.rs`](src/solutions/coded_triangle_numbers.rs)|
 |[43](https://projecteuler.net/problem=43)|[`sub_string_divisibility.rs`](src/solutions/sub_string_divisibility.rs)|
 |[44](https://projecteuler.net/problem=44)|[`pentagon_numbers.rs`](src/solutions/pentagon_numbers.rs)|
+|[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|

@@ -25,7 +25,7 @@ impl CacheMap {
         }
         match self.map.get(&key) {
             Some(&value) => value,
-            _ => {
+            None => {
                 let without = self.get((index + 1, remaining));
                 let with = self.get((index, remaining - self.denominations[index]));
                 let value = without + with;
