@@ -17,7 +17,7 @@ fn is_pentagonal(num: i64) -> bool {
 ///
 /// -> Smallest pentagonal difference.
 fn minimum_pentagonal_difference() -> i64 {
-    let pentagons = utils::Pentagonal::new().take(3000).collect::<Vec<i64>>();
+    let pentagons = utils::Polygonal::new(5).take(3000).collect::<Vec<i64>>();
     for i in 1..pentagons.len() {
         for j in 0..i {
             let sum = pentagons[i] + pentagons[j];
