@@ -398,6 +398,25 @@ impl Iterator for Triangular {
     }
 }
 
+/// Pentagonal number iterator.
+pub struct Pentagonal {
+    idx: i64,
+    num: i64,
+}
+impl Pentagonal {
+    pub fn new() -> Pentagonal {
+        Pentagonal { idx: 1, num: 0 }
+    }
+}
+impl Iterator for Pentagonal {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        self.num += 3 * self.idx - 2;
+        self.idx += 1;
+        Some(self.num)
+    }
+}
+
 /// Collatz sequence iterator.
 pub struct Collatz {
     num: i64,
