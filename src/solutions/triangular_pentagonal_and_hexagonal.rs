@@ -1,13 +1,11 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
+    // Every hexagonal number is a triangular number as well, so it is enough
+    // to find a hexagonal number which is also pentagonal.
     let result = utils::Polygonal::new(6)
         .skip(143)
-        .filter(|&num| {
-            // Every triangular number is a hexagonal number as well, so it is
-            // enough to check whether the number is pentagonal.
-            utils::Polygonal::invert(5, num) != None
-        })
+        .filter(|&num| utils::Polygonal::invert(5, num) != None)
         .next()
         .unwrap();
 
