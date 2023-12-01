@@ -1,9 +1,11 @@
+use crate::utils;
+
 /// Check whether the given number is a pentagonal number.
 ///
 /// * `num` - Number to check.
 ///
 /// -> Whether it is pentagonal.
-fn is_pentagonal(num: i32) -> bool {
+fn is_pentagonal(num: i64) -> bool {
     // Calculate its index using the inverse of the pentagonal number formula.
     // Said index must be an integer.
     let idx = (1.0 + (1.0 + 24.0 * num as f64).sqrt()) / 6.0;
@@ -14,10 +16,8 @@ fn is_pentagonal(num: i32) -> bool {
 /// pentagonal number, while their sum is also a pentagonal number.
 ///
 /// -> Smallest pentagonal difference.
-fn minimum_pentagonal_difference() -> i32 {
-    let pentagons = (1..3000)
-        .map(|num| num * (3 * num - 1) / 2)
-        .collect::<Vec<i32>>();
+fn minimum_pentagonal_difference() -> i64 {
+    let pentagons = utils::Pentagonal::new().take(3000).collect::<Vec<i64>>();
     for i in 1..pentagons.len() {
         for j in 0..i {
             let sum = pentagons[i] + pentagons[j];

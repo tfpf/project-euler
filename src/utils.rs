@@ -381,19 +381,38 @@ impl Iterator for Fibonacci {
 
 /// Triangular number iterator.
 pub struct Triangular {
-    idx: i64,
+    offset: i64,
     num: i64,
 }
 impl Triangular {
     pub fn new() -> Triangular {
-        Triangular { idx: 1, num: 0 }
+        Triangular { offset: 1, num: 0 }
     }
 }
 impl Iterator for Triangular {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {
-        self.num += self.idx;
-        self.idx += 1;
+        self.num += self.offset;
+        self.offset += 1;
+        Some(self.num)
+    }
+}
+
+/// Pentagonal number iterator.
+pub struct Pentagonal {
+    offset: i64,
+    num: i64,
+}
+impl Pentagonal {
+    pub fn new() -> Pentagonal {
+        Pentagonal { offset: 1, num: 0 }
+    }
+}
+impl Iterator for Pentagonal {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        self.num += self.offset;
+        self.offset += 3;
         Some(self.num)
     }
 }
