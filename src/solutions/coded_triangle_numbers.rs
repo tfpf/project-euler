@@ -2,7 +2,7 @@ use crate::utils;
 
 pub fn solve() -> i64 {
     // Collect enough triangle numbers to dwarf the greatest word value.
-    let triangle_numbers = utils::Triangular::new().take(20).collect::<Vec<i64>>();
+    let triangle_numbers = utils::Polygonal::new(3).take(20).collect::<Vec<i64>>();
 
     let words = std::fs::read_to_string("res/coded_triangle_numbers.txt").unwrap();
     let result = words
