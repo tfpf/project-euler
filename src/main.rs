@@ -54,6 +54,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         43 => solutions::sub_string_divisibility::solve,
         44 => solutions::pentagon_numbers::solve,
         45 => solutions::triangular_pentagonal_and_hexagonal::solve,
+        46 => solutions::goldbachs_other_conjecture::solve,
         67 => solutions::maximum_path_sum_ii::solve,
         _ => return false,
     };
