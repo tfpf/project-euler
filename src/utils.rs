@@ -379,40 +379,27 @@ impl Iterator for Fibonacci {
     }
 }
 
-/// Triangular number iterator.
-pub struct Triangular {
+/// Triangular, pentagonal, hexagonal, etc. number iterator. Specify the
+/// number of sides of the polygon as the argument to the constructor.
+pub struct Polygonal {
+    increment: i64,
     offset: i64,
     num: i64,
 }
-impl Triangular {
-    pub fn new() -> Triangular {
-        Triangular { offset: 1, num: 0 }
+impl Polygonal {
+    pub fn new(sides: i64) -> Polygonal {
+        Polygonal {
+            increment: sides - 2,
+            offset: 1,
+            num: 0,
+        }
     }
 }
-impl Iterator for Triangular {
+impl Iterator for Polygonal {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {
         self.num += self.offset;
-        self.offset += 1;
-        Some(self.num)
-    }
-}
-
-/// Pentagonal number iterator.
-pub struct Pentagonal {
-    offset: i64,
-    num: i64,
-}
-impl Pentagonal {
-    pub fn new() -> Pentagonal {
-        Pentagonal { offset: 1, num: 0 }
-    }
-}
-impl Iterator for Pentagonal {
-    type Item = i64;
-    fn next(&mut self) -> Option<i64> {
-        self.num += self.offset;
-        self.offset += 3;
+        self.offset += self.increment;
         Some(self.num)
     }
 }
