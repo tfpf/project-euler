@@ -394,6 +394,28 @@ impl Polygonal {
             num: 0,
         }
     }
+    /// Find the index at which the given number would appear in a sequence of
+    /// polygonal numbers (if it is a polygonal number).
+    ///
+    /// * `sides` - Number of sides of the polygon the sequence is based on.
+    /// * `num` - Number whose index is to be found.
+    ///
+    /// -> Index.
+    pub fn invert(sides: i64, num: i64) -> Option<i64> {
+        // A polygonal number is a quadratic function of the index it appears
+        // at. Solve for the positive root of the corresponding quadratic
+        // equation.
+        let a = sides - 2;
+        let b = 4 - sides;
+        let c = -2 * num;
+        let discriminant = b.pow(2) - 4 * a * c;
+        let idx = (-b as f64 + (discriminant as f64).sqrt()) / (2.0 * a as f64);
+        if idx.fract() == 0.0 {
+            Some(idx as i64)
+        } else {
+            None
+        }
+    }
 }
 impl Iterator for Polygonal {
     type Item = i64;
