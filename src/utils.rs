@@ -388,7 +388,11 @@ pub struct Polygonal {
 }
 impl Polygonal {
     pub fn new(sides: i64) -> Polygonal {
-        Polygonal {increment: sides - 2, offset: 1, num: 0}
+        Polygonal {
+            increment: sides - 2,
+            offset: 1,
+            num: 0,
+        }
     }
 }
 impl Iterator for Polygonal {
