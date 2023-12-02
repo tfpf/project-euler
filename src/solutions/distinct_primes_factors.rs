@@ -1,6 +1,7 @@
 use crate::utils;
 
 fn four_distinct() -> i64 {
+    let primes = utils::Primes::new(1000).iter().collect::<Vec<i64>>();
     let mut num = 644;
     let mut obtained = 0;
     let mut required = 4;
@@ -11,7 +12,13 @@ fn four_distinct() -> i64 {
         for n in (num..num + 4).rev() {
             // Try to terminate the iterator as early as possible by taking
             // only 4 prime divisors.
-            if utils::PrimeDivisors::new(n).take(4).count() == 4 {
+            if primes
+                .iter()
+                .filter(|&&prime| n % prime == 0)
+                .take(4)
+                .count()
+                == 4
+            {
                 required -= 1;
                 if required == 0 {
                     return num;
