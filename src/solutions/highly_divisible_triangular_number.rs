@@ -5,13 +5,14 @@ pub fn solve() -> i64 {
     // product of their number of divisors. Every triangular number is the
     // product of two coprime numbers. Just iterate over the indices in order
     // to have those two coprime numbers at hand.
+    let mut multiplicand1_divisors = 1;
     let idx = (1..)
         .filter(|&idx| {
-            (if idx & 1 == 0 {
-                utils::Divisors::new(idx / 2).count() * utils::Divisors::new(idx + 1).count()
-            } else {
-                utils::Divisors::new(idx).count() * utils::Divisors::new((idx + 1) / 2).count()
-            }) >= 500
+            let multiplicand2 = if idx & 1 == 1 { (idx + 1) / 2 } else { idx + 1 };
+            let multiplicand2_divisors = utils::Divisors::new(multiplicand2).count();
+            let divisors = multiplicand1_divisors * multiplicand2_divisors;
+            multiplicand1_divisors = multiplicand2_divisors;
+            divisors >= 500
         })
         .next()
         .unwrap();
