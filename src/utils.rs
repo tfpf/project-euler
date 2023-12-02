@@ -525,7 +525,9 @@ impl Iterator for PrimeDivisors {
         loop {
             // After checking for divisibility by 2, 3 and 5, check only
             // numbers which differ from a multiple of 6 by exactly 1, because
-            // only they can be prime numbers.
+            // only they can be prime numbers. If I actually find all prime
+            // numbers to iterate over before running this loop, performance
+            // drops significantly.
             self.divisor = match self.divisor {
                 1 => 2,
                 2 => 3,
