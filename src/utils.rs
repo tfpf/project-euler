@@ -1,4 +1,15 @@
 /******************************************************************************
+ * Macros.
+ *****************************************************************************/
+
+/// Exchange two variables.
+macro_rules! swap {
+    ($a:expr, $b:expr) => {
+        ($a, $b) = ($b, $a)
+    };
+}
+
+/******************************************************************************
  * Functions.
  *****************************************************************************/
 
@@ -140,16 +151,13 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
 /// -> Whether the next permutation was generated.
 pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an inversion from the right.
-    let mut sorted_until: usize = usize::MAX;
-    for idx in (1..slice.len()).rev() {
-        if slice[idx - 1] < slice[idx] {
-            sorted_until = idx;
-            break;
-        }
-    }
-    if sorted_until == usize::MAX {
+    let Some(sorted_until) = (1..slice.len())
+        .rev()
+        .filter(|&idx| slice[idx - 1] < slice[idx])
+        .next()
+    else {
         return false;
-    }
+    };
 
     // Find out where it can be placed while maintaining sorted order from the
     // right. (That means reverse order when looking from the left.)
@@ -175,16 +183,13 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// -> Whether the previous permutation was generated.
 pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
-    let mut sorted_until: usize = usize::MAX;
-    for idx in (1..slice.len()).rev() {
-        if slice[idx - 1] > slice[idx] {
-            sorted_until = idx;
-            break;
-        }
-    }
-    if sorted_until == usize::MAX {
+    let Some(sorted_until) = (1..slice.len())
+        .rev()
+        .filter(|&idx| slice[idx - 1] > slice[idx])
+        .next()
+    else {
         return false;
-    }
+    };
 
     // Find out where it can be placed while maintaining reverse order from the
     // right. (That means sorted order when looking from the left.)
@@ -196,7 +201,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
             Err(idx) => idx,
         }
         - 1;
-    (slice[sorted_until - 1], slice[target]) = (slice[target], slice[sorted_until - 1]);
+    swap!(slice[sorted_until - 1], slice[target]);
     slice[sorted_until..].reverse();
     true
 }
