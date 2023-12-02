@@ -70,4 +70,5 @@ intent of the code by hiding confounding implementation details.
 |[44](https://projecteuler.net/problem=44)|[`pentagon_numbers.rs`](src/solutions/pentagon_numbers.rs)|
 |[45](https://projecteuler.net/problem=45)|[`triangular_pentagonal_and_hexagonal.rs`](src/solutions/triangular_pentagonal_and_hexagonal.rs)|
 |[46](https://projecteuler.net/problem=46)|[`goldbachs_other_conjecture.rs`](src/solutions/goldbachs_other_conjecture.rs)|
+|[47](https://projecteuler.net/problem=47)|[`distinct_primes_factors.rs`](src/solutions/distinct_primes_factors.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
