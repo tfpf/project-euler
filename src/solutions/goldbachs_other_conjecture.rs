@@ -1,21 +1,31 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut arr = vec![false; 10000];
-    let primes = utils::Primes::new(10000);
+    const LIMIT: usize = 10000;
+
+    // This indicates which numbers can be constructed in the described manner.
+    // Since only odd numbers are of interest, half of the space used is
+    // wasted. Doing extra processing to prevent wastage increases the running
+    // time by more than 100 µs.
+    let mut goldbach_constructible = vec![false; LIMIT];
+
+    let primes = utils::Primes::new(LIMIT);
+    let sieve = primes.sieve();
     for prime in primes.iter() {
+        // Squares are quadrilateral numbers. Generating them like this avoids
+        // having to do multiplication.
         for square in utils::Polygonal::new(4) {
-            let num = prime + 2 * square;
-            if (num as usize) < arr.len() {
-                arr[num as usize] = true;
+            let num = (prime + 2 * square) as usize;
+            if num < goldbach_constructible.len() {
+                goldbach_constructible[num] = true;
             } else {
                 break;
             }
         }
     }
-    let result = (3..arr.len())
+    let result = (3..goldbach_constructible.len())
         .step_by(2)
-        .filter(|&num| !utils::is_prime(num as i64) && !arr[num])
+        .filter(|&idx| !goldbach_constructible[idx] && !sieve[idx])
         .next()
         .unwrap();
 
