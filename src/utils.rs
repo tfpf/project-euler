@@ -508,12 +508,14 @@ impl Iterator for Divisors {
 pub struct PrimeDivisors {
     num: i64,
     divisor: i64,
+    offset: i64,
 }
 impl PrimeDivisors {
     pub fn new(num: i64) -> PrimeDivisors {
         PrimeDivisors {
             num: num,
             divisor: 1,
+            offset: 2,
         }
     }
 }
@@ -521,7 +523,19 @@ impl Iterator for PrimeDivisors {
     type Item = (i64, usize);
     fn next(&mut self) -> Option<(i64, usize)> {
         loop {
-            self.divisor += 1;
+            // After checking for divisibility by 2, 3 and 5, check only
+            // numbers which differ from a multiple of 6 by exactly 1, because
+            // only they can be prime numbers.
+            self.divisor = match self.divisor {
+                1 => 2,
+                2 => 3,
+                3 => 5,
+                d => {
+                    let d = d + self.offset;
+                    self.offset = 6 - self.offset;
+                    d
+                }
+            };
             if self.num < self.divisor {
                 return None;
             }
