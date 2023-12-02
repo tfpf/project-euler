@@ -520,8 +520,8 @@ impl PrimeDivisors {
     }
 }
 impl Iterator for PrimeDivisors {
-    type Item = (i64, usize);
-    fn next(&mut self) -> Option<(i64, usize)> {
+    type Item = (i64, u32);
+    fn next(&mut self) -> Option<(i64, u32)> {
         loop {
             // After checking for divisibility by 2, 3 and 5, check only
             // numbers which differ from a multiple of 6 by exactly 1, because
