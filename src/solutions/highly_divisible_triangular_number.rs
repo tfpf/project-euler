@@ -1,9 +1,12 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let triangular = utils::Polygonal::new(3);
-    let result = triangular
-        .filter(|num| utils::Divisors::new(*num).count() >= 500)
+    let result = utils::Polygonal::new(3)
+        .filter(|&num| {
+            utils::PrimeDivisors::new(num)
+                .fold(1, |accumulator, (_, power)| accumulator * (power + 1))
+                >= 500
+        })
         .next()
         .unwrap();
 

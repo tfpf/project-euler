@@ -503,6 +503,56 @@ impl Iterator for Divisors {
     }
 }
 
+/// Prime divisors iterator. Generates all prime divisors of a number in
+/// ascending order. Positive numbers only!
+pub struct PrimeDivisors {
+    num: i64,
+    divisor: i64,
+    offset: i64,
+}
+impl PrimeDivisors {
+    pub fn new(num: i64) -> PrimeDivisors {
+        PrimeDivisors {
+            num: num,
+            divisor: 1,
+            offset: 2,
+        }
+    }
+}
+impl Iterator for PrimeDivisors {
+    type Item = (i64, usize);
+    fn next(&mut self) -> Option<(i64, usize)> {
+        loop {
+            // After checking for divisibility by 2, 3 and 5, check only
+            // numbers which differ from a multiple of 6 by exactly 1, because
+            // only they can be prime numbers. If I actually find all prime
+            // numbers to iterate over before running this loop, performance
+            // drops significantly.
+            self.divisor = match self.divisor {
+                1 => 2,
+                2 => 3,
+                3 => 5,
+                d => {
+                    let d = d + self.offset;
+                    self.offset = 6 - self.offset;
+                    d
+                }
+            };
+            if self.num < self.divisor {
+                return None;
+            }
+            let mut power = 0;
+            while self.num % self.divisor == 0 {
+                self.num /= self.divisor;
+                power += 1;
+            }
+            if power > 0 {
+                return Some((self.divisor, power));
+            }
+        }
+    }
+}
+
 /// Primes iterator. Generates prime numbers by internally constructing the
 /// sieve of Eratosthenes. Differs from other iterators in that its method must
 /// be called in order to obtain an iterator.
