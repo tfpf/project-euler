@@ -18,8 +18,8 @@ fn four_distinct() -> i64 {
                 }
             } else {
                 num += obtained + required;
-                obtained = 4 - obtained - required;
-                required = 4 - obtained;
+                required += obtained;
+                obtained = 4 - required;
                 break;
             }
         }
