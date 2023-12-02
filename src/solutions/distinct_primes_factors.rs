@@ -1,5 +1,8 @@
 use crate::utils;
 
+/// Find four consecutive integers which have at least four prime factors each.
+///
+/// -> First of the four integers.
 fn four_distinct() -> i64 {
     let primes = utils::Primes::new(1000).iter().collect::<Vec<i64>>();
     let mut num = 644;
@@ -11,7 +14,7 @@ fn four_distinct() -> i64 {
         // avoiding unnecessary computations.
         for n in (num..num + 4).rev() {
             // Try to terminate the iterator as early as possible by taking
-            // only 4 prime divisors.
+            // only as many prime divisors as required.
             if primes
                 .iter()
                 .filter(|&&prime| n % prime == 0)
