@@ -171,7 +171,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
             Err(idx) => idx,
         }
         - 1;
-    (slice[sorted_until - 1], slice[target]) = (slice[target], slice[sorted_until - 1]);
+    swap!(slice[sorted_until - 1], slice[target]);
     slice[sorted_until..].reverse();
     true
 }
