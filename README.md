@@ -21,6 +21,10 @@ cargo r
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
 intent of the code by hiding confounding implementation details.
 
+![certified_human](badges/certified_human.svg)
+
+No part of the code in this repository was written by or in consultation with artificial intelligence chatbots.
+
 ## Problems and Solutions
 |Problem|Solution|
 |-:|:-:|
