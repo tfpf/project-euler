@@ -269,19 +269,18 @@ impl Long {
     /// * `exp` - Power.
     ///
     /// -> Value of this number raised to the given power.
-    pub fn pow(&self, exp: u32) -> Long {
-        match exp {
-            0 => Long { digits: vec![1] },
-            1 => self.clone(),
-            2 => self * self,
-            exp => {
-                let intermediate = self.pow(2).pow(exp >> 1);
-                if exp & 1 == 0 {
-                    intermediate
-                } else {
-                    self * &intermediate
-                }
+    pub fn pow(&self, mut exp: u32) -> Long {
+        let mut base = self.clone();
+        let mut multiplier = Long::from(1);
+        loop {
+            if exp & 1 == 1 {
+                multiplier = &multiplier * &base;
             }
+            if exp <= 1 {
+                return multiplier;
+            }
+            exp >>= 1;
+            base = &base * &base;
         }
     }
     fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
