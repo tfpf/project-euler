@@ -5,7 +5,7 @@ use crate::utils;
 /// * `num` - Number to analyse.
 ///
 /// -> Map between digits and frequencies.
-fn digits_frequencies(num: i64) -> [i32; 10] {
+fn digits_frequencies(num: i64) -> [u8; 10] {
     let mut freq = [0; 10];
     for digit in utils::Digits::new(num) {
         freq[digit as usize] += 1;
