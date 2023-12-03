@@ -22,7 +22,7 @@ Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`]
 intent of the code by hiding confounding implementation details.
 
 <p align="center">
- <img src="badges/certified_human.svg" />
+ <img src="res/certified_human.svg" />
 </p>
 
 No part of the code in this repository was written by or in consultation with artificial intelligence chatbots.
