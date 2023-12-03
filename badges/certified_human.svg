@@ -1,8 +1,8 @@
-<svg width="600" height="300" version="1.1" viewBox="0 0 450 225" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="800" height="400" version="1.1" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
  </defs>
- <g transform="matrix(.427 0 0 .427 -1.75e-7 .0307)">
+ <g transform="matrix(.569 0 0 .569 -2.48e-5 .0409)">
   <path d="m0 527h1054v-527h-1054z" fill="#fff"/>
   <path d="m0 527h1054v-527h-1054z" fill="#fff"/>
   <defs>
