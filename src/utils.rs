@@ -270,13 +270,20 @@ impl Long {
     ///
     /// -> Value of this number raised to the given power.
     pub fn pow(&self, mut exp: u32) -> Long {
-        let mut base = self.clone();
         let mut multiplier = Long::from(1);
+
+        // This isn't actually required, but improves the performance by
+        // avoiding unnecessary cloning.
+        if exp == 0 {
+            return multiplier;
+        }
+
+        let mut base = self.clone();
         loop {
             if exp & 1 == 1 {
                 multiplier = &multiplier * &base;
             }
-            if exp <= 1 {
+            if exp == 1 {
                 return multiplier;
             }
             exp >>= 1;
