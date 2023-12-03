@@ -37,6 +37,7 @@ pub mod pentagon_numbers;
 pub mod power_digit_sum;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
+pub mod self_powers;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
 pub mod sub_string_divisibility;
