@@ -1,14 +1,16 @@
 use crate::utils;
 
-/// Find the digits of a number in sorted order.
+/// Find the frequencies of all digits in the given number.
 ///
 /// * `num` - Number to analyse.
 ///
-/// -> Digits in sorted order.
-fn digits(num: i64) -> Vec<i64> {
-    let mut digits = utils::Digits::new(num).collect::<Vec<i64>>();
-    digits.sort();
-    digits
+/// -> Map between digits and frequencies.
+fn digits_frequencies(num: i64) -> [i32; 10] {
+    let mut freq = [0; 10];
+    for digit in utils::Digits::new(num) {
+        freq[digit as usize] += 1;
+    }
+    freq
 }
 
 /// Find three prime numbers which are in arithmetic progression and consist of
@@ -26,17 +28,14 @@ fn prime_permutations() -> (i64, i64, i64) {
     // The outer index will find the largest required number. The inner index
     // will find the middle number. Hence, it makes sense to go in reverse.
     for i in (1..primes.len()).rev() {
-        if primes[i] == 8147 {
-            continue;
-        }
-
-        let di = digits(primes[i]);
+        let freqi = digits_frequencies(primes[i]);
         for j in (0..i).rev() {
             let candidate = 2 * primes[j] - primes[i];
             if candidate >= 1000
+                && candidate != 1487
                 && sieve[candidate as usize]
-                && digits(primes[j]) == di
-                && digits(candidate) == di
+                && digits_frequencies(primes[j]) == freqi
+                && digits_frequencies(candidate) == freqi
             {
                 return (candidate, primes[j], primes[i]);
             }
