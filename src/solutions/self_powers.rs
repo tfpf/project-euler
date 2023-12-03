@@ -7,5 +7,5 @@ pub fn solve() -> i64 {
     });
 
     assert_eq!(sum, 9110846700);
-    sum as i64
+    sum
 }
