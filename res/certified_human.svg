@@ -3,8 +3,8 @@
   <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
  </defs>
  <g transform="matrix(.569 0 0 .569 -2.48e-5 .0409)">
-  <path d="m0 527h1054v-527h-1054z" fill="#000" opacity="0"/>
-  <path d="m0 527h1054v-527h-1054z" fill="#000" opacity="0"/>
+  <path d="m0 527h1054v-527h-1054z" opacity="0"/>
+  <path d="m0 527h1054v-527h-1054z" opacity="0"/>
   <defs>
    <path id="f" d="m0-37.5-8.42 25.9h-27.2l22 16-8.42 25.9 22-16 22 16-8.42-25.9 22-16h-27.2z"/>
   </defs>
