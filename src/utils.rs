@@ -214,20 +214,20 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 ///
 /// -> Modular exponentiation of the given numer.
 pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
-    let (base, modulus) = (base as i128, modulus as i128);
-    (match exp {
-        0 => 1,
-        1 => base % modulus,
-        exp => {
-            let base_squared = base.pow(2) % modulus;
-            let intermediate = pow(base_squared as i64, exp >> 1, modulus as i64) as i128;
-            if exp & 1 == 0 {
-                intermediate
-            } else {
-                base * intermediate % modulus
-            }
+    match exp {
+        0 => return 1,
+        1 => return base % modulus,
+        _ => (),
+    }
+    let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1i128);
+    while exp > 1 {
+        if exp & 1 == 1 {
+            multiplier = multiplier * base % modulus;
         }
-    }) as i64
+        base = base.pow(2) % modulus;
+        exp >>= 1;
+    }
+    (multiplier * base % modulus) as i64
 }
 
 /******************************************************************************
