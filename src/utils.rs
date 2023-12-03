@@ -211,7 +211,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
  *****************************************************************************/
 
 /// Arbitrary-precision integer type which stores digits of a positive number
-/// in base 1_000_000_000. Implements addition by reference.
+/// in base 1_000_000_000.
 #[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Long {
     digits: Vec<i32>,
