@@ -297,6 +297,28 @@ impl std::ops::Mul<i32> for &Long {
         result
     }
 }
+impl std::ops::Mul<&Long> for &Long {
+    type Output = Long;
+    fn mul(self, other: &Long) -> Long {
+        let mut result = Long { digits: vec![] };
+        for (pad, od) in other.digits.iter().enumerate() {
+            let mut partial_product = Long {
+                digits: vec![0; pad],
+            };
+            let mut carry = 0;
+            for sd in self.digits.iter() {
+                let sum_carry = Long::mlc(*sd, *od, carry);
+                partial_product.digits.push(sum_carry.0);
+                carry = sum_carry.1;
+            }
+            if carry > 0 {
+                partial_product.digits.push(carry);
+            }
+            result += &partial_product;
+        }
+        result
+    }
+}
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         self.digits

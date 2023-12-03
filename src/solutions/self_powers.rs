@@ -5,7 +5,7 @@ pub fn solve() -> i64 {
     for num in 1..1000 {
         let mut term = utils::Long::new("1");
         for _ in 0..num {
-            term *= num;
+            term = &term * &utils::Long::new(&num.to_string());
         }
         sum += &term;
     }
