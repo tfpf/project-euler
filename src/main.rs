@@ -58,6 +58,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         47 => solutions::distinct_primes_factors::solve,
         48 => solutions::self_powers::solve,
         49 => solutions::prime_permutations::solve,
+        50 => solutions::consecutive_prime_sum::solve,
         67 => solutions::maximum_path_sum_ii::solve,
         _ => return false,
     };
