@@ -206,6 +206,30 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     true
 }
 
+/// Perform modular exponentiation.
+///
+/// * `base` - Number to be exponentiated.
+/// * `exp` - Exponent.
+/// * `modulus` - Modulus.
+///
+/// -> Modular exponentiation of the given numer.
+pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
+    let (base, modulus) = (base as i128, modulus as i128);
+    (match exp {
+        0 => 1,
+        1 => base % modulus,
+        exp => {
+            let base_squared = base.pow(2) % modulus;
+            let intermediate = pow(base_squared as i64, exp >> 1, modulus as i64) as i128;
+            if exp & 1 == 0 {
+                intermediate
+            } else {
+                base * intermediate % modulus
+            }
+        }
+    }) as i64
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
