@@ -212,7 +212,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// * `exp` - Exponent.
 /// * `modulus` - Modulus.
 ///
-/// -> Modular exponentiation of the given numer.
+/// -> Modular exponentiation of the given number.
 pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
     let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1i128);
     loop {
