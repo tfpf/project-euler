@@ -24,9 +24,12 @@ fn prime_permutations() -> (i64, i64, i64) {
         .iter()
         .skip_while(|&prime| prime < 1000)
         .collect::<Vec<i64>>();
-    for i in 1..primes.len() {
+
+    // The outer index will find the largest required number. The inner index
+    // will find the middle number. Hence, it makes sense to go in reverse.
+    for i in (1..primes.len()).rev() {
         let freqi = digits_frequencies(primes[i]);
-        for j in 0..i {
+        for j in (0..i).rev() {
             let candidate = 2 * primes[j] - primes[i];
             if candidate >= 1000
                 && candidate != 1487
