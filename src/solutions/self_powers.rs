@@ -1,13 +1,9 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut sum = utils::Long::new("0");
-    for num in 1..1000 {
-        let mut term = utils::Long::new("1");
-        for _ in 0..num {
-            term = &term * &utils::Long::new(&num.to_string());
-        }
-        sum += &term;
+    let mut sum = utils::Long::from(0);
+    for num in (1..1000).filter(|num| num % 10 != 0) {
+        sum += &utils::Long::from(num).pow(num as u32);
     }
     let result = sum.to_string()[sum.len() - 10..].parse::<i64>().unwrap();
 
