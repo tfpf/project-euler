@@ -25,7 +25,8 @@ intent of the code by hiding confounding implementation details.
  <img src="res/certified_human.svg" />
 </p>
 
-No part of the code in this repository was written by or in consultation with artificial intelligence chatbots.
+No part of the code in this repository has been written by or in consultation with artificial intelligence chatbots
+such as (but not limited to) Bard and ChatGPT.
 
 ## Problems and Solutions
 |Problem|Solution|
