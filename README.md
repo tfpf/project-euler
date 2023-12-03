@@ -78,4 +78,5 @@ No part of the code in this repository was written by or in consultation with ar
 |[46](https://projecteuler.net/problem=46)|[`goldbachs_other_conjecture.rs`](src/solutions/goldbachs_other_conjecture.rs)|
 |[47](https://projecteuler.net/problem=47)|[`distinct_primes_factors.rs`](src/solutions/distinct_primes_factors.rs)|
 |[48](https://projecteuler.net/problem=48)|[`self_powers.rs`](src/solutions/self_powers.rs)|
+|[49](https://projecteuler.net/problem=49)|[`prime_permutations.rs`](src/solutions/prime_permutations.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
