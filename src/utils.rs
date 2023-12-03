@@ -272,8 +272,8 @@ impl Long {
     pub fn pow(&self, mut exp: u32) -> Long {
         let mut multiplier = Long::from(1);
 
-        // This isn't actually required, but improves the performance by
-        // avoiding unnecessary cloning.
+        // This isn't actually required, but improves performance by avoiding
+        // unnecessary cloning.
         if exp == 0 {
             return multiplier;
         }
