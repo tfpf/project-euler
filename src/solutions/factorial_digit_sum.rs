@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut product = utils::Long::new("1");
+    let mut product = utils::Long::from(1);
     for num in 2..=100 {
         product *= num;
     }

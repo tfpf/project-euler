@@ -104,7 +104,7 @@ pub fn solve() -> i64 {
         "53503534226472524250874054075591789781264330331690",
     ];
 
-    let mut sum = utils::Long::new("0");
+    let mut sum = utils::Long::from(0);
     for num in &nums {
         sum += &utils::Long::new(num);
     }

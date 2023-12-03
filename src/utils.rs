@@ -206,12 +206,33 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     true
 }
 
+/// Perform modular exponentiation.
+///
+/// * `base` - Number to be exponentiated.
+/// * `exp` - Exponent.
+/// * `modulus` - Modulus.
+///
+/// -> Modular exponentiation of the given number.
+pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
+    let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1i128);
+    loop {
+        if exp & 1 == 1 {
+            multiplier = multiplier * base % modulus;
+        }
+        if exp <= 1 {
+            return multiplier as i64;
+        }
+        exp >>= 1;
+        base = base.pow(2) % modulus;
+    }
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
 
 /// Arbitrary-precision integer type which stores digits of a positive number
-/// in base 1_000_000_000. Implements addition by reference.
+/// in base 1_000_000_000.
 #[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Long {
     digits: Vec<i32>,
@@ -228,6 +249,11 @@ impl Long {
         }
         long
     }
+    pub fn from(digit: i32) -> Long {
+        Long {
+            digits: vec![digit],
+        }
+    }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
     /// -> Length.
@@ -236,6 +262,33 @@ impl Long {
             0 => 0,
             1 if self.digits[0] == 0 => 0,
             len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
+        }
+    }
+    /// Raise this number to the given power.
+    ///
+    /// * `exp` - Power.
+    ///
+    /// -> Value of this number raised to the given power.
+    pub fn pow(&self, mut exp: u32) -> Long {
+        // Multiplication is expensive, so these checks will improve
+        // performance.
+        let mut multiplier = Long::from(1);
+        if exp == 0 {
+            return multiplier;
+        }
+        let mut base = self.clone();
+        if exp == 1 {
+            return base;
+        }
+        loop {
+            if exp & 1 == 1 {
+                multiplier = &multiplier * &base;
+            }
+            if exp == 1 {
+                return multiplier;
+            }
+            exp >>= 1;
+            base = &base * &base;
         }
     }
     fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
@@ -294,6 +347,28 @@ impl std::ops::Mul<i32> for &Long {
     fn mul(self, other: i32) -> Long {
         let mut result = self.clone();
         result *= other;
+        result
+    }
+}
+impl std::ops::Mul<&Long> for &Long {
+    type Output = Long;
+    fn mul(self, other: &Long) -> Long {
+        let mut result = Long { digits: vec![] };
+        for (pad, od) in other.digits.iter().enumerate() {
+            let mut partial_product = Long {
+                digits: vec![0; pad],
+            };
+            let mut carry = 0;
+            for sd in self.digits.iter() {
+                let sum_carry = Long::mlc(*sd, *od, carry);
+                partial_product.digits.push(sum_carry.0);
+                carry = sum_carry.1;
+            }
+            if carry > 0 {
+                partial_product.digits.push(carry);
+            }
+            result += &partial_product;
+        }
         result
     }
 }

@@ -1,8 +1,8 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut a = utils::Long::new("0");
-    let mut b = utils::Long::new("1");
+    let mut a = utils::Long::from(0);
+    let mut b = utils::Long::from(1);
     let mut index = 0;
     let result = loop {
         index += 1;
