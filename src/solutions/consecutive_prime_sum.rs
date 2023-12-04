@@ -1,38 +1,27 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let primes = utils::Primes::new(1000000).iter().skip_while(|&prime| prime < 1000).collect::<Vec<i64>>();
+    let mut sum = 0;
+    let primes_prefix_sum = utils::Primes::new(1000000).iter().map(|prime| {
+        sum += prime;
+        sum
+    }).collect::<Vec<i64>>();
 
-    for i in (2..primes.len()).rev() {
-        let mut window = (i - 2, i - 1);
-        let mut sum = primes[window.0] + primes[window.1];
-        while window.0 >= 1 {
-            if sum == primes[i] {
-                window.0 -= 1;
-                sum += primes[window.0] - primes[window.1];
-                window.1 -= 1;
+    let mut prime_and_window = (0, 0);
+    for i in (1..primes_prefix_sum.len()).rev() {
+        for j in (0..i).rev() {
+            let consecutive_primes_sum = primes_prefix_sum[i] - primes_prefix_sum[j];
+            if consecutive_primes_sum >= 1000000 {
+                break;
             }
-            else if sum > primes[i] {
-                sum -= primes[window.1];
-                window.1 -= 1;
-            }
-            else {
-                window.0 -= 1;
-                sum += primes[window.0];
+            let window = i - j;
+            if utils::is_prime(consecutive_primes_sum) && window > prime_and_window.1 {
+                prime_and_window = (consecutive_primes_sum, window);
             }
         }
     }
+    let result = prime_and_window.0;
 
-
-
-
-
-
-
-
-
-
-
-
-    0
+    assert_eq!(result, 997651);
+    result
 }
