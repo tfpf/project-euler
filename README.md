@@ -80,4 +80,5 @@ such as (but not limited to) Bard and ChatGPT.
 |[47](https://projecteuler.net/problem=47)|[`distinct_primes_factors.rs`](src/solutions/distinct_primes_factors.rs)|
 |[48](https://projecteuler.net/problem=48)|[`self_powers.rs`](src/solutions/self_powers.rs)|
 |[49](https://projecteuler.net/problem=49)|[`prime_permutations.rs`](src/solutions/prime_permutations.rs)|
+|[50](https://projecteuler.net/problem=50)|[`consecutive_prime_sum.rs`](src/solutions/consecutive_prime_sum.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
