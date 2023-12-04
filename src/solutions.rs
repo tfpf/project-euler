@@ -36,6 +36,7 @@ pub mod pandigital_prime;
 pub mod pandigital_products;
 pub mod pentagon_numbers;
 pub mod power_digit_sum;
+pub mod prime_digit_replacements;
 pub mod prime_permutations;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
