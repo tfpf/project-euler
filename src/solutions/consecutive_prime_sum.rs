@@ -2,10 +2,13 @@ use crate::utils;
 
 pub fn solve() -> i64 {
     let mut sum = 0;
-    let primes_prefix_sum = utils::Primes::new(1000000).iter().map(|prime| {
-        sum += prime;
-        sum
-    }).collect::<Vec<i64>>();
+    let primes_prefix_sum = utils::Primes::new(1000000)
+        .iter()
+        .map(|prime| {
+            sum += prime;
+            sum
+        })
+        .collect::<Vec<i64>>();
 
     let mut prime_and_window = (0, 0);
     for i in (1..primes_prefix_sum.len()).rev() {
