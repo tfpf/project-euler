@@ -7,6 +7,10 @@ pub fn solve() -> i64 {
     let mut sum = 0;
     let primes_prefix_sum = primes
         .iter()
+        // The target sequence contains at least 21 terms and sums to a number
+        // less than 1000000. Hence, each term in that sequence is bounded
+        // above.
+        .take_while(|&prime| prime <= 1000000 / 21)
         .map(|prime| {
             sum += prime;
             sum
