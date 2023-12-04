@@ -1,8 +1,11 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
+    let primes = utils::Primes::new(1000000);
+    let sieve = primes.sieve();
+
     let mut sum = 0;
-    let primes_prefix_sum = utils::Primes::new(1000000)
+    let primes_prefix_sum = primes
         .iter()
         .map(|prime| {
             sum += prime;
@@ -18,7 +21,7 @@ pub fn solve() -> i64 {
                 break;
             }
             let window = i - j;
-            if utils::is_prime(consecutive_primes_sum) && window > prime_and_window.1 {
+            if sieve[consecutive_primes_sum as usize] && window > prime_and_window.1 {
                 prime_and_window = (consecutive_primes_sum, window);
             }
         }
