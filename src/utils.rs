@@ -131,15 +131,23 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
     let mut sieve = vec![true; limit + 1];
     sieve[0] = false;
     sieve[1] = false;
-    for num in (2..).take_while(|num| num * num <= limit) {
-        // If this number is prime, mark its multiples starting from its square
-        // as composite. (Smaller multiples have already been marked as
-        // composite.)
+    let offsets = [4, 2, 4, 2, 4, 6, 2, 6];
+    let (mut num, mut idx) = (2, 7);
+    while num * num <= limit {
         if sieve[num] {
             for multiple in (num * num..=limit).step_by(num) {
                 sieve[multiple] = false;
             }
         }
+        num = match num {
+            2 => 3,
+            3 => 5,
+            5 => 7,
+            num => {
+                idx = (idx + 1) & 7;
+                num + offsets[idx]
+            }
+        };
     }
     sieve
 }
