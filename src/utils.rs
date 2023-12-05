@@ -219,6 +219,17 @@ impl SieveOfEratosthenes {
             self.sieve[row] &= !mask;
         }
     }
+    pub fn iter(&self) -> impl Iterator<Item=i64> + '_ {
+        let mut num = 1;
+        let mut offsets_idx = 0;
+        let offsets = [6, 4, 2, 4, 2, 4, 6, 2];
+        [2, 3, 5].into_iter().chain(self.sieve.iter().flat_map(|&byte| [byte & 1, byte >> 1 & 1, byte >> 2 & 1, byte >> 3 & 1, byte >> 4 & 1, byte >> 5 & 1, byte >> 6 & 1, byte >> 7 & 1]).map(move |is_prime| {
+            let pair = (is_prime, num);
+            num += offsets[offsets_idx];
+            offsets_idx = (offsets_idx + 1) & 7;
+            pair
+        }).filter(|&(is_prime, _)| is_prime == 1).map(|(_, num)| num).take_while(|&num| num <= self.limit as i64))
+    }
 }
 
 /// Generate the next permutation.
