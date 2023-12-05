@@ -152,6 +152,75 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
     sieve
 }
 
+pub struct SieveOfEratosthenes {
+    limit: usize,
+    sieve: Vec<u8>,
+}
+impl SieveOfEratosthenes {
+    pub fn new(limit: usize) -> SieveOfEratosthenes {
+        let sieve_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
+        let mut sieve = vec![255; sieve_len];
+        sieve[0] = 254;
+        let mut soe = SieveOfEratosthenes {limit:limit, sieve: sieve };
+        soe.init();
+        soe
+    }
+    fn init(&mut self) {
+        let offsets = [6, 4, 2, 4, 2, 4, 6, 2];
+        let mut num = 1;
+        let mut offsets_idx = 0;
+        while num * num <= self.limit {
+            if self.check_prime(num) {
+                for multiple in (num * num..=self.limit).step_by(num) {
+                    self.mark_prime(multiple, false);
+                }
+            }
+            num += offsets[offsets_idx];
+            offsets_idx = (offsets_idx + 1) & 7;
+        }
+    }
+    fn convert(num: usize) -> (usize, usize) {
+        let (row, col) = (num / 30, num % 30);
+        let col = match col {
+            1 => 0,
+            7 => 1,
+            11 => 2,
+            13 => 3,
+            17 => 4,
+            19 => 5,
+            23 => 6,
+            29 => 7,
+            _ => 8,
+        };
+        (row, col)
+    }
+    pub fn check_prime(&self, num: usize) -> bool {
+        if num < 2 {
+            return false;
+        }
+        if num == 2 || num == 3 || num == 5 {
+            return true;
+        }
+        let (row, col) = SieveOfEratosthenes::convert(num);
+        if col == 8 {
+            return false;
+        }
+        return self.sieve[row] >> col & 1 == 1;
+    }
+    fn mark_prime(&mut self, num: usize, bit: bool) {
+        let (row, col) = SieveOfEratosthenes::convert(num);
+        if col == 8 {
+            return;
+        }
+        let mask = 1 << col;
+        if bit {
+            self.sieve[row] |= mask;
+        } else {
+            self.sieve[row] &= !mask;
+        }
+    }
+}
+
 /// Generate the next permutation.
 ///
 /// * `slice` - Object containing the unique items to permute.
