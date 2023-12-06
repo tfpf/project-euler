@@ -6,13 +6,13 @@ use crate::utils;
 /// * `sieve` - Sieve of eratosthenes.
 ///
 /// -> Whether the number is a circular prime.
-fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
+fn is_circular_prime(mut num: i64, sieve: &utils::SieveOfEratosthenes) -> bool {
     // Since the number is prime, only its rotations have to be checked.
     let passes = utils::Digits::new(num).count() - 1;
     let multiplier = 10i64.pow(passes as u32);
     for _ in 0..passes {
         num = num / 10 + num % 10 * multiplier;
-        if !sieve[num as usize] {
+        if !sieve.is_prime(num as usize) {
             return false;
         }
     }
@@ -20,11 +20,10 @@ fn is_circular_prime(mut num: i64, sieve: &Vec<bool>) -> bool {
 }
 
 pub fn solve() -> i64 {
-    let primes = utils::Primes::new(1000000);
-    let sieve = primes.sieve();
-    let result = primes
+    let sieve = utils::SieveOfEratosthenes::new(1000000);
+    let result = sieve
         .iter()
-        .filter(|&num| is_circular_prime(num, sieve))
+        .filter(|&num| is_circular_prime(num, &sieve))
         .count();
 
     assert_eq!(result, 55);

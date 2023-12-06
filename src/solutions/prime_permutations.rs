@@ -18,9 +18,8 @@ fn digits_frequencies(num: i64) -> [u8; 10] {
 ///
 /// -> Tuple of prime numbers.
 fn prime_permutations() -> (i64, i64, i64) {
-    let primes = utils::Primes::new(9999);
-    let sieve = primes.sieve();
-    let primes = primes
+    let sieve = utils::SieveOfEratosthenes::new(9999);
+    let primes = sieve
         .iter()
         .skip_while(|&prime| prime < 1000)
         .collect::<Vec<i64>>();
@@ -35,7 +34,7 @@ fn prime_permutations() -> (i64, i64, i64) {
         for j in (0..i).rev() {
             let candidate = 2 * primes[j] - primes[i];
             if candidate >= 1000
-                && sieve[candidate as usize]
+                && sieve.is_prime(candidate as usize)
                 && digits_frequencies(primes[j]) == freqi
                 && digits_frequencies(candidate) == freqi
             {
