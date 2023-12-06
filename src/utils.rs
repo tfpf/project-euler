@@ -414,6 +414,13 @@ impl PandigitalChecker {
     }
 }
 
+/// Construct the sieve of Eratosthenes. This is stored as an array of bytes
+/// in which the bits of the first byte (from least significant to most
+/// significant) indicate the primality of 1, 7, 11, 13, 17, 19, 23 and 29; the
+/// second byte, of 31, 37, 41, 43, 47, 49, 53 and 59; and so on. (These are
+/// the numbers coprime to 30. Any number not coprime to 30 is guaranteed to be
+/// composite, with 2, 3 and 5 being the only exceptions.) In effect, wheel
+/// factorisation with 2, 3 and 5 is used.
 pub struct SieveOfEratosthenes {
     limit: usize,
     bitfields: Vec<u8>,
@@ -423,6 +430,7 @@ impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
         let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
         let mut bitfields = vec![255; bitfields_len];
+        // In the first byte, only 1 is not prime.
         bitfields[0] = 254;
         let mut sieve_of_eratosthenes = SieveOfEratosthenes {
             limit: limit,
@@ -448,6 +456,8 @@ impl SieveOfEratosthenes {
             }
         }
     }
+    /// Given a number, determine the index into the array where the bit
+    /// indicating its primaility is present.
     fn convert(num: usize) -> (usize, usize) {
         let (bitfields_idx, column) = (num / 30, num % 30);
         let offsets_idx = match column {
@@ -459,10 +469,18 @@ impl SieveOfEratosthenes {
             19 => 5,
             23 => 6,
             29 => 7,
+            // If we reach here, it means the primality of the number is not
+            // indicated by any bit, because it is composite. As mentioned
+            // earlier, numbers not coprime to 30 are composite. (The
+            // exceptions 2, 3 and 5 are handled separately. See below.)
             _ => 8,
         };
         (bitfields_idx, offsets_idx)
     }
+    /// Determine whether the given number is prime. The number must be less
+    /// than or equal to the number with which this object was constructed.
+    ///
+    /// * `num` - Number to check.
     pub fn is_prime(&self, num: usize) -> bool {
         if num < 2 {
             return false;
@@ -483,24 +501,30 @@ impl SieveOfEratosthenes {
         }
         self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
     }
+    /// Iterate over all prime numbers until the number this object was
+    /// constructed with.
+    ///
+    /// -> Prime iterator.
     pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
         let mut num = 1;
-        [2, 3, 5].into_iter().chain(
-            self.bitfields
-                .iter()
-                .flat_map(|bitfield| {
-                    (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
-                })
-                .map(move |(offsets_idx, bit)| {
-                    let pair = (bit, num);
-                    num += self.offsets[offsets_idx];
-                    pair
-                })
-                .filter(|&(bit, _)| bit == 1)
-                .map(|(_, num)| num)
-                .take_while(|&num| num <= self.limit)
-                .map(|num| num as i64),
-        )
+        [2, 3, 5]
+            .into_iter()
+            .chain(
+                self.bitfields
+                    .iter()
+                    .flat_map(|bitfield| {
+                        (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
+                    })
+                    .map(move |(offsets_idx, bit)| {
+                        let pair = (bit, num);
+                        num += self.offsets[offsets_idx];
+                        pair
+                    })
+                    .filter(|&(bit, _)| bit == 1)
+                    .map(|(_, num)| num),
+            )
+            .take_while(|&num| num <= self.limit)
+            .map(|num| num as i64)
     }
 }
 
