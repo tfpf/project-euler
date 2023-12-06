@@ -154,34 +154,41 @@ pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
 
 pub struct SieveOfEratosthenes {
     limit: usize,
-    sieve: Vec<u8>,
+    bitfields: Vec<u8>,
+    offsets: [usize; 8],
 }
 impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
-        let sieve_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
-        let mut sieve = vec![255; sieve_len];
-        sieve[0] = 254;
-        let mut soe = SieveOfEratosthenes {limit:limit, sieve: sieve };
-        soe.init();
-        soe
+        let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
+        let mut bitfields = vec![255; bitfields_len];
+        bitfields[0] = 254;
+        let mut sieve_of_eratosthenes = SieveOfEratosthenes {
+            limit: limit,
+            bitfields: bitfields,
+            offsets: [6, 4, 2, 4, 2, 4, 6, 2],
+        };
+        sieve_of_eratosthenes.init();
+        sieve_of_eratosthenes
     }
     fn init(&mut self) {
-        let offsets = [6, 4, 2, 4, 2, 4, 6, 2];
         let mut num = 1;
-        let mut offsets_idx = 0;
-        while num * num <= self.limit {
-            if self.check_prime(num) {
-                for multiple in (num * num..=self.limit).step_by(num) {
-                    self.mark_prime(multiple, false);
-                }
+        for bitfields_idx in 0..self.bitfields.len() {
+            if num * num > self.limit {
+                break;
             }
-            num += offsets[offsets_idx];
-            offsets_idx = (offsets_idx + 1) & 7;
+            for offsets_idx in 0..8 {
+                if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
+                    for multiple in (num * num..=self.limit).step_by(num) {
+                        self.mark_composite(multiple);
+                    }
+                }
+                num += self.offsets[offsets_idx];
+            }
         }
     }
     fn convert(num: usize) -> (usize, usize) {
-        let (row, col) = (num / 30, num % 30);
-        let col = match col {
+        let (bitfields_idx, column) = (num / 30, num % 30);
+        let offsets_idx = match column {
             1 => 0,
             7 => 1,
             11 => 2,
@@ -192,43 +199,46 @@ impl SieveOfEratosthenes {
             29 => 7,
             _ => 8,
         };
-        (row, col)
+        (bitfields_idx, offsets_idx)
     }
-    pub fn check_prime(&self, num: usize) -> bool {
+    pub fn is_prime(&self, num: usize) -> bool {
         if num < 2 {
             return false;
         }
         if num == 2 || num == 3 || num == 5 {
             return true;
         }
-        let (row, col) = SieveOfEratosthenes::convert(num);
-        if col == 8 {
+        let (bitfields_idx, offsets_idx) = SieveOfEratosthenes::convert(num);
+        if offsets_idx == 8 {
             return false;
         }
-        return self.sieve[row] >> col & 1 == 1;
+        return self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1;
     }
-    fn mark_prime(&mut self, num: usize, bit: bool) {
-        let (row, col) = SieveOfEratosthenes::convert(num);
-        if col == 8 {
+    fn mark_composite(&mut self, num: usize) {
+        let (bitfields_idx, offsets_idx) = SieveOfEratosthenes::convert(num);
+        if offsets_idx == 8 {
             return;
         }
-        let mask = 1 << col;
-        if bit {
-            self.sieve[row] |= mask;
-        } else {
-            self.sieve[row] &= !mask;
-        }
+        self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
     }
-    pub fn iter(&self) -> impl Iterator<Item=i64> + '_ {
+    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
         let mut num = 1;
-        let mut offsets_idx = 0;
-        let offsets = [6, 4, 2, 4, 2, 4, 6, 2];
-        [2, 3, 5].into_iter().chain(self.sieve.iter().flat_map(|&byte| [byte & 1, byte >> 1 & 1, byte >> 2 & 1, byte >> 3 & 1, byte >> 4 & 1, byte >> 5 & 1, byte >> 6 & 1, byte >> 7 & 1]).map(move |is_prime| {
-            let pair = (is_prime, num);
-            num += offsets[offsets_idx];
-            offsets_idx = (offsets_idx + 1) & 7;
-            pair
-        }).filter(|&(is_prime, _)| is_prime == 1).map(|(_, num)| num).take_while(|&num| num <= self.limit as i64))
+        [2, 3, 5].into_iter().chain(
+            self.bitfields
+                .iter()
+                .flat_map(|bitfield| {
+                    (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
+                })
+                .map(move |(offsets_idx, bit)| {
+                    let pair = (bit, num);
+                    num += self.offsets[offsets_idx];
+                    pair
+                })
+                .filter(|&(bit, _)| bit == 1)
+                .map(|(_, num)| num)
+                .take_while(|&num| num <= self.limit)
+                .map(|num| num as i64),
+        )
     }
 }
 
