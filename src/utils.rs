@@ -449,6 +449,8 @@ impl SieveOfEratosthenes {
             for offsets_idx in 0..8 {
                 if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
                     for multiple in (num * num..=self.limit).step_by(num) {
+                        // TODO Figure out a way to mark this number as
+                        // composite without doing division.
                         self.mark_composite(multiple);
                     }
                 }
