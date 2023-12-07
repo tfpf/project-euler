@@ -122,28 +122,6 @@ pub fn recurrence_length(prime: i64) -> i64 {
     unreachable!();
 }
 
-/// Construct the sieve of Eratosthenes.
-///
-/// * `limit` - Number up to which the sieve should be constructed.
-///
-/// -> Boolean vector indicating the primality of its indices.
-pub fn sieve_of_eratosthenes(limit: usize) -> Vec<bool> {
-    let mut sieve = vec![true; limit + 1];
-    sieve[0] = false;
-    sieve[1] = false;
-    for num in (2..).take_while(|num| num * num <= limit) {
-        // If this number is prime, mark its multiples starting from its square
-        // as composite. (Smaller multiples have already been marked as
-        // composite.)
-        if sieve[num] {
-            for multiple in (num * num..=limit).step_by(num) {
-                sieve[multiple] = false;
-            }
-        }
-    }
-    sieve
-}
-
 /// Generate the next permutation.
 ///
 /// * `slice` - Object containing the unique items to permute.
@@ -214,7 +192,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 ///
 /// -> Modular exponentiation of the given number.
 pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
-    let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1i128);
+    let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1);
     loop {
         if exp & 1 == 1 {
             multiplier = multiplier * base % modulus;
@@ -436,6 +414,109 @@ impl PandigitalChecker {
     }
 }
 
+/// Construct the sieve of Eratosthenes. This is stored as an array of bytes
+/// in which the bits of the first byte (from least significant to most
+/// significant) indicate the primality of 1, 7, 11, 13, 17, 19, 23 and 29; the
+/// second byte, of 31, 37, 41, 43, 47, 49, 53 and 59; and so on. (These are
+/// the numbers coprime to 30. Any number not coprime to 30 is guaranteed to be
+/// composite, with 2, 3 and 5 being the only exceptions.) In effect, wheel
+/// factorisation with 2, 3 and 5 is used.
+pub struct SieveOfEratosthenes {
+    limit: usize,
+    bitfields: Vec<u8>,
+}
+impl SieveOfEratosthenes {
+    // Differences between consecutive elements of
+    // [1, 7, 11, 13, 17, 19, 23, 29]. Starting from 1, repeatedly adding these
+    // numbers cyclically will yield all numbers congruent to them.
+    const OFFSETS: [usize; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+    // Indices are residues modulo 30. Values are indices into
+    // [1, 7, 11, 13, 17, 19, 23, 29] at which the residue appears. If the
+    // value is 8, it means that that residue does not appear in said array.
+    const RESIDUE_MAP: [usize; 30] = [
+        8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7,
+    ];
+}
+impl SieveOfEratosthenes {
+    pub fn new(limit: usize) -> SieveOfEratosthenes {
+        let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
+        let mut sieve_of_eratosthenes = SieveOfEratosthenes {
+            limit: limit,
+            bitfields: vec![255; bitfields_len],
+        };
+        sieve_of_eratosthenes.init();
+        sieve_of_eratosthenes
+    }
+    fn init(&mut self) {
+        // In the first byte, only 1 is not prime.
+        self.bitfields[0] = 254;
+
+        // In the remaining bytes, sieve out the composite numbers.
+        let mut num = 1;
+        for bitfields_idx in 0..self.bitfields.len() {
+            if num * num > self.limit {
+                break;
+            }
+            for offsets_idx in 0..8 {
+                if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
+                    for multiple in (num * num..=self.limit).step_by(num) {
+                        let (bitfields_idx, offsets_idx) = (
+                            multiple / 30,
+                            SieveOfEratosthenes::RESIDUE_MAP[multiple % 30],
+                        );
+                        if offsets_idx < 8 {
+                            self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
+                        }
+                    }
+                }
+                num += SieveOfEratosthenes::OFFSETS[offsets_idx];
+            }
+        }
+    }
+    /// Determine whether the given number is prime. The number must be less
+    /// than or equal to the number with which this object was constructed.
+    ///
+    /// * `num` - Number to check.
+    pub fn is_prime(&self, num: usize) -> bool {
+        if num < 2 {
+            return false;
+        }
+        if num == 2 || num == 3 || num == 5 {
+            return true;
+        }
+        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
+        if offsets_idx == 8 {
+            return false;
+        }
+        return self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1;
+    }
+    /// Iterate over all prime numbers until the number this object was
+    /// constructed with.
+    ///
+    /// -> Prime iterator.
+    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
+        let mut num = 1;
+        [2, 3, 5]
+            .into_iter()
+            .chain(
+                self.bitfields
+                    .iter()
+                    .flat_map(|bitfield| {
+                        (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
+                    })
+                    .map(move |(offsets_idx, bit)| {
+                        let pair = (bit, num);
+                        num += SieveOfEratosthenes::OFFSETS[offsets_idx];
+                        pair
+                    })
+                    .filter(|&(bit, _)| bit == 1)
+                    .map(|(_, num)| num),
+            )
+            .take_while(|&num| num <= self.limit)
+            .map(|num| num as i64)
+    }
+}
+
 /******************************************************************************
  * Iterators.
  *****************************************************************************/
@@ -625,30 +706,6 @@ impl Iterator for PrimeDivisors {
                 return Some((self.divisor, power));
             }
         }
-    }
-}
-
-/// Primes iterator. Generates prime numbers by internally constructing the
-/// sieve of Eratosthenes. Differs from other iterators in that its method must
-/// be called in order to obtain an iterator.
-pub struct Primes {
-    sieve: Vec<bool>,
-}
-impl Primes {
-    pub fn new(limit: usize) -> Primes {
-        Primes {
-            sieve: sieve_of_eratosthenes(limit),
-        }
-    }
-    pub fn sieve(&self) -> &Vec<bool> {
-        &self.sieve
-    }
-    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
-        self.sieve
-            .iter()
-            .enumerate()
-            .filter(|(_, is_prime)| **is_prime)
-            .map(|(num, _)| num as i64)
     }
 }
 
