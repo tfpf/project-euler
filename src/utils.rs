@@ -424,7 +424,16 @@ impl PandigitalChecker {
 pub struct SieveOfEratosthenes {
     limit: usize,
     bitfields: Vec<u8>,
-    offsets: [usize; 8],
+}
+impl SieveOfEratosthenes {
+    // Differences between consecutive elements of
+    // [1, 7, 11, 13, 17, 19, 23, 29]. Starting from 1, repeatedly adding these
+    // numbers cyclically will yield all numbers congruent to them.
+    const OFFSETS: [usize; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+    // Indices are residues modulo 30. Values are indices into
+    // [1, 7, 11, 13, 17, 19, 23, 29] at which the residue appears. If the
+    // value is 8, it means that that residue does not appear in said array.
+    const RESIDUE_MAP: [usize; 30] = [8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7];
 }
 impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
@@ -432,7 +441,6 @@ impl SieveOfEratosthenes {
         let mut sieve_of_eratosthenes = SieveOfEratosthenes {
             limit: limit,
             bitfields: vec![255; bitfields_len],
-            offsets: [6, 4, 2, 4, 2, 4, 6, 2],
         };
         sieve_of_eratosthenes.init();
         sieve_of_eratosthenes
@@ -455,30 +463,9 @@ impl SieveOfEratosthenes {
                         self.mark_composite(multiple);
                     }
                 }
-                num += self.offsets[offsets_idx];
+                num += SieveOfEratosthenes::OFFSETS[offsets_idx];
             }
         }
-    }
-    /// Given a number, determine the index into the array where the bit
-    /// indicating its primaility is present.
-    fn convert(num: usize) -> (usize, usize) {
-        let (bitfields_idx, column) = (num / 30, num % 30);
-        let offsets_idx = match column {
-            1 => 0,
-            7 => 1,
-            11 => 2,
-            13 => 3,
-            17 => 4,
-            19 => 5,
-            23 => 6,
-            29 => 7,
-            // If we reach here, it means the primality of the number is not
-            // indicated by any bit, because it is composite. As mentioned
-            // earlier, numbers not coprime to 30 are composite. (The
-            // exceptions 2, 3 and 5 are handled separately. See below.)
-            _ => 8,
-        };
-        (bitfields_idx, offsets_idx)
     }
     /// Determine whether the given number is prime. The number must be less
     /// than or equal to the number with which this object was constructed.
@@ -491,14 +478,14 @@ impl SieveOfEratosthenes {
         if num == 2 || num == 3 || num == 5 {
             return true;
         }
-        let (bitfields_idx, offsets_idx) = SieveOfEratosthenes::convert(num);
+        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
         if offsets_idx == 8 {
             return false;
         }
         return self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1;
     }
     fn mark_composite(&mut self, num: usize) {
-        let (bitfields_idx, offsets_idx) = SieveOfEratosthenes::convert(num);
+        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
         if offsets_idx == 8 {
             return;
         }
@@ -520,7 +507,7 @@ impl SieveOfEratosthenes {
                     })
                     .map(move |(offsets_idx, bit)| {
                         let pair = (bit, num);
-                        num += self.offsets[offsets_idx];
+                        num += SieveOfEratosthenes::OFFSETS[offsets_idx];
                         pair
                     })
                     .filter(|&(bit, _)| bit == 1)
