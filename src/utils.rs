@@ -429,18 +429,19 @@ pub struct SieveOfEratosthenes {
 impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
         let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
-        let mut bitfields = vec![255; bitfields_len];
-        // In the first byte, only 1 is not prime.
-        bitfields[0] = 254;
         let mut sieve_of_eratosthenes = SieveOfEratosthenes {
             limit: limit,
-            bitfields: bitfields,
+            bitfields: vec![255; bitfields_len],
             offsets: [6, 4, 2, 4, 2, 4, 6, 2],
         };
         sieve_of_eratosthenes.init();
         sieve_of_eratosthenes
     }
     fn init(&mut self) {
+        // In the first byte, only 1 is not prime.
+        self.bitfields[0] = 254;
+
+        // In the remaining bytes, sieve out the composite numbers.
         let mut num = 1;
         for bitfields_idx in 0..self.bitfields.len() {
             if num * num > self.limit {
