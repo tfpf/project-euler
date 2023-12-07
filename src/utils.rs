@@ -433,7 +433,9 @@ impl SieveOfEratosthenes {
     // Indices are residues modulo 30. Values are indices into
     // [1, 7, 11, 13, 17, 19, 23, 29] at which the residue appears. If the
     // value is 8, it means that that residue does not appear in said array.
-    const RESIDUE_MAP: [usize; 30] = [8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7];
+    const RESIDUE_MAP: [usize; 30] = [
+        8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7,
+    ];
 }
 impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
@@ -458,9 +460,13 @@ impl SieveOfEratosthenes {
             for offsets_idx in 0..8 {
                 if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
                     for multiple in (num * num..=self.limit).step_by(num) {
-                        // TODO Figure out a way to mark this number as
-                        // composite without doing division.
-                        self.mark_composite(multiple);
+                        let (bitfields_idx, offsets_idx) = (
+                            multiple / 30,
+                            SieveOfEratosthenes::RESIDUE_MAP[multiple % 30],
+                        );
+                        if offsets_idx < 8 {
+                            self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
+                        }
                     }
                 }
                 num += SieveOfEratosthenes::OFFSETS[offsets_idx];
@@ -483,13 +489,6 @@ impl SieveOfEratosthenes {
             return false;
         }
         return self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1;
-    }
-    fn mark_composite(&mut self, num: usize) {
-        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
-        if offsets_idx == 8 {
-            return;
-        }
-        self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
     }
     /// Iterate over all prime numbers until the number this object was
     /// constructed with.
