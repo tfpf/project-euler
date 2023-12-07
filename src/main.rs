@@ -64,13 +64,8 @@ fn solve_and_time_one(problem_number: i32) -> bool {
     };
     let now = std::time::Instant::now();
     let result = solve();
-    let elapsed = now.elapsed();
-    println!(
-        "{:>3} [{:>9.3} ms] {}",
-        problem_number,
-        elapsed.as_micros() as f64 / 1000.0,
-        result
-    );
+    let elapsed = now.elapsed().as_micros() as f64 / 1000.0;
+    println!("{:>3} [{:>9.3} ms] {}", problem_number, elapsed, result);
     true
 }
 
