@@ -73,10 +73,8 @@ fn solve_and_time_one(problem_number: i32) -> bool {
 /// Execute the solutions of all available problems, measuring their running
 /// times.
 fn solve_and_time_all() {
-    for problem_number in 1.. {
-        if !solve_and_time_one(problem_number) {
-            break;
-        }
+    for problem_number in 1..=100 {
+        solve_and_time_one(problem_number);
     }
 }
 
