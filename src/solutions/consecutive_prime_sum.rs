@@ -1,11 +1,10 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let primes = utils::Primes::new(1000000);
-    let sieve = primes.sieve();
+    let sieve = utils::SieveOfEratosthenes::new(1000000);
 
     let mut sum = 0;
-    let primes_prefix_sum = primes
+    let primes_prefix_sum = sieve
         .iter()
         // The target sequence contains at least 21 terms and sums to a number
         // less than 1000000. Hence, each term in that sequence is bounded
@@ -25,7 +24,7 @@ pub fn solve() -> i64 {
                 break;
             }
             let window = i - j;
-            if sieve[consecutive_primes_sum as usize] && window > prime_and_window.1 {
+            if sieve.is_prime(consecutive_primes_sum as usize) && window > prime_and_window.1 {
                 prime_and_window = (consecutive_primes_sum, window);
             }
         }
