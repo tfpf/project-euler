@@ -205,6 +205,19 @@ pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
     }
 }
 
+/// Determine the frequencies of all digits in a number.
+///
+/// * `num` - Number to analyse.
+///
+/// -> Map from digits to their frequencies.
+pub fn digits_frequencies(num: i64) -> [u8; 10] {
+    let mut frequency = [0; 10];
+    for digit in Digits::new(num) {
+        frequency[digit as usize] += 1;
+    }
+    frequency
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
