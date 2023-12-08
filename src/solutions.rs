@@ -35,6 +35,7 @@ pub mod pandigital_multiples;
 pub mod pandigital_prime;
 pub mod pandigital_products;
 pub mod pentagon_numbers;
+pub mod permuted_multiples;
 pub mod power_digit_sum;
 pub mod prime_permutations;
 pub mod quadratic_primes;
