@@ -245,6 +245,10 @@ impl Long {
             digits: vec![digit],
         }
     }
+    pub fn reverse(&self) -> Long {
+        let s = self.to_string().chars().rev().collect::<String>();
+        Long::new(&s)
+    }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
     /// -> Length.
