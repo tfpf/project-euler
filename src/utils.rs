@@ -537,19 +537,19 @@ pub struct PokerHand {
     // its suit. The pairs shall be sorted in descending order of the value.
     hand: Vec<(u8, u8)>,
     // Used to rank this hand on an arbitrary scale. Higher is better.
-    score: u8,
+    score: i32,
 }
 impl PokerHand {
-    const HIGH_CARD: u8 = 0;
-    const ONE_PAIR: u8 = 1;
-    const TWO_PAIRS: u8 = 2;
-    const THREE_OF_A_KIND: u8 = 3;
-    const STRAIGHT: u8 = 4;
-    const FLUSH: u8 = 5;
-    const FULL_HOUSE: u8 = 6;
-    const FOUR_OF_A_KIND: u8 = 7;
-    const STRAIGHT_FLUSH: u8 = 8;
-    const ROYAL_FLUSH: u8 = 9;
+    const HIGH_CARD: i32 = 0;
+    const ONE_PAIR: i32 = 100000000;
+    const TWO_PAIRS: i32 = 200000000;
+    const THREE_OF_A_KIND: i32 = 300000000;
+    const STRAIGHT: i32 = 400000000;
+    const FLUSH: i32 = 500000000;
+    const FULL_HOUSE: i32 = 600000000;
+    const FOUR_OF_A_KIND: i32 = 700000000;
+    const STRAIGHT_FLUSH: i32 = 800000000;
+    const ROYAL_FLUSH: i32 = 900000000;
 }
 impl PokerHand {
     pub fn new(hand: &[&str]) -> PokerHand {
@@ -601,27 +601,46 @@ impl PokerHand {
             return;
         }
 
+        // How many times does each value appear?
         let mut values_frequencies = [0; 15];
-        let (twos, threes, fours) =
-            self.hand
-                .iter()
-                .fold((0, 0, 0), |(twos, threes, fours), card| {
-                    let value = card.0 as usize;
-                    values_frequencies[value] += 1;
-                    match values_frequencies[value] {
-                        2 => (twos + 1, threes, fours),
-                        3 => (twos - 1, threes + 1, fours),
-                        4 => (twos, threes - 1, fours + 1),
-                        _ => (twos, threes, fours),
-                    }
-                });
+        for card in &self.hand {
+            let value = card.0 as usize;
+            values_frequencies[value] += 1;
+        }
+
+        // If we have two pairs, the pair with greater value contributes more
+        // towards the extra score. If we have three or four of a kind, the
+        // extra score is fixed.
+        let mut extra_score_multipliers = (1, 10000, 1000000);
+        let (mut twos, mut threes, mut fours) = (0, 0, 0);
+        let extra_score: i32 = values_frequencies
+            .iter()
+            .enumerate()
+            .map(|(value, frequency)| match frequency {
+                2 => {
+                    twos += 1;
+                    let extra_score = extra_score_multipliers.0 * value as i32;
+                    extra_score_multipliers.0 *= 100;
+                    extra_score
+                }
+                3 => {
+                    threes += 1;
+                    extra_score_multipliers.1 * value as i32
+                }
+                4 => {
+                    fours += 1;
+                    extra_score_multipliers.2 * value as i32
+                }
+                _ => 0,
+            })
+            .sum();
 
         if fours == 1 {
-            self.score = PokerHand::FOUR_OF_A_KIND;
+            self.score = PokerHand::FOUR_OF_A_KIND + extra_score;
             return;
         }
         if twos == 1 && threes == 1 {
-            self.score = PokerHand::FULL_HOUSE;
+            self.score = PokerHand::FULL_HOUSE + extra_score;
             return;
         }
         if same_suit {
@@ -633,15 +652,15 @@ impl PokerHand {
             return;
         }
         if threes == 1 {
-            self.score = PokerHand::THREE_OF_A_KIND;
+            self.score = PokerHand::THREE_OF_A_KIND + extra_score;
             return;
         }
         if twos == 2 {
-            self.score = PokerHand::TWO_PAIRS;
+            self.score = PokerHand::TWO_PAIRS + extra_score;
             return;
         }
         if twos == 1 {
-            self.score = PokerHand::ONE_PAIR;
+            self.score = PokerHand::ONE_PAIR + extra_score;
             return;
         }
         self.score = PokerHand::HIGH_CARD;

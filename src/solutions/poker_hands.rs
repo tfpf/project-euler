@@ -10,10 +10,10 @@ pub fn solve() -> i64 {
             let split = line.as_ref().unwrap().split(" ").collect::<Vec<&str>>();
             let p1_hand = utils::PokerHand::new(&split[..5]);
             let p2_hand = utils::PokerHand::new(&split[5..]);
-            println!("{:?} {:?}", p1_hand, p2_hand);
             p1_hand > p2_hand
         })
         .count();
 
+    assert_eq!(result, 376);
     result as i64
 }
