@@ -25,6 +25,7 @@ pub mod largest_product_in_a_series;
 pub mod lattice_paths;
 pub mod lexicographic_permutations;
 pub mod longest_collatz_sequence;
+pub mod lychrel_numbers;
 pub mod maximum_path_sum_i;
 pub mod maximum_path_sum_ii;
 pub mod multiples_of_3_or_5;
