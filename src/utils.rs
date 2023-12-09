@@ -246,8 +246,7 @@ impl Long {
         }
     }
     pub fn reverse(&self) -> Long {
-        let s = self.to_string().chars().rev().collect::<String>();
-        Long::new(&s)
+        Long::new(&self.to_string().chars().rev().collect::<String>())
     }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
