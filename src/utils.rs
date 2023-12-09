@@ -531,7 +531,7 @@ impl SieveOfEratosthenes {
 }
 
 /// A hand of poker.
-#[derive(Eq, Debug, PartialEq)]
+#[derive(Eq, PartialEq)]
 pub struct PokerHand {
     // Pairs in which the first number is the value of a card and the second is
     // its suit. The pairs shall be sorted in descending order of the value.
@@ -608,10 +608,18 @@ impl PokerHand {
             values_frequencies[value] += 1;
         }
 
-        // If we have two pairs, the pair with greater value contributes more
-        // towards the extra score. If we have three or four of a kind, the
-        // extra score is fixed.
-        let mut extra_score_multipliers = (1, 10000, 1000000);
+        // Suppose two hands have the same rank, four of a kind: 3 clubs,
+        // 3 diamonds, 3 hearts and 3 spades, and 6 clubs, 6 diamonds, 6 hearts
+        // and 6 spades. The second hand is the winner, because the value
+        // forming four of a kind is higher. To take care of such
+        // possibilities, assign a different weightage to each rank, depending
+        // on the values forming that rank. This weightage shall be the extra
+        // score added to the rank. (If we have two pairs, assign greater
+        // weightage to the pair with the greater value.) If the scores are
+        // tied, the greatest values in each hand are compared. Hence, if the
+        // rank is formed by all cards (e.g. straight or flush), no extra score
+        // has to be added.
+        let mut score_weightage = (1, 10000, 1000000);
         let (mut twos, mut threes, mut fours) = (0, 0, 0);
         let extra_score: i32 = values_frequencies
             .iter()
@@ -619,17 +627,18 @@ impl PokerHand {
             .map(|(value, frequency)| match frequency {
                 2 => {
                     twos += 1;
-                    let extra_score = extra_score_multipliers.0 * value as i32;
-                    extra_score_multipliers.0 *= 100;
+                    let extra_score = score_weightage.0 * value as i32;
+                    // Increase the weightage for the next pair (if any).
+                    score_weightage.0 *= 100;
                     extra_score
                 }
                 3 => {
                     threes += 1;
-                    extra_score_multipliers.1 * value as i32
+                    score_weightage.1 * value as i32
                 }
                 4 => {
                     fours += 1;
-                    extra_score_multipliers.2 * value as i32
+                    score_weightage.2 * value as i32
                 }
                 _ => 0,
             })
