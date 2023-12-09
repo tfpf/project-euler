@@ -251,7 +251,20 @@ impl Long {
         }
     }
     pub fn reverse(&self) -> Long {
-        Long::new(&self.to_string().chars().rev().collect::<String>())
+        let mut long = Long { digits: vec![] };
+        let (_, digit) = self.to_string().bytes().fold((0, 0), |(idx, digit), byte| {
+            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
+            if idx == 8 {
+                long.digits.push(digit);
+                (0, 0)
+            } else {
+                (idx + 1, digit)
+            }
+        });
+        if digit > 0 || long.digits.is_empty() {
+            long.digits.push(digit);
+        }
+        long
     }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
