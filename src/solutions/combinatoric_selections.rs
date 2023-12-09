@@ -8,14 +8,9 @@ pub fn solve() -> i64 {
             (1..row)
                 .rev()
                 .filter(|&col| {
-                    triangle[col] += triangle[col - 1];
-                    if triangle[col] > 1000000 {
-                        // Avoid integer overflow.
-                        triangle[col] = 1000000;
-                        true
-                    } else {
-                        false
-                    }
+                    // Avoid integer overflow.
+                    triangle[col] = std::cmp::min(1000000, triangle[col] + triangle[col - 1]);
+                    triangle[col] == 1000000
                 })
                 .count()
         })
