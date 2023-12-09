@@ -5,19 +5,22 @@ pub fn solve() -> i64 {
     let mut triangle = [1; 101];
     let result = (1..=100)
         .map(|row| {
-            (1..row).rev().fold(0, |above_1m, col| {
-                triangle[col] += triangle[col - 1];
-                if triangle[col] > 1000000 {
-                    // Avoid integer overflow.
-                    triangle[col] = 1000000;
-                    above_1m + 1
-                } else {
-                    above_1m
-                }
-            })
+            (1..row)
+                .rev()
+                .filter(|&col| {
+                    triangle[col] += triangle[col - 1];
+                    if triangle[col] > 1000000 {
+                        // Avoid integer overflow.
+                        triangle[col] = 1000000;
+                        true
+                    } else {
+                        false
+                    }
+                })
+                .count()
         })
-        .sum();
+        .sum::<usize>();
 
     assert_eq!(result, 4075);
-    result
+    result as i64
 }
