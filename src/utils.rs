@@ -231,11 +231,16 @@ pub struct Long {
 impl Long {
     pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
-        for chunk in s.bytes().rev().collect::<Vec<u8>>().chunks(9) {
-            let digit = chunk
-                .iter()
-                .rev()
-                .fold(0i32, |digit, &element| digit * 10 + element as i32 - 0x30);
+        let (_, digit) = s.bytes().rev().fold((0, 0), |(idx, digit), byte| {
+            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
+            if idx == 8 {
+                long.digits.push(digit);
+                (0, 0)
+            } else {
+                (idx + 1, digit)
+            }
+        });
+        if digit > 0 || long.digits.is_empty() {
             long.digits.push(digit);
         }
         long
