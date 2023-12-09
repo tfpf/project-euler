@@ -229,9 +229,9 @@ pub struct Long {
     digits: Vec<i32>,
 }
 impl Long {
-    pub fn new(s: &str) -> Long {
+    fn new_helper(bytes: impl Iterator<Item=u8>) -> Long {
         let mut long = Long { digits: vec![] };
-        let (_, digit) = s.bytes().rev().fold((0, 0), |(idx, digit), byte| {
+        let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
             let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
             if idx == 8 {
                 long.digits.push(digit);
@@ -244,6 +244,9 @@ impl Long {
             long.digits.push(digit);
         }
         long
+    }
+    pub fn new(s: &str) -> Long {
+        Long::new_helper(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
         Long {
@@ -251,20 +254,7 @@ impl Long {
         }
     }
     pub fn reverse(&self) -> Long {
-        let mut long = Long { digits: vec![] };
-        let (_, digit) = self.to_string().bytes().fold((0, 0), |(idx, digit), byte| {
-            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
-            if idx == 8 {
-                long.digits.push(digit);
-                (0, 0)
-            } else {
-                (idx + 1, digit)
-            }
-        });
-        if digit > 0 || long.digits.is_empty() {
-            long.digits.push(digit);
-        }
-        long
+        Long::new_helper(self.to_string().bytes())
     }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
