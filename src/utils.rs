@@ -541,15 +541,15 @@ pub struct PokerHand {
 }
 impl PokerHand {
     const HIGH_CARD: i32 = 0;
-    const ONE_PAIR: i32 = 100000000;
-    const TWO_PAIRS: i32 = 200000000;
-    const THREE_OF_A_KIND: i32 = 300000000;
-    const STRAIGHT: i32 = 400000000;
-    const FLUSH: i32 = 500000000;
-    const FULL_HOUSE: i32 = 600000000;
-    const FOUR_OF_A_KIND: i32 = 700000000;
-    const STRAIGHT_FLUSH: i32 = 800000000;
-    const ROYAL_FLUSH: i32 = 900000000;
+    const ONE_PAIR: i32 = 1 << 16;
+    const TWO_PAIRS: i32 = 2 << 16;
+    const THREE_OF_A_KIND: i32 = 3 << 16;
+    const STRAIGHT: i32 = 4 << 16;
+    const FLUSH: i32 = 5 << 16;
+    const FULL_HOUSE: i32 = 6 << 16;
+    const FOUR_OF_A_KIND: i32 = 7 << 16;
+    const STRAIGHT_FLUSH: i32 = 8 << 16;
+    const ROYAL_FLUSH: i32 = 9 << 16;
 }
 impl PokerHand {
     pub fn new(hand: &[&str]) -> PokerHand {
@@ -618,8 +618,10 @@ impl PokerHand {
         // weightage to the pair with the greater value.) If the scores are
         // tied, the greatest values in each hand are compared. Hence, if the
         // rank is formed by all cards (e.g. straight or flush), no extra score
-        // has to be added.
-        let mut score_weightage = (1, 10000, 1000000);
+        // has to be added. The weightage must be chosen carefully so that it
+        // does not cause the score to overflow into the score of the next
+        // higher rank.
+        let mut score_weightage = (1, 1 << 8, 1 << 12);
         let (mut twos, mut threes, mut fours) = (0, 0, 0);
         let extra_score: i32 = values_frequencies
             .iter()
@@ -629,7 +631,7 @@ impl PokerHand {
                     twos += 1;
                     let extra_score = score_weightage.0 * value as i32;
                     // Increase the weightage for the next pair (if any).
-                    score_weightage.0 *= 100;
+                    score_weightage.0 <<= 4;
                     extra_score
                 }
                 3 => {
