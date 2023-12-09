@@ -14,7 +14,7 @@ used as the name of a Rust source file.
 
 :return: Rust module name derived from the title.
     """
-    title = title[title.index(' ') + 1 :].rstrip(' - Project Euler').lower()
+    title = title[title.index(' ') + 1 :].removesuffix(' - Project Euler').lower()
     refined_title = []
     for char in title:
         if char.isalnum():
@@ -40,8 +40,8 @@ Main function.
         print(f'pub mod {title};', file=solutions)
     with open('README.md', 'a') as readme:
         print(f'|[{problem}]({url})|[`{title}.rs`](src/solutions/{title}.rs)|', file=readme)
-    with open('src/main.rs', 'a') as entrypoint:
-        print(f'        {problem} => solutions::{title}::solve,', file=entrypoint)
+    with open('src/main.rs', 'a') as main_rs:
+        print(f'        {problem} => solutions::{title}::solve,', file=main_rs)
 
 
 if __name__ == '__main__':
