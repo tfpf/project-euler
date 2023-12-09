@@ -87,16 +87,11 @@ fn main() {
     }
     for arg in &args[1..] {
         match arg.parse() {
-            Ok(problem_number) => {
-                if solve_and_time_one(problem_number) {
-                    continue;
-                }
-            }
-            Err(_) => (),
+            Ok(problem_number) if solve_and_time_one(problem_number) => (),
+            _ => eprintln!(
+                "Problem {} does not exist or its solution is not implemented.",
+                arg
+            ),
         }
-        eprintln!(
-            "Problem {} does not exist or its solution is not implemented.",
-            arg
-        );
     }
 }
