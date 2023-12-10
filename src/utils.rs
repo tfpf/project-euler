@@ -229,21 +229,38 @@ pub struct Long {
     digits: Vec<i32>,
 }
 impl Long {
-    pub fn new(s: &str) -> Long {
+    /// Construct an arbitrary-precision integer from an iterator over decimal
+    /// digits, least significant first.
+    ///
+    /// * `bytes` - Iterator which yields numbers from 0 to 9.
+    ///
+    /// -> Arbitrary-precision integer.
+    fn create(bytes: impl Iterator<Item = u8>) -> Long {
         let mut long = Long { digits: vec![] };
-        for chunk in s.bytes().rev().collect::<Vec<u8>>().chunks(9) {
-            let digit = chunk
-                .iter()
-                .rev()
-                .fold(0i32, |digit, &element| digit * 10 + element as i32 - 0x30);
+        let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
+            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
+            if idx == 8 {
+                long.digits.push(digit);
+                (0, 0)
+            } else {
+                (idx + 1, digit)
+            }
+        });
+        if digit > 0 || long.digits.is_empty() {
             long.digits.push(digit);
         }
         long
+    }
+    pub fn new(s: &str) -> Long {
+        Long::create(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
         Long {
             digits: vec![digit],
         }
+    }
+    pub fn reverse(&self) -> Long {
+        Long::create(self.to_string().bytes())
     }
     /// Obtain the number of decimal digits in this number (i.e. its length).
     ///
