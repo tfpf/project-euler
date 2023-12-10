@@ -262,7 +262,7 @@ impl Long {
     pub fn reverse(&self) -> Long {
         Long::create(self.to_string().bytes())
     }
-    /// Obtain the number of decimal digits in this number (i.e. its length).
+    /// Obtain the number of decimal digits of this number (i.e. its length).
     ///
     /// -> Length.
     pub fn len(&self) -> usize {
@@ -271,6 +271,15 @@ impl Long {
             1 if self.digits[0] == 0 => 0,
             len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
         }
+    }
+    /// Calculate the sum of all decimal digits of this number.
+    ///
+    /// -> Sum.
+    pub fn sum(&self) -> i64 {
+        self.digits
+            .iter()
+            .map(|&digit| Digits::new(digit as i64).sum::<i64>())
+            .sum()
     }
     /// Raise this number to the given power.
     ///

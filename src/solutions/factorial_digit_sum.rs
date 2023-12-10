@@ -5,11 +5,7 @@ pub fn solve() -> i64 {
     for num in 2..=100 {
         product *= num;
     }
-    let result: u32 = product
-        .to_string()
-        .chars()
-        .map(|c| c.to_digit(10).unwrap())
-        .sum();
+    let result = product.sum();
 
     assert_eq!(result, 648);
     result as i64
