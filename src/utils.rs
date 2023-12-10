@@ -235,7 +235,7 @@ impl Long {
     /// * `bytes` - Iterator which yields numbers from 0 to 9.
     ///
     /// -> Arbitrary-precision integer.
-    fn create(bytes: impl Iterator<Item=u8>) -> Long {
+    fn create(bytes: impl Iterator<Item = u8>) -> Long {
         let mut long = Long { digits: vec![] };
         let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
             let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
