@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 from bs4 import BeautifulSoup
+import subprocess
 import sys
 from urllib import request
 
@@ -42,6 +43,7 @@ Main function.
         print(f'|[{problem}]({url})|[`{title}.rs`](src/solutions/{title}.rs)|', file=readme)
     with open('src/main.rs', 'a') as main_rs:
         print(f'        {problem} => solutions::{title}::solve,', file=main_rs)
+    subprocess.call(('git', 'checkout', '-b', f'p{problem}'))
 
 
 if __name__ == '__main__':
