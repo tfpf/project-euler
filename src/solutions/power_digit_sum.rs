@@ -1,15 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut product = utils::Long::from(1);
-    for _ in 0..1000 {
-        product *= 2;
-    }
-    let result: u32 = product
-        .to_string()
-        .chars()
-        .map(|c| c.to_digit(10).unwrap())
-        .sum();
+    let result = utils::Long::from(2).pow(1000).sum();
 
     assert_eq!(result, 1366);
     result as i64
