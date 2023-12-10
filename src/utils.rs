@@ -14,26 +14,31 @@ macro_rules! swap {
  *****************************************************************************/
 
 /// Check whether the given number is prime by searching for any prime factors.
-/// Use the fact that a prime factor, by virtue of being prime, is 2 or 3, or
-/// differs from 6 by exactly 1.
+/// Use wheel factorisation with 2, 3 and 5. (A similar technique is used to
+/// generate the sieve of Eratosthenes below. The only difference is that here,
+/// trial by division starts from 7.)
 ///
 /// * `num` - Number to check for primality.
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
-    if num == 2 || num == 3 {
-        return true;
-    }
-    if num < 2 || num % 2 == 0 || num % 3 == 0 {
+    if num < 2 {
         return false;
     }
-    for candidate in (5i64..)
-        .step_by(6)
-        .take_while(|candidate| candidate.pow(2) <= num)
-    {
-        if num % candidate == 0 || num % (candidate + 2) == 0 {
+    if num == 2 || num == 3 || num == 5 {
+        return true;
+    }
+    if num & 1 == 0 || num % 3 == 0 || num % 5 == 0 {
+        return false;
+    }
+    const OFFSETS: [i64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+    let (mut candidate, mut offsets_idx) = (7i64, 1);
+    while candidate.pow(2) <= num {
+        if num % candidate == 0 {
             return false;
         }
+        candidate += OFFSETS[offsets_idx];
+        offsets_idx = (offsets_idx + 1) & 7;
     }
     true
 }
