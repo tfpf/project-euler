@@ -259,6 +259,42 @@ impl Long {
             digits: vec![digit],
         }
     }
+    /// Calculate the factorial of a non-negative number.
+    ///
+    /// * `num` - Number whose factorial is to be calculated.
+    pub fn factorial(num: i32) -> Long {
+        match num {
+            (..=-1) => panic!("factorials are not defined for negative integers"),
+            0 | 1 => return Long::from(1),
+            2 => return Long::from(2),
+            3 => return Long::from(6),
+            4 => return Long::from(24),
+            5 => return Long::from(120),
+            6 => return Long::from(720),
+            7 => return Long::from(5040),
+            8 => return Long::from(40320),
+            9 => return Long::from(362880),
+            10 => return Long::from(3628800),
+            11 => return Long::from(39916800),
+            12 => return Long::from(479001600),
+            _ => (),
+        }
+
+        // Multiply the extremes, converting towards the centre. For example,
+        // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
+        // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
+        let (mut multiplicand, mut delta) = (num, num - 2);
+        let mut result = Long::from(1);
+        for _ in 0..num / 2 {
+            result *= multiplicand;
+            multiplicand += delta;
+            delta -= 2;
+        }
+        if num % 2 == 1 {
+            result *= num / 2 + 1;
+        }
+        result
+    }
     pub fn reverse(&self) -> Long {
         Long::create(self.to_string().bytes())
     }
