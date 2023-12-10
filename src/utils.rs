@@ -283,15 +283,17 @@ impl Long {
         // Multiply the extremes, converting towards the centre. For example,
         // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
         // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
+        let partials = num >> 1;
+        let mut result = if num & 1 == 1 {
+            Long::from(partials + 1)
+        } else {
+            Long::from(1)
+        };
         let (mut multiplicand, mut delta) = (num, num - 2);
-        let mut result = Long::from(1);
-        for _ in 0..num / 2 {
+        for _ in 0..partials {
             result *= multiplicand;
             multiplicand += delta;
             delta -= 2;
-        }
-        if num % 2 == 1 {
-            result *= num / 2 + 1;
         }
         result
     }
