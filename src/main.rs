@@ -63,6 +63,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         53 => solutions::combinatoric_selections::solve,
         54 => solutions::poker_hands::solve,
         55 => solutions::lychrel_numbers::solve,
+        56 => solutions::powerful_digit_sum::solve,
         67 => solutions::maximum_path_sum_ii::solve,
         _ => return false,
     };
