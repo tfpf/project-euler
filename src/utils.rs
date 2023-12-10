@@ -13,25 +13,41 @@ macro_rules! swap {
  * Functions.
  *****************************************************************************/
 
-/// Check whether the given number is prime by searching for any prime factors.
-/// Use the fact that a prime factor, by virtue of being prime, is 2 or 3, or
-/// differs from 6 by exactly 1.
+/// Check whether the given number is prime.
 ///
 /// * `num` - Number to check for primality.
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
-    if num == 2 || num == 3 {
-        return true;
-    }
-    if num < 2 || num % 2 == 0 || num % 3 == 0 {
+    if num < 2 {
         return false;
     }
-    for candidate in (5i64..)
-        .step_by(6)
-        .take_while(|candidate| candidate.pow(2) <= num)
-    {
-        if num % candidate == 0 || num % (candidate + 2) == 0 {
+    if num == 2 || num == 3 || num == 5 {
+        return true;
+    }
+    if num & 1 == 0 {
+        return false;
+    }
+
+    // Primality of a few odd numbers starting from 7, encoded in bits.
+    // const MASK: u128 = 0x2432D041B0C94986502DA2534C96996D;
+    const MASK: u64 = 0x502DA2534C96996D;
+    let idx = (num - 7) >> 1;
+    if idx < 64 {
+        return MASK >> idx & 1 == 1;
+    }
+
+    // Miller-Rabin primality test.
+    let num_minus_1 = num - 1;
+    let twopower = num_minus_1.trailing_zeros();
+    let multiplier = num_minus_1 >> twopower;
+    for prime in [2, 3, 5, 7, 11, 13] {
+        let mut residue = pow(prime, multiplier as u64, num);
+        if !(0..twopower).any(|power| {
+            let cond = residue == num_minus_1 || if power == 0 { residue == 1 } else { false };
+            residue = pow(residue, 2, num);
+            cond
+        }) {
             return false;
         }
     }
@@ -191,7 +207,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// * `modulus` - Modulus.
 ///
 /// -> Modular exponentiation of the given number.
-pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
+pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
     let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1);
     loop {
         if exp & 1 == 1 {
@@ -324,7 +340,7 @@ impl Long {
     /// * `exp` - Power.
     ///
     /// -> Value of this number raised to the given power.
-    pub fn pow(&self, mut exp: u32) -> Long {
+    pub fn pow(&self, mut exp: u64) -> Long {
         // Multiplication is expensive, so these checks will improve
         // performance.
         let mut multiplier = Long::from(1);
