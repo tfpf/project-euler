@@ -47,6 +47,7 @@ pub mod reciprocal_cycles;
 pub mod self_powers;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
+pub mod spiral_primes;
 pub mod square_root_convergents;
 pub mod sub_string_divisibility;
 pub mod sum_square_difference;
