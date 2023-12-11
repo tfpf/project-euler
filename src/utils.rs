@@ -762,6 +762,45 @@ impl PartialOrd for PokerHand {
     }
 }
 
+/// Rational numbers.
+#[derive(Clone)]
+pub struct Fraction {
+    numerator: Long,
+    denominator: Long,
+}
+impl Fraction {
+    pub fn from(numerator: i32, denominator: i32) -> Fraction {
+        Fraction {
+            numerator: Long::from(numerator),
+            denominator: Long::from(denominator),
+        }
+    }
+    pub fn invert(&mut self) {
+        std::mem::swap(&mut self.numerator, &mut self.denominator);
+    }
+    pub fn len(&self) -> (usize, usize) {
+        (self.numerator.len(), self.denominator.len())
+    }
+}
+impl std::ops::AddAssign<i32> for Fraction {
+    fn add_assign(&mut self, other: i32) {
+        self.numerator += &(&self.denominator * other);
+    }
+}
+impl std::ops::Add<i32> for &Fraction {
+    type Output = Fraction;
+    fn add(self, other: i32) -> Fraction {
+        let mut result = self.clone();
+        result += other;
+        result
+    }
+}
+impl std::fmt::Display for Fraction {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}/{}", self.numerator, self.denominator)
+    }
+}
+
 /******************************************************************************
  * Iterators.
  *****************************************************************************/
