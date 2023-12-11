@@ -555,6 +555,9 @@ impl SieveOfEratosthenes {
     ///
     /// * `num` - Number to check.
     pub fn is_prime(&self, num: usize) -> bool {
+        if num > self.limit {
+            panic!("primality is not determined for numbers beyond the limit");
+        }
         if num < 2 {
             return false;
         }
