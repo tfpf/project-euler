@@ -2,11 +2,15 @@ use crate::utils;
 
 pub fn solve() -> i64 {
     let mut primes = 0;
+    // Generating the side lengths and their squares using quadrilateral
+    // numbers avoids multiplications.
     let result = (1..)
         .zip(utils::Polygonal::new(4))
         .step_by(2)
         .skip(1)
         .skip_while(|&(side, area)| {
+            // The numbers at the vertices of the current square are as seen
+            // below.
             primes += [
                 area,
                 area - side + 1,
