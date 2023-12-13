@@ -67,18 +67,15 @@ fn is_prime_mr(num: i64) -> bool {
             continue;
         }
         for _ in 1..twopower {
-            let residue_ = pow(residue, 2, num);
-            if residue_ == 1 {
+            residue = pow(residue, 2, num);
+            if residue == 1 {
                 return false;
             }
-            if residue_ == num_minus_1 {
+            if residue == num_minus_1 {
                 continue 'next_prime;
             }
-            residue = residue_;
         }
-        if residue != 1 && residue != num_minus_1 {
-            return false;
-        }
+        return false;
     }
     true
 }
