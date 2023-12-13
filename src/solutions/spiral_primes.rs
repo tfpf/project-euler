@@ -11,14 +11,10 @@ pub fn solve() -> i64 {
         .skip_while(|&(side, area)| {
             // The numbers at the vertices of the current square are as seen
             // below.
-            primes += [
-                area - side + 1,
-                area - 2 * side + 2,
-                area - 3 * side + 3,
-            ]
-            .iter()
-            .filter(|&&num| utils::is_prime(num))
-            .count() as i64;
+            primes += [area - side + 1, area - 2 * side + 2, area - 3 * side + 3]
+                .iter()
+                .filter(|&&num| utils::is_prime(num))
+                .count() as i64;
             primes * 10 >= 2 * side - 1
         })
         .next()
