@@ -1,15 +1,4 @@
 /******************************************************************************
- * Macros.
- *****************************************************************************/
-
-/// Exchange two variables.
-macro_rules! swap {
-    ($a:expr, $b:expr) => {
-        ($a, $b) = ($b, $a)
-    };
-}
-
-/******************************************************************************
  * Functions.
  *****************************************************************************/
 
@@ -205,7 +194,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
             Err(idx) => idx,
         }
         - 1;
-    swap!(slice[sorted_until - 1], slice[target]);
+    slice.swap(sorted_until - 1, target);
     slice[sorted_until..].reverse();
     true
 }
@@ -235,7 +224,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
             Err(idx) => idx,
         }
         - 1;
-    swap!(slice[sorted_until - 1], slice[target]);
+    slice.swap(sorted_until - 1, target);
     slice[sorted_until..].reverse();
     true
 }
