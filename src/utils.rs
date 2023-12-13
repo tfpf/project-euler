@@ -19,20 +19,26 @@ macro_rules! swap {
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
+    // Fast checks.
     match num {
         (..=1) => return false,
         2 | 3 | 5 => return true,
         _ => (),
     }
     let idx = (num - 7) >> 1;
+    if num % 2 == 0 {
+        return false;
+    }
     if idx < 64 {
         return 0x502DA2534C96996Di64 >> idx & 1 == 1;
     }
-    if num % 2 == 0 || num % 3 == 0 || num % 5 == 0 {
+
+    // Slow checks.
+    if num % 3 == 0 || num % 5 == 0 {
         return false;
     }
     match num {
-        (..=1000000000) => is_prime_tbd(num),
+        (..=100000) => is_prime_tbd(num),
         num => is_prime_mr(num),
     }
 }
