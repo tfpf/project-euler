@@ -13,25 +13,81 @@ macro_rules! swap {
  * Functions.
  *****************************************************************************/
 
-/// Check whether the given number is prime by searching for any prime factors.
-/// Use the fact that a prime factor, by virtue of being prime, is 2 or 3, or
-/// differs from 6 by exactly 1.
+/// Check whether the given number is prime.
 ///
 /// * `num` - Number to check for primality.
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
-    if num == 2 || num == 3 {
-        return true;
+    // Fast checks.
+    match num {
+        (..=1) => return false,
+        2 | 3 | 5 => return true,
+        _ => (),
     }
-    if num < 2 || num % 2 == 0 || num % 3 == 0 {
+    if num % 2 == 0 {
         return false;
     }
-    for candidate in (5i64..)
-        .step_by(6)
-        .take_while(|candidate| candidate.pow(2) <= num)
-    {
-        if num % candidate == 0 || num % (candidate + 2) == 0 {
+    let idx = (num - 7) >> 1;
+    if idx < 64 {
+        return 0x502DA2534C96996Di64 >> idx & 1 == 1;
+    }
+
+    // Slow checks.
+    if num % 3 == 0 || num % 5 == 0 {
+        return false;
+    }
+    match num {
+        (..=100000) => is_prime_tbd(num),
+        num => is_prime_mr(num),
+    }
+}
+
+/// Check whether the given number is prime using trial by division. Use wheel
+/// factorisation with 2 and 3.
+///
+/// * `num` - Number to check for primality.
+///
+/// -> Whether `num` is prime.
+fn is_prime_tbd(num: i64) -> bool {
+    let (mut factor, mut offset) = (7i64, 4);
+    while factor.pow(2) <= num {
+        if num % factor == 0 {
+            return false;
+        }
+        factor += offset;
+        offset = 6 - offset;
+    }
+    true
+}
+
+/// Check whether the given number is prime using the Miller-Rabin test. This
+/// is probabilistic in general; however, this implementation is exact for all
+/// 32-bit integers (signed or unsigned).
+///
+/// * `num` - Number to check for primality.
+///
+/// -> Whether `num` is prime.
+fn is_prime_mr(num: i64) -> bool {
+    let num_minus_1 = num - 1;
+    let twopower = num_minus_1.trailing_zeros();
+    let multiplier = num_minus_1 >> twopower;
+    'next_prime: for prime in [2, 7, 61] {
+        let mut residue = pow(prime, multiplier as u64, num);
+        if residue == 1 || residue == num_minus_1 {
+            continue;
+        }
+        for _ in 1..twopower {
+            let residue_ = pow(residue, 2, num);
+            if residue_ == 1 {
+                return false;
+            }
+            if residue_ == num_minus_1 {
+                continue 'next_prime;
+            }
+            residue = residue_;
+        }
+        if residue != 1 && residue != num_minus_1 {
             return false;
         }
     }
@@ -191,7 +247,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// * `modulus` - Modulus.
 ///
 /// -> Modular exponentiation of the given number.
-pub fn pow(base: i64, exp: u32, modulus: i64) -> i64 {
+pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
     let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1);
     loop {
         if exp & 1 == 1 {
@@ -555,6 +611,9 @@ impl SieveOfEratosthenes {
     ///
     /// * `num` - Number to check.
     pub fn is_prime(&self, num: usize) -> bool {
+        if num > self.limit {
+            panic!("primality is not determined for numbers beyond the limit");
+        }
         if num < 2 {
             return false;
         }
