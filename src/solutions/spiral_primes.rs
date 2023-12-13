@@ -12,7 +12,6 @@ pub fn solve() -> i64 {
             // The numbers at the vertices of the current square are as seen
             // below.
             primes += [
-                area,
                 area - side + 1,
                 area - 2 * side + 2,
                 area - 3 * side + 3,
