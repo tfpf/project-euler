@@ -25,10 +25,10 @@ pub fn is_prime(num: i64) -> bool {
         2 | 3 | 5 => return true,
         _ => (),
     }
-    let idx = (num - 7) >> 1;
     if num % 2 == 0 {
         return false;
     }
+    let idx = (num - 7) >> 1;
     if idx < 64 {
         return 0x502DA2534C96996Di64 >> idx & 1 == 1;
     }
