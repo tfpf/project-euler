@@ -61,7 +61,9 @@ fn is_prime_tbd(num: i64) -> bool {
     true
 }
 
-/// Check whether the given number is prime using the Miller-Rabin test.
+/// Check whether the given number is prime using the Miller-Rabin test. This
+/// is probabilistic in general; however, this implementation is exact till
+/// 100_000_000.
 ///
 /// * `num` - Number to check for primality.
 ///
@@ -70,16 +72,22 @@ fn is_prime_mr(num: i64) -> bool {
     let num_minus_1 = num - 1;
     let twopower = num_minus_1.trailing_zeros();
     let multiplier = num_minus_1 >> twopower;
-    for prime in [2, 3, 5] {
+    'next_prime: for prime in [2, 5, 7] {
         let mut residue = pow(prime, multiplier as u64, num);
-        for _ in 0..twopower {
+        if residue == 1 || residue == num_minus_1 {
+            continue;
+        }
+        for _ in 1..twopower {
             let residue_ = pow(residue, 2, num);
-            if residue_ == 1 && residue != 1 && residue != num_minus_1 {
+            if residue_ == 1 {
                 return false;
+            }
+            if residue_ == num_minus_1 {
+                continue 'next_prime;
             }
             residue = residue_;
         }
-        if residue != 1 {
+        if residue != 1 && residue != num_minus_1 {
             return false;
         }
     }
