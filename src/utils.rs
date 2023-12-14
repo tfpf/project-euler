@@ -28,7 +28,7 @@ pub fn is_prime(num: i64) -> bool {
     }
     match num {
         (..=100000) => is_prime_tbd(num),
-        num => is_prime_mr(num),
+        num => is_prime_mr(num, &vec![2, 7, 61]),
     }
 }
 
@@ -55,14 +55,15 @@ fn is_prime_tbd(num: i64) -> bool {
 /// 32-bit integers (signed or unsigned).
 ///
 /// * `num` - Number to check for primality.
+/// * `bases` - Bases to perform the test with.
 ///
 /// -> Whether `num` is prime.
-fn is_prime_mr(num: i64) -> bool {
+fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let num_minus_1 = num - 1;
     let twopower = num_minus_1.trailing_zeros();
     let multiplier = num_minus_1 >> twopower;
-    'next_prime: for prime in [2, 7, 61] {
-        let mut residue = pow(prime, multiplier as u64, num);
+    'next_base: for &base in bases {
+        let mut residue = pow(base, multiplier as u64, num);
         if residue == 1 || residue == num_minus_1 {
             continue;
         }
@@ -72,7 +73,7 @@ fn is_prime_mr(num: i64) -> bool {
                 return false;
             }
             if residue == num_minus_1 {
-                continue 'next_prime;
+                continue 'next_base;
             }
         }
         return false;
