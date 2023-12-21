@@ -56,3 +56,4 @@ pub mod ten_thousand_and_first_prime;
 pub mod thousand_digit_fibonacci_number;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
+pub mod xor_decryption;
