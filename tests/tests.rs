@@ -9,4 +9,12 @@ mod tests {
             .count();
         assert_eq!(num_of_primes, 203280221);
     }
+
+    #[test]
+    fn test_sieve_of_eratosthenes() {
+        let num_of_primes = utils::SieveOfEratosthenes::new(2usize.pow(32))
+            .iter()
+            .count();
+        assert_eq!(num_of_primes, 203280221);
+    }
 }
