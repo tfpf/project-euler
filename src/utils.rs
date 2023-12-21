@@ -17,7 +17,7 @@ pub fn is_prime(num: i64) -> bool {
     if num % 2 == 0 {
         return false;
     }
-    let idx = (num - 7) >> 1;
+    let idx = (num - 7) / 2;
     if idx < 64 {
         return 0x502DA2534C96996Di64 >> idx & 1 == 1;
     }
@@ -28,6 +28,8 @@ pub fn is_prime(num: i64) -> bool {
     }
     match num {
         (..=100000) => is_prime_tbd(num),
+        // The Miller-Rabin test is probabilistic in general, but is exact for
+        // all numbers up to 4294967296 using these bases.
         num => is_prime_mr(num, &vec![2, 7, 61]),
     }
 }
@@ -35,7 +37,7 @@ pub fn is_prime(num: i64) -> bool {
 /// Check whether the given number is prime using trial by division. Use wheel
 /// factorisation with 2 and 3.
 ///
-/// * `num` - Number to check for primality.
+/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
 fn is_prime_tbd(num: i64) -> bool {
@@ -50,11 +52,9 @@ fn is_prime_tbd(num: i64) -> bool {
     true
 }
 
-/// Check whether the given number is prime using the Miller-Rabin test. This
-/// is probabilistic in general; however, this implementation is exact for all
-/// 32-bit integers (signed or unsigned).
+/// Check whether the given number is prime using the Miller-Rabin test.
 ///
-/// * `num` - Number to check for primality.
+/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 /// * `bases` - Bases to perform the test with.
 ///
 /// -> Whether `num` is prime.
@@ -79,6 +79,83 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
         return false;
     }
     true
+}
+
+pub fn is_prime_bpsw(num: i64) -> bool {
+    if !is_prime_mr(num, &vec![2]) {
+        return false;
+    }
+    if ((num as f64).sqrt() as i64).pow(2) == num {
+        return false;
+    }
+    let selfridge_d = LeibnizQuarterPiDenominatorsSigned::new()
+        .skip(2)
+        .filter_map(|selfridge_d| {
+            let (js, g) = jacobi_symbol(selfridge_d, num);
+            if g != 1 && g != num {
+                // GCD divides the number, so it is not prime.
+                Some(0)
+            } else if js == -1 {
+                Some(selfridge_d)
+            } else {
+                None
+            }
+        })
+        .next()
+        .unwrap();
+    if selfridge_d == 0 {
+        return false;
+    }
+    let (selfridge_p, selfridge_q) = (1, (1 - selfridge_d) / 4);
+    let num_plus_1 = num + 1;
+    let (mut lucas_u,mut lucas_v, mut lucas_q) = (1,selfridge_p, selfridge_q);
+    for pos in (1..63 - num_plus_1.leading_zeros()).rev() {
+        lucas_u = lucas_u * lucas_v % num;
+        lucas_v = (lucas_v.pow(2) - 2 * lucas_q) % num;
+        lucas_q = lucas_q.pow(2) % num;
+        if num_plus_1 >> pos & 1 == 1 {
+            (lucas_u, lucas_v) = ((lucas_u * selfridge_p + lucas_v) % num, (lucas_v * selfridge_p + selfridge_d * lucas_u) % num);
+            if lucas_u % 2 == 1 {
+                lucas_u += num;
+            }
+            lucas_u /= 2;
+            if lucas_v % 2 == 1 {
+                lucas_v += num;
+            }
+            lucas_v /= 2;
+            lucas_q = lucas_q * selfridge_q % num;
+        }
+    }
+    lucas_u == 0
+}
+
+/// Calculate the Jacobi symbol of the given numbers.
+///
+/// * `upper` - First number.
+/// * `lower` - Second number.
+///
+/// -> Jacobi symbol and GCD of the numbers.
+fn jacobi_symbol(mut upper: i64, mut lower: i64) -> (i32, i64) {
+    let mut js = 1;
+    upper = upper.rem_euclid(lower);
+    while upper > 0 {
+        while upper % 2 == 0 && upper > 0 {
+            upper /= 2;
+            if (lower % 8 - 1).abs() == 1 {
+                js = -js;
+            }
+        }
+        std::mem::swap(&mut upper, &mut lower);
+        if upper % 4 == 3 && lower % 4 == 3 {
+            js = -js;
+        }
+        upper %= lower;
+    }
+    if lower == 1 {
+        (js, 1)
+    } else {
+        (0, lower)
+    }
 }
 
 /// Check whether a number is a palindrome or not.
@@ -1133,5 +1210,23 @@ impl Iterator for PythagoreanTriplets {
                 }
             }
         }
+    }
+}
+
+/// Signed denominators of the terms of the Leibniz series for π/4.
+pub struct LeibnizQuarterPiDenominatorsSigned {
+    den: i64,
+}
+impl LeibnizQuarterPiDenominatorsSigned {
+    pub fn new() -> LeibnizQuarterPiDenominatorsSigned {
+        LeibnizQuarterPiDenominatorsSigned { den: 1 }
+    }
+}
+impl Iterator for LeibnizQuarterPiDenominatorsSigned {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        let den = self.den;
+        self.den = -self.den + if self.den > 0 { -2 } else { 2 };
+        Some(den)
     }
 }
