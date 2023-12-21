@@ -11,7 +11,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sieve_of_eratosthenes() {
+    fn sieve_of_eratosthenes_test() {
         let num_of_primes = utils::SieveOfEratosthenes::new(2usize.pow(32))
             .iter()
             .count();
