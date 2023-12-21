@@ -36,9 +36,7 @@ pub fn is_prime(num: i64) -> bool {
 
 #[test]
 fn is_prime_test() {
-    let num_of_primes = (0..2i64.pow(32))
-        .filter(|&num| is_prime(num))
-        .count();
+    let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
 }
 
@@ -650,9 +648,7 @@ impl SieveOfEratosthenes {
 
 #[test]
 fn sieve_of_eratosthenes_test() {
-    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(32))
-        .iter()
-        .count();
+    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(32)).iter().count();
     assert_eq!(num_of_primes, 203280221);
 }
 
