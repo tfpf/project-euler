@@ -1,9 +1,9 @@
-name: tests
+name: sanity
 on: [push, workflow_dispatch]
 
 jobs:
-  tests:
-    name: tests on ${{ matrix.os }}
+  sanity:
+    name: sanity on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
