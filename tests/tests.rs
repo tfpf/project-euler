@@ -4,6 +4,9 @@ mod tests {
 
     #[test]
     fn is_prime_test() {
-        assert_eq!((0..10i64.pow(3)).filter(|&num| utils::is_prime(num)).count(), 168);
+        let num_of_primes = (0..2i64.pow(32))
+            .filter(|&num| utils::is_prime(num))
+            .count();
+        assert_eq!(num_of_primes, 203280221);
     }
 }
