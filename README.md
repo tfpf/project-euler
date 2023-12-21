@@ -4,7 +4,7 @@ solutions to the first hundred problems here with the intention being to showcas
 build along the way. This is permitted according to the Project Euler guidelines.
 
 ![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)
-![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)
+![sanity](https://github.com/tfpf/project-euler/actions/workflows/sanity.yml/badge.svg)
 
 To solve, say, problem 16, enter the following command.
 
