@@ -62,7 +62,7 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let num_minus_1 = num - 1;
     let twopower = num_minus_1.trailing_zeros();
     let multiplier = num_minus_1 >> twopower;
-    'bases: for base in bases {
+    'bases: for &base in bases {
         let mut residue = pow(base, multiplier as u64, num);
         if residue == 1 || residue == num_minus_1 {
             continue;
