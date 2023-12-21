@@ -6,6 +6,7 @@ pub mod coin_sums;
 pub mod combinatoric_selections;
 pub mod consecutive_prime_sum;
 pub mod counting_sundays;
+pub mod cubic_permutations;
 pub mod digit_cancelling_fractions;
 pub mod digit_factorials;
 pub mod digit_fifth_powers;
