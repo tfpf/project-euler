@@ -30,7 +30,8 @@ pub fn is_prime(num: i64) -> bool {
         (..=100000) => is_prime_tbd(num),
         // The Miller-Rabin test is probabilistic in general, but is exact for
         // all numbers up to 4294967296 using these bases.
-        num => is_prime_mr(num, &vec![2, 7, 61]),
+        // num => is_prime_mr(num, &vec![2, 7, 61]),
+        num => is_prime_bpsw(num),
     }
 }
 
@@ -83,11 +84,15 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
 
 pub fn is_prime_bpsw(num: i64) -> bool {
     if !is_prime_mr(num, &vec![2]) {
+        println!("MR test found {} composite.", num);
         return false;
     }
     if ((num as f64).sqrt() as i64).pow(2) == num {
+        println!("Square test found {} composite.", num);
         return false;
     }
+
+    // Calculate Selfridge parameters for Lucas test.
     let selfridge_d = LeibnizQuarterPiDenominatorsSigned::new()
         .skip(2)
         .filter_map(|selfridge_d| {
@@ -104,17 +109,22 @@ pub fn is_prime_bpsw(num: i64) -> bool {
         .next()
         .unwrap();
     if selfridge_d == 0 {
+        println!("GCD test found {} composite.", num);
         return false;
     }
     let (selfridge_p, selfridge_q) = (1, (1 - selfridge_d) / 4);
+
+    // Set up Lucas sequence.
     let num_plus_1 = num + 1;
+    let twopower = num_plus_1.trailing_zeros();
+    let multiplier = num_plus_1 >> twopower;
     let (mut lucas_u,mut lucas_v, mut lucas_q) = (1,selfridge_p, selfridge_q);
-    for pos in (1..63 - num_plus_1.leading_zeros()).rev() {
+    for pos in (0..63 - num_plus_1.leading_zeros()).rev() {
         lucas_u = lucas_u * lucas_v % num;
         lucas_v = (lucas_v.pow(2) - 2 * lucas_q) % num;
-        lucas_q = lucas_q.pow(2) % num;
-        if num_plus_1 >> pos & 1 == 1 {
-            (lucas_u, lucas_v) = ((lucas_u * selfridge_p + lucas_v) % num, (lucas_v * selfridge_p + selfridge_d * lucas_u) % num);
+        lucas_q = lucas_q.pow(2);
+        if multiplier >> pos & 1 == 1 {
+            (lucas_u, lucas_v) = (lucas_u * selfridge_p + lucas_v, lucas_v * selfridge_p + selfridge_d * lucas_u);
             if lucas_u % 2 == 1 {
                 lucas_u += num;
             }
@@ -123,10 +133,26 @@ pub fn is_prime_bpsw(num: i64) -> bool {
                 lucas_v += num;
             }
             lucas_v /= 2;
-            lucas_q = lucas_q * selfridge_q % num;
+            lucas_q *= selfridge_q;
         }
+        lucas_q %= num;
     }
-    lucas_u == 0
+    if lucas_u == 0 {
+        println!("Lucas test found {} prime.", num);
+    }
+    lucas_u %= num;
+    lucas_v %= num;
+    if lucas_u == 0 || lucas_v == 0 {
+        return true;
+    }
+    for _ in 1..twopower {
+        lucas_v = (lucas_v.pow(2) - 2 * lucas_q) % num;
+        if lucas_v == 0 {
+            return true;
+        }
+        lucas_q = pow(lucas_q, 2, num);
+    }
+    false
 }
 
 /// Calculate the Jacobi symbol of the given numbers.
