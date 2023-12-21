@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   tests:
-    name: tests on ${{ matrix.os }}
+    name: tests
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
