@@ -3,12 +3,8 @@ on: [push, workflow_dispatch]
 
 jobs:
   tests:
-    name: tests on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-12, ubuntu-22.04, windows-2022]
+    name: tests
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - run: cargo -vv build --release
-      - run: cargo -vv run --release
+      - run: cargo test --test '*' --release

@@ -17,7 +17,7 @@ pub fn is_prime(num: i64) -> bool {
     if num % 2 == 0 {
         return false;
     }
-    let idx = (num - 7) >> 1;
+    let idx = (num - 7) / 2;
     if idx < 64 {
         return 0x502DA2534C96996Di64 >> idx & 1 == 1;
     }
@@ -28,14 +28,16 @@ pub fn is_prime(num: i64) -> bool {
     }
     match num {
         (..=100000) => is_prime_tbd(num),
-        num => is_prime_mr(num),
+        // Deterministic for all signed/unsigned values which fit in 32 bits.
+        (..=9080190) => is_prime_mr(num, &vec![31, 73]),
+        _ => is_prime_mr(num, &vec![2, 7, 61]),
     }
 }
 
 /// Check whether the given number is prime using trial by division. Use wheel
 /// factorisation with 2 and 3.
 ///
-/// * `num` - Number to check for primality.
+/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
 fn is_prime_tbd(num: i64) -> bool {
@@ -50,19 +52,18 @@ fn is_prime_tbd(num: i64) -> bool {
     true
 }
 
-/// Check whether the given number is prime using the Miller-Rabin test. This
-/// is probabilistic in general; however, this implementation is exact for all
-/// 32-bit integers (signed or unsigned).
+/// Check whether the given number is prime using the Miller-Rabin test.
 ///
-/// * `num` - Number to check for primality.
+/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
+/// * `bases` - Bases to perform the test with.
 ///
 /// -> Whether `num` is prime.
-fn is_prime_mr(num: i64) -> bool {
+fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let num_minus_1 = num - 1;
     let twopower = num_minus_1.trailing_zeros();
     let multiplier = num_minus_1 >> twopower;
-    'next_prime: for prime in [2, 7, 61] {
-        let mut residue = pow(prime, multiplier as u64, num);
+    'bases: for &base in bases {
+        let mut residue = pow(base, multiplier as u64, num);
         if residue == 1 || residue == num_minus_1 {
             continue;
         }
@@ -72,7 +73,7 @@ fn is_prime_mr(num: i64) -> bool {
                 return false;
             }
             if residue == num_minus_1 {
-                continue 'next_prime;
+                continue 'bases;
             }
         }
         return false;
