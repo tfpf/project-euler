@@ -4,7 +4,7 @@ pub fn solve() -> i64 {
     // Keys are the digits forming cubes. The value corresponding to each key
     // is a pair of the smallest cube made of those digits and the number of
     // cubes made of those digits.
-    let mut frequency = std::collections::BTreeMap::<i64, (i64, u8)>::new();
+    let mut frequency = std::collections::HashMap::<i64, (i64, u8)>::new();
 
     let result = utils::Cubes::new()
         .filter_map(|cube| {
