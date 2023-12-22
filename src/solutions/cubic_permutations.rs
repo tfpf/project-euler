@@ -1,7 +1,11 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut frequency = std::collections::BTreeMap::new();
+    // Keys are the digits forming cubes. The value corresponding to each key
+    // is a pair of the smallest cube made of those digits and the number of
+    // cubes made of those digits.
+    let mut frequency = std::collections::BTreeMap::<i64, (i64, u8)>::new();
+
     for cube in utils::Cubes::new() {
         let mut digits = utils::Digits::new(cube).collect::<Vec<i64>>();
         digits.sort();
@@ -9,15 +13,16 @@ pub fn solve() -> i64 {
             .iter()
             .rev()
             .fold(0, |key, digit| key * 10 + digit);
+
         match frequency.get_mut(&key) {
-            Some(count) => {
-                *count += 1;
+            Some(value) => {
+                value.1 += 1;
             }
             None => {
-                frequency.insert(key, 1);
+                frequency.insert(key, (cube, 1));
             }
         }
-        println!("{} {} {}", cube, key, frequency.get(&key).unwrap());
+        println!("{} {} {:?}", cube, key, frequency.get(&key).unwrap());
     }
 
     0
