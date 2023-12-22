@@ -494,6 +494,15 @@ impl std::fmt::Display for Long {
     }
 }
 
+#[test]
+fn long_test() {
+    let num = &Long::new("43").pow(37) * &Long::from(745683);
+    assert_eq!(
+        num.to_string(),
+        "2045912701959610384504655483644445648403009639935355936214143659169"
+    );
+}
+
 /// Check whether a bunch of numbers are pandigital with respect to the given
 /// range.
 pub struct PandigitalChecker {
