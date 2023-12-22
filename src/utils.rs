@@ -929,7 +929,8 @@ impl Iterator for Polygonal {
     }
 }
 
-/// Cubes iterator.
+/// Cubes iterator. Generates cubes of integers without multiplication or
+/// exponentiation.
 pub struct Cubes {
     increment: i64,
     offset: i64,
