@@ -90,4 +90,5 @@ such as (but not limited to) Bard and ChatGPT.
 |[57](https://projecteuler.net/problem=57)|[`square_root_convergents.rs`](src/solutions/square_root_convergents.rs)|
 |[58](https://projecteuler.net/problem=58)|[`spiral_primes.rs`](src/solutions/spiral_primes.rs)|
 |[59](https://projecteuler.net/problem=59)|[`xor_decryption.rs`](src/solutions/xor_decryption.rs)|
+|[62](https://projecteuler.net/problem=62)|[`cubic_permutations.rs`](src/solutions/cubic_permutations.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
