@@ -647,8 +647,7 @@ impl SieveOfEratosthenes {
                         num += SieveOfEratosthenes::OFFSETS[offsets_idx];
                         pair
                     })
-                    .filter(|&(bit, _)| bit == 1)
-                    .map(|(_, num)| num),
+                    .filter_map(|(bit, num)| if bit == 1 { Some(num) } else { None }),
             )
             .take_while(|&num| num <= self.limit)
             .map(|num| num as i64)
