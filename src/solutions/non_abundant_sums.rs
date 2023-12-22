@@ -18,8 +18,7 @@ pub fn solve() -> i64 {
     let sum: usize = abundant_sum
         .iter()
         .enumerate()
-        .filter(|(_, &abundant)| !abundant)
-        .map(|(elem, _)| elem)
+        .filter_map(|(elem, &abundant)| if abundant { None } else { Some(elem) })
         .sum();
 
     assert_eq!(sum, 4179871);

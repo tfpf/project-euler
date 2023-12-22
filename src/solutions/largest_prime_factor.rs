@@ -5,13 +5,17 @@ pub fn solve() -> i64 {
     let largest_pf = (3i64..)
         .step_by(2)
         .take_while(|f| f * f <= num)
-        .filter(|f| num % f == 0 && utils::is_prime(*f))
-        .map(|f| {
+        // FIXME This doesn't seem correct. What if `f` is composite, but
+        // `other` is prime?
+        .filter_map(|f| {
+            if num % f != 0 || !utils::is_prime(f) {
+                return None;
+            }
             let other = num / f;
             if utils::is_prime(other) {
-                other
+                Some(other)
             } else {
-                f
+                Some(f)
             }
         })
         .max()
