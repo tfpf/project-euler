@@ -25,15 +25,7 @@ pub fn solve() -> i64 {
     let result: usize = amicable
         .iter()
         .enumerate()
-        .filter_map(
-            |(idx, &is_amicable)| {
-                if is_amicable {
-                    Some(idx)
-                } else {
-                    None
-                }
-            },
-        )
+        .filter_map(|(idx, &amicable)| if amicable { Some(idx) } else { None })
         .sum();
 
     assert_eq!(result, 31626);
