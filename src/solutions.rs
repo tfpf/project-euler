@@ -41,6 +41,7 @@ pub mod pentagon_numbers;
 pub mod permuted_multiples;
 pub mod poker_hands;
 pub mod power_digit_sum;
+pub mod powerful_digit_counts;
 pub mod powerful_digit_sum;
 pub mod prime_permutations;
 pub mod quadratic_primes;
