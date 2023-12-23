@@ -20,9 +20,10 @@ pub fn solve() -> i64 {
                 .count()
         })
         .sum::<usize>()
-        // We did not consider the base 1, because it is an integral power of
-        // 10 (the formula mentioned above does not work on such). We also did
-        // not consider the exponent 1. Count all of them.
+        // We did not consider the base 1 (for the exponent 1), because it is
+        // an integral power of 10 (the formula mentioned above does not work
+        // on such). We also did not consider the exponent 1 (for each of the
+        // bases from 2 to 9). Count all of them.
         + 9;
 
     assert_eq!(sum, 49);
