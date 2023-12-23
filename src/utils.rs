@@ -28,9 +28,15 @@ pub fn is_prime(num: i64) -> bool {
     }
     match num {
         ..=100000 => is_prime_tbd(num),
-        // Deterministic for all signed/unsigned values which fit in 32 bits.
-        ..=9080190 => is_prime_mr(num, &vec![31, 73]),
-        _ => is_prime_mr(num, &vec![2, 7, 61]),
+        // The Miller-Rabin tests as performed below are deterministic for all
+        // possible inputs. I chose the thresholds (after consulting some
+        // tables) such that each is two digits longer than the previous.
+        ..=38010306 => is_prime_mr(num, &vec![2, 9332593]),
+        ..=1050535500 => is_prime_mr(num, &vec![336781006125, 9639812373923155]),
+        ..=273919523040 => is_prime_mr(num, &vec![15, 7363882082, 992620450144556]),
+        ..=31858317218646 => is_prime_mr(num, &vec![2, 642735, 553174392, 3046413974]),
+        ..=3770579582154546 => is_prime_mr(num, &vec![2, 2570940, 880937, 610386380, 4130785767]),
+        _ => is_prime_mr(num, &vec![2, 325, 9375, 28178, 450775, 9780504, 1795265022]),
     }
 }
 
@@ -70,7 +76,11 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let multiplier = num_minus_1 >> twopower;
     'bases: for &base in bases {
         let mut residue = pow(base, multiplier as u64, num);
-        if residue == 1 || residue == num_minus_1 {
+        // If this is 0, it means a wrong base was chosen, so the test is
+        // inconclusive. Hence, I group it together with the two cases in which
+        // it is suspected to be prime. This ensures that I never mislabel a
+        // number as composite.
+        if residue == 0 || residue == 1 || residue == num_minus_1 {
             continue;
         }
         for _ in 1..twopower {
