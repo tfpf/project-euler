@@ -31,7 +31,7 @@ pub fn is_prime(num: i64) -> bool {
         // The Miller-Rabin tests as performed below are deterministic for all
         // possible inputs. I chose the thresholds (after consulting some
         // tables) such that each is two digits longer than the previous.
-        ..=9080190 => is_prime_mr(num, &vec![31, 73]),
+        ..=38010306 => is_prime_mr(num, &vec![2, 9332593]),
         ..=1050535500 => is_prime_mr(num, &vec![336781006125, 9639812373923155]),
         ..=273919523040 => is_prime_mr(num, &vec![15, 7363882082, 992620450144556]),
         ..=31858317218646 => is_prime_mr(num, &vec![2, 642735, 553174392, 3046413974]),
@@ -76,7 +76,9 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let multiplier = num_minus_1 >> twopower;
     'bases: for &base in bases {
         let mut residue = pow(base, multiplier as u64, num);
-        if residue == 1 || residue == num_minus_1 {
+        // If this is 0, it means a wrong base was chosen, so the test is
+        // inconclusive.
+        if residue == 0 || residue == 1 || residue == num_minus_1 {
             continue;
         }
         for _ in 1..twopower {
