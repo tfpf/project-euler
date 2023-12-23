@@ -34,6 +34,7 @@ pub mod names_scores;
 pub mod non_abundant_sums;
 pub mod number_letter_counts;
 pub mod number_spiral_diagonals;
+pub mod odd_period_square_roots;
 pub mod pandigital_multiples;
 pub mod pandigital_prime;
 pub mod pandigital_products;
