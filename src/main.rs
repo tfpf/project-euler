@@ -68,6 +68,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         58 => solutions::spiral_primes::solve,
         59 => solutions::xor_decryption::solve,
         62 => solutions::cubic_permutations::solve,
+        63 => solutions::powerful_digit_counts::solve,
         67 => solutions::maximum_path_sum_ii::solve,
         _ => return false,
     };
