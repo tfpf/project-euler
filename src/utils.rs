@@ -29,24 +29,13 @@ pub fn is_prime(num: i64) -> bool {
     match num {
         ..=100000 => is_prime_tbd(num),
         // The Miller-Rabin tests as performed below are deterministic for all
-        // possible inputs. The thresholds are chosen such that each is two
-        // digits longer than the previous.
+        // possible inputs. I chose the thresholds (after consulting some
+        // tables) such that each is two digits longer than the previous.
         ..=38010306 => is_prime_mr(num, &vec![2, 9332593]),
-        ..=4759123140 => is_prime_mr(num, &vec![2, 7, 61]),
-        ..=105936894252 => is_prime_mr(num, &vec![2, 1005905886, 1340600841]),
+        ..=1050535500 => is_prime_mr(num, &vec![336781006125, 9639812373923155]),
+        ..=273919523040 => is_prime_mr(num, &vec![15, 7363882082, 992620450144556]),
         ..=31858317218646 => is_prime_mr(num, &vec![2, 642735, 553174392, 3046413974]),
-        ..=3071837692357848 => is_prime_mr(num, &vec![2, 75088, 642735, 203659041, 3613982119]),
-        ..=585226005592931976 => is_prime_mr(
-            num,
-            &vec![
-                2,
-                123635709730000,
-                9233062284813009,
-                43835965440333360,
-                761179012939631437,
-                1263739024124850375,
-            ],
-        ),
+        ..=3770579582154546 => is_prime_mr(num, &vec![2, 2570940, 880937, 610386380, 4130785767]),
         _ => is_prime_mr(num, &vec![2, 325, 9375, 28178, 450775, 9780504, 1795265022]),
     }
 }
