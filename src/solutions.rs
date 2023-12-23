@@ -5,6 +5,7 @@ pub mod coded_triangle_numbers;
 pub mod coin_sums;
 pub mod combinatoric_selections;
 pub mod consecutive_prime_sum;
+pub mod convergents_of_e;
 pub mod counting_sundays;
 pub mod cubic_permutations;
 pub mod digit_cancelling_fractions;
