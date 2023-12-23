@@ -77,7 +77,9 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     'bases: for &base in bases {
         let mut residue = pow(base, multiplier as u64, num);
         // If this is 0, it means a wrong base was chosen, so the test is
-        // inconclusive.
+        // inconclusive. Hence, I group it together with the two cases in which
+        // it is suspected to be prime. This ensures that I never mis-label a
+        // number as composite.
         if residue == 0 || residue == 1 || residue == num_minus_1 {
             continue;
         }
