@@ -10,7 +10,7 @@
 pub fn is_prime(num: i64) -> bool {
     // Fast checks.
     match num {
-        (..=1) => return false,
+        ..=1 => return false,
         2 | 3 | 5 => return true,
         _ => (),
     }
@@ -27,9 +27,9 @@ pub fn is_prime(num: i64) -> bool {
         return false;
     }
     match num {
-        (..=100000) => is_prime_tbd(num),
+        ..=100000 => is_prime_tbd(num),
         // Deterministic for all signed/unsigned values which fit in 32 bits.
-        (..=9080190) => is_prime_mr(num, &vec![31, 73]),
+        ..=9080190 => is_prime_mr(num, &vec![31, 73]),
         _ => is_prime_mr(num, &vec![2, 7, 61]),
     }
 }
@@ -313,7 +313,7 @@ impl Long {
     /// * `num` - Number whose factorial is to be calculated.
     pub fn factorial(num: i32) -> Long {
         match num {
-            (..=-1) => panic!("factorials are not defined for negative integers"),
+            ..=-1 => panic!("factorials are not defined for negative integers"),
             0 | 1 => return Long::from(1),
             2 => return Long::from(2),
             3 => return Long::from(6),
@@ -846,6 +846,9 @@ impl Fraction {
     }
     pub fn len(&self) -> (usize, usize) {
         (self.numerator.len(), self.denominator.len())
+    }
+    pub fn sum(&self) -> (i64, i64) {
+        (self.numerator.sum(), self.denominator.sum())
     }
 }
 impl std::ops::AddAssign<i32> for Fraction {
