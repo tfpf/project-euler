@@ -42,9 +42,7 @@ pub fn is_prime(num: i64) -> bool {
 
 #[test]
 fn is_prime_test() {
-    let num_of_primes = PotentialPrimes::new(2i64.pow(32))
-        .filter(|&num| is_prime(num))
-        .count();
+    let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
 }
 
