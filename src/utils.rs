@@ -46,20 +46,18 @@ fn is_prime_test() {
     assert_eq!(num_of_primes, 203280221);
 }
 
-/// Check whether the given number is prime using trial by division. Use wheel
-/// factorisation with 2 and 3.
+/// Check whether the given number is prime using trial by division.
 ///
 /// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
 fn is_prime_tbd(num: i64) -> bool {
-    let (mut factor, mut offset) = (7i64, 4);
-    while factor.pow(2) <= num {
-        if num % factor == 0 {
+    // No need to search for composite factors. We'll find prime factors (if
+    // any) faster.
+    for potential_prime in PotentialPrimes::new((num as f64).sqrt() as i64).skip(3) {
+        if num % potential_prime == 0 {
             return false;
         }
-        factor += offset;
-        offset = 6 - offset;
     }
     true
 }
@@ -1051,16 +1049,16 @@ impl Iterator for Divisors {
 /// Prime divisors iterator. Generates all prime divisors of a number in
 /// ascending order. Positive numbers only!
 pub struct PrimeDivisors {
+    // If I actually find all prime numbers to iterate over (instead of just
+    // using potential prime numbers), performance drops significantly.
+    potential_primes: PotentialPrimes,
     num: i64,
-    divisor: i64,
-    offset: i64,
 }
 impl PrimeDivisors {
     pub fn new(num: i64) -> PrimeDivisors {
         PrimeDivisors {
+            potential_primes: PotentialPrimes::new(num),
             num: num,
-            divisor: 1,
-            offset: 2,
         }
     }
 }
@@ -1068,31 +1066,19 @@ impl Iterator for PrimeDivisors {
     type Item = (i64, u32);
     fn next(&mut self) -> Option<(i64, u32)> {
         loop {
-            // After checking for divisibility by 2, 3 and 5, check only
-            // numbers which differ from a multiple of 6 by exactly 1, because
-            // only they can be prime numbers. If I actually find all prime
-            // numbers to iterate over before running this loop, performance
-            // drops significantly.
-            self.divisor = match self.divisor {
-                1 => 2,
-                2 => 3,
-                3 => 5,
-                d => {
-                    let d = d + self.offset;
-                    self.offset = 6 - self.offset;
-                    d
-                }
+            let potential_prime = match self.potential_primes.next() {
+                Some(potential_prime) if potential_prime <= self.num => potential_prime,
+                _ => return None,
             };
-            if self.num < self.divisor {
-                return None;
-            }
             let mut power = 0;
-            while self.num % self.divisor == 0 {
-                self.num /= self.divisor;
+            while self.num % potential_prime == 0 {
+                self.num /= potential_prime;
                 power += 1;
             }
+            // Since I divide out the number by all potential primes I find,
+            // the potential primes I do find are actually prime.
             if power > 0 {
-                return Some((self.divisor, power));
+                return Some((potential_prime, power));
             }
         }
     }
@@ -1191,6 +1177,46 @@ impl Iterator for PythagoreanTriplets {
                     return Some((a, b, c));
                 }
             }
+        }
+    }
+}
+
+/// Potential prime numbers. Generates some small prime numbers and numbers
+/// coprime to 30. Used for wheel factorisation with 2, 3 and 5. See
+/// `SieveOfEratosthenes` for details.
+pub struct PotentialPrimes {
+    limit: i64,
+    num: i64,
+    offsets_idx: usize,
+}
+impl PotentialPrimes {
+    const OFFSETS: [i64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+}
+impl PotentialPrimes {
+    pub fn new(limit: i64) -> PotentialPrimes {
+        PotentialPrimes {
+            limit: limit,
+            num: 1,
+            offsets_idx: 0,
+        }
+    }
+}
+impl Iterator for PotentialPrimes {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        self.num += match self.num {
+            1 => 1,
+            2 => 1,
+            3 | 5 => 2,
+            _ => {
+                self.offsets_idx = (self.offsets_idx + 1) % 8;
+                PotentialPrimes::OFFSETS[self.offsets_idx]
+            }
+        };
+        if self.num > self.limit {
+            None
+        } else {
+            Some(self.num)
         }
     }
 }
