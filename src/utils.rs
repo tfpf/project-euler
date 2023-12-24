@@ -538,10 +538,11 @@ impl std::fmt::Display for Long {
 
 #[test]
 fn long_test() {
-    let num = &Long::new("43").pow(37) * &Long::from(745683);
+    let mut num = &Long::new("43").pow(37) * &Long::from(745683);
+    num += &Long::factorial(51);
     assert_eq!(
         num.to_string(),
-        "2045912701959610384504655483644445648403009639935355936214143659169"
+        "3597031455246992664728898500113748859466269359952342048214143659169"
     );
 }
 
