@@ -699,8 +699,8 @@ impl SieveOfEratosthenes {
 
 #[test]
 fn sieve_of_eratosthenes_test() {
-    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(32)).iter().count();
-    assert_eq!(num_of_primes, 203280221);
+    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(36)).iter().count();
+    assert_eq!(num_of_primes, 2874398515);
 }
 
 /// A hand of poker.
