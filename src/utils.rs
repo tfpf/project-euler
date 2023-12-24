@@ -41,9 +41,43 @@ pub fn is_prime(num: i64) -> bool {
 }
 
 #[test]
-fn is_prime_test() {
+fn is_prime_small_test() {
     let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
+}
+
+#[test]
+fn is_prime_large_primes_test() {
+    assert!([
+        33526550999,
+        174884629103,
+        6875319205331,
+        85154813484397,
+        356298700180783,
+        4821961991942807,
+        39342679709893253,
+        846429558835176541,
+        6371310980381503477,
+    ]
+    .into_iter()
+    .all(is_prime));
+}
+
+#[test]
+fn is_prime_large_composites_test() {
+    assert!(![
+        85580365793,
+        840048636491,
+        7898066099597,
+        94681873239843,
+        731661692677361,
+        6641506470734403,
+        66447373060534613,
+        228995686118461909,
+        4474371213263375189,
+    ]
+    .into_iter()
+    .any(is_prime));
 }
 
 /// Check whether the given number is prime using trial by division.
@@ -504,10 +538,11 @@ impl std::fmt::Display for Long {
 
 #[test]
 fn long_test() {
-    let num = &Long::new("43").pow(37) * &Long::from(745683);
+    let mut num = &Long::new("43").pow(37) * &Long::from(745683);
+    num += &Long::factorial(51);
     assert_eq!(
         num.to_string(),
-        "2045912701959610384504655483644445648403009639935355936214143659169"
+        "3597031455246992664728898500113748859466269359952342048214143659169"
     );
 }
 
@@ -664,8 +699,8 @@ impl SieveOfEratosthenes {
 
 #[test]
 fn sieve_of_eratosthenes_test() {
-    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(32)).iter().count();
-    assert_eq!(num_of_primes, 203280221);
+    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(35)).iter().count();
+    assert_eq!(num_of_primes, 1480206279);
 }
 
 /// A hand of poker.
