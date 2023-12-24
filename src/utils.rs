@@ -52,8 +52,10 @@ fn is_prime_test() {
 ///
 /// -> Whether `num` is prime.
 fn is_prime_tbd(num: i64) -> bool {
-    for potential_divisor in PotentialPrimes::new((num as f64).sqrt() as i64) {
-        if num % potential_divisor == 0 {
+    // No need to search for composite factors. We'll find prime factors (if
+    // any) faster.
+    for potential_prime in PotentialPrimes::new((num as f64).sqrt() as i64) {
+        if num % potential_prime == 0 {
             return false;
         }
     }
@@ -1048,14 +1050,14 @@ impl Iterator for Divisors {
 /// ascending order. Positive numbers only!
 pub struct PrimeDivisors {
     // If I actually find all prime numbers to iterate over (instead of just
-    // using potential prime numbers) performance drops significantly.
-    potential_prime_divisors: PotentialPrimes,
+    // using potential prime numbers), performance drops significantly.
+    potential_primes: PotentialPrimes,
     num: i64,
 }
 impl PrimeDivisors {
     pub fn new(num: i64) -> PrimeDivisors {
         PrimeDivisors {
-            potential_prime_divisors: PotentialPrimes::new(num),
+            potential_primes: PotentialPrimes::new(num),
             num: num,
         }
     }
@@ -1064,19 +1066,19 @@ impl Iterator for PrimeDivisors {
     type Item = (i64, u32);
     fn next(&mut self) -> Option<(i64, u32)> {
         loop {
-            let potential_prime_divisor = match self.potential_prime_divisors.next() {
-                Some(potential_prime_divisor) if potential_prime_divisor <= self.num => {
-                    potential_prime_divisor
-                }
+            let potential_prime = match self.potential_primes.next() {
+                Some(potential_prime) if potential_prime <= self.num => potential_prime,
                 _ => return None,
             };
             let mut power = 0;
-            while self.num % potential_prime_divisor == 0 {
-                self.num /= potential_prime_divisor;
+            while self.num % potential_prime == 0 {
+                self.num /= potential_prime;
                 power += 1;
             }
+            // Since I divide out the number by all potential primes I find,
+            // the potential primes I do find are actually prime.
             if power > 0 {
-                return Some((potential_prime_divisor, power));
+                return Some((potential_prime, power));
             }
         }
     }
