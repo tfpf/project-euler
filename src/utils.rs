@@ -41,9 +41,43 @@ pub fn is_prime(num: i64) -> bool {
 }
 
 #[test]
-fn is_prime_test() {
+fn is_prime_small_test() {
     let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
+}
+
+#[test]
+fn is_prime_large_primes_test() {
+    assert!([
+        33526550999,
+        174884629103,
+        6875319205331,
+        85154813484397,
+        356298700180783,
+        4821961991942807,
+        39342679709893253,
+        846429558835176541,
+        6371310980381503477,
+    ]
+    .into_iter()
+    .all(is_prime));
+}
+
+#[test]
+fn is_prime_large_composites_test() {
+    assert!(![
+        85580365793,
+        840048636491,
+        7898066099597,
+        94681873239843,
+        731661692677361,
+        6641506470734403,
+        66447373060534613,
+        228995686118461909,
+        4474371213263375189
+    ]
+    .into_iter()
+    .any(is_prime));
 }
 
 /// Check whether the given number is prime using trial by division.
