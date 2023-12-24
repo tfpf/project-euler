@@ -54,7 +54,7 @@ fn is_prime_test() {
 fn is_prime_tbd(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
-    for potential_prime in PotentialPrimes::new((num as f64).sqrt() as i64) {
+    for potential_prime in PotentialPrimes::new((num as f64).sqrt() as i64).skip(3) {
         if num % potential_prime == 0 {
             return false;
         }
