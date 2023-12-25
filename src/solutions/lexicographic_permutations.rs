@@ -30,7 +30,7 @@ pub fn solve() -> i64 {
     // used; it's there just to make the code simpler.
     let mut digits = (0..=10).collect::<Vec<i32>>();
 
-    let mut result: Vec<i32> = vec![];
+    let mut result = vec![];
     let mut count = 0;
     let mut step = 3628800;
     for position in 0..=9 {
