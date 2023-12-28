@@ -55,7 +55,15 @@ pub fn solve() -> i64 {
                     break;
                 }
             }
-            chain_len[num] == 60
+
+            // If a loop could not be found after 60 iterations, the chain must
+            // be longer than 60.
+            if chain_len[num] == 0 {
+                chain_len[num] = 61;
+                false
+            } else {
+                chain_len[num] == 60
+            }
         })
         .count();
 
