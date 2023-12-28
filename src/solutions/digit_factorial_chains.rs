@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let mut chain_len = [0; 1000000];
+    let mut chain_len = vec![0; 1000000];
     const FACTORIAL: [usize; 10] = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
     let count = (1..1000000)
         .filter(|&num| {
