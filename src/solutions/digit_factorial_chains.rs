@@ -11,9 +11,8 @@ pub fn solve() -> i64 {
             }
 
             let mut curr = num;
-            let (mut nums_set, mut nums_vec) = (std::collections::HashSet::new(), vec![]);
+            let mut nums_vec = vec![];
             for idx in 1..=60 {
-                nums_set.insert(curr);
                 nums_vec.push(curr);
                 curr = utils::Digits::new(curr as i64)
                     .map(|digit| FACTORIAL[digit as usize])
@@ -31,8 +30,10 @@ pub fn solve() -> i64 {
                     break;
                 }
 
-                // Reached a number from the current chain?
-                if nums_set.contains(&curr) {
+                // Reached a number from the current chain? (It is enough to
+                // check the last three numbers, because the question states
+                // that that is the length of the longest chain loop.)
+                if nums_vec.iter().rev().take(3).any(|&n| n == curr) {
                     // For numbers not part of the loop (and the first number
                     // which is part of the loop), the chain length is their
                     // (reversed) position in the vector.
