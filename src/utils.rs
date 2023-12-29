@@ -1169,7 +1169,6 @@ impl Iterator for Bits {
 /// given sum. The triplets are generated using a well-known parametrisation
 /// which can represent any primitive triplet. Positive numbers only!
 pub struct PythagoreanTriplets {
-    perimeter: i64,
     semiperimeter: i64,
     m_ub: i64,
     m: i64,
@@ -1180,7 +1179,6 @@ impl PythagoreanTriplets {
         // Non-strict upper bound for the parameter `m`.
         let m_ub = (semiperimeter as f64).sqrt() as i64;
         PythagoreanTriplets {
-            perimeter,
             semiperimeter,
             m_ub,
             m: 1,
@@ -1190,38 +1188,31 @@ impl PythagoreanTriplets {
 impl Iterator for PythagoreanTriplets {
     type Item = (i64, i64, i64);
     fn next(&mut self) -> Option<(i64, i64, i64)> {
-        if self.perimeter % 2 == 1 {
-            return None;
-        }
-
-        // 2 × m × (m + n) × d = perimeter
-        // m × (m + n) × d = semiperimeter
-        self.m += 1;
-        for m in self.m..=self.m_ub {
-            if self.semiperimeter % m != 0 {
+        loop {
+            self.m += 1;
+            if self.m > self.m_ub {
+                return None;
+            }
+            if self.semiperimeter % self.m != 0 {
                 continue;
             }
-
-            // (m + n) × d
-            // The first multiplicand must be odd, because exactly one of `m`
-            // and `n` is even. Any evenness must be part of `d`, so remove it.
+            let m = self.m;
             let remaining_term = self.semiperimeter / m;
-            let remaining_term = remaining_term >> remaining_term.trailing_zeros();
-            for m_plus_n in (m + 1 + (m & 1)..)
-                .take_while(|&m_plus_n| m_plus_n < 2 * m && m_plus_n <= remaining_term)
+            let m_plus_n_lb = m + 1 + (m & 1);
+            for m_plus_n in (m_plus_n_lb..)
+                .step_by(2)
+                .take_while(|&m_plus_n| m_plus_n < 2 * m)
             {
                 if remaining_term % m_plus_n == 0 && gcd(m_plus_n, m) == 1 {
-                    let d = self.semiperimeter / (m * m_plus_n);
+                    let d = remaining_term / m_plus_n;
                     let n = m_plus_n - m;
                     let a = (m.pow(2) - n.pow(2)) * d;
                     let b = 2 * m * n * d;
                     let c = (m.pow(2) + n.pow(2)) * d;
-                    self.m = m;
                     return Some((a, b, c));
                 }
             }
         }
-        None
     }
 }
 
