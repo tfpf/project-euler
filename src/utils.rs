@@ -596,7 +596,7 @@ impl PandigitalChecker {
             .iter()
             .skip(self.min_digit)
             .take(self.max_digit - self.min_digit + 1)
-            .fold(true, |pandigital, &digit_seen| pandigital && digit_seen)
+            .all(|&digit_seen| digit_seen)
     }
 }
 
@@ -677,7 +677,7 @@ impl SieveOfEratosthenes {
         if offsets_idx == 8 {
             return false;
         }
-        return self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1;
+        self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1
     }
     /// Iterate over all prime numbers until the number this object was
     /// constructed with.
