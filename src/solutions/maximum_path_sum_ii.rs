@@ -42,7 +42,7 @@ pub fn solve() -> i64 {
         .lines()
         .map(|line| {
             line.unwrap()
-                .split(" ")
+                .split(' ')
                 .map(|s| s.parse::<i32>().unwrap())
                 .collect()
         })

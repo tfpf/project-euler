@@ -11,7 +11,7 @@ pub fn solve() -> i64 {
         .chain(1000..1666)
         .chain(10000..16666)
         .chain(100000..166666)
-        .filter(|&num| {
+        .find(|&num| {
             let expected = utils::digits_frequencies(num);
             expected == utils::digits_frequencies(2 * num)
                 && expected == utils::digits_frequencies(3 * num)
@@ -19,7 +19,6 @@ pub fn solve() -> i64 {
                 && expected == utils::digits_frequencies(5 * num)
                 && expected == utils::digits_frequencies(6 * num)
         })
-        .next()
         .unwrap();
 
     assert_eq!(result, 142857);

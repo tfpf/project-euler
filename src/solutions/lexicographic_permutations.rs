@@ -8,7 +8,7 @@
 ///   `digits`.
 ///
 /// -> The correct digit of the 1_000_000th permutation.
-fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32 {
+fn overshoot(digits: &[i32], count: &mut i32, step: i32) -> i32 {
     for (&prev, &_) in digits.iter().zip(digits.iter().skip(1)) {
         // If I set the digit `_`, how many permutations will I have seen
         // before any number containing `_` at this position?

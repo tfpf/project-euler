@@ -10,13 +10,12 @@ pub fn solve() -> i64 {
     // consecutive products need be considered.
     let num_to_find = (9123..=9876)
         .rev()
-        .filter(|num| {
+        .find(|&num| {
             pandigital_checker.renew();
-            pandigital_checker.update(num * 1)
+            pandigital_checker.update(num)
                 && pandigital_checker.update(num * 2)
                 && pandigital_checker.check()
         })
-        .next()
         .unwrap();
 
     // We have found the integer. Now find the pandigital concatenated product

@@ -7,7 +7,7 @@ pub fn solve() -> i64 {
     let result = reader
         .lines()
         .filter(|line| {
-            let split = line.as_ref().unwrap().split(" ").collect::<Vec<&str>>();
+            let split = line.as_ref().unwrap().split(' ').collect::<Vec<&str>>();
             let p1_hand = utils::PokerHand::new(&split[..5]);
             let p2_hand = utils::PokerHand::new(&split[5..]);
             p1_hand > p2_hand
