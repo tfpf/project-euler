@@ -230,8 +230,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an inversion from the right.
     let Some(sorted_until) = (1..slice.len())
         .rev()
-        .filter(|&idx| slice[idx - 1] < slice[idx])
-        .next()
+        .find(|&idx| slice[idx - 1] < slice[idx])
     else {
         return false;
     };
@@ -262,8 +261,7 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
     let Some(sorted_until) = (1..slice.len())
         .rev()
-        .filter(|&idx| slice[idx - 1] > slice[idx])
-        .next()
+        .find(|&idx| slice[idx - 1] > slice[idx])
     else {
         return false;
     };

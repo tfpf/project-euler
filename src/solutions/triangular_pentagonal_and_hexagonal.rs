@@ -5,8 +5,7 @@ pub fn solve() -> i64 {
     // to find a hexagonal number which is also pentagonal.
     let result = utils::Polygonal::new(6)
         .skip(143)
-        .filter(|&num| utils::Polygonal::invert(5, num) != None)
-        .next()
+        .find(|&num| utils::Polygonal::invert(5, num).is_some())
         .unwrap();
 
     assert_eq!(result, 1533776805);
