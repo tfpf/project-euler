@@ -7,14 +7,13 @@ pub fn solve() -> i64 {
     // to have those two coprime numbers at hand.
     let mut multiplicand1_divisors = 1;
     let idx = (1..)
-        .filter(|&idx| {
+        .find(|&idx| {
             let multiplicand2 = if idx & 1 == 1 { (idx + 1) / 2 } else { idx + 1 };
             let multiplicand2_divisors = utils::Divisors::new(multiplicand2).count();
             let divisors = multiplicand1_divisors * multiplicand2_divisors;
             multiplicand1_divisors = multiplicand2_divisors;
             divisors >= 500
         })
-        .next()
         .unwrap();
     let result = idx * (idx + 1) / 2;
 
