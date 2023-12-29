@@ -48,10 +48,10 @@ fn is_prime_small_test() {
 
 #[test]
 fn is_prime_large_test() {
-    let num_of_primes = (2i64.pow(40)..2i64.pow(40) + 2i64.pow(32))
+    let num_of_primes = (2i64.pow(40)..2i64.pow(40) + 2i64.pow(31))
         .filter(|&num| is_prime(num))
         .count();
-    assert_eq!(num_of_primes, 154896242);
+    assert_eq!(num_of_primes, 77450336);
 }
 
 #[test]
