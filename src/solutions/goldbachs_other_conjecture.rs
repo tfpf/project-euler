@@ -24,8 +24,7 @@ pub fn solve() -> i64 {
     }
     let result = (3..goldbach_constructible.len())
         .step_by(2)
-        .filter(|&idx| !goldbach_constructible[idx] && !sieve.is_prime(idx))
-        .next()
+        .find(|&idx| !goldbach_constructible[idx] && !sieve.is_prime(idx))
         .unwrap();
 
     assert_eq!(result, 5777);

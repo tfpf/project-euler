@@ -5,7 +5,7 @@ use crate::utils;
 /// * `digits` - Digits of the number (in big-endian order) to check.
 ///
 /// -> Whether the number is a left-truncatable prime.
-fn left_truncatable(digits: &Vec<i32>) -> bool {
+fn left_truncatable(digits: &[i32]) -> bool {
     // Instead of chopping off digits from the left, prepend digits to the
     // left. This avoids division.
     let mut multiplier = 1;

@@ -11,5 +11,5 @@ pub fn solve() -> i64 {
         .1;
 
     assert_eq!(result, 840);
-    result as i64
+    result
 }

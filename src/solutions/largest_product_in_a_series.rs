@@ -17,17 +17,13 @@ pub fn solve() -> i64 {
     // Keep track of how many times 0 is present in the window at any time.
     let mut zeros = 0;
     for i in 0..1000 {
-        let incoming = (digits[i] - '0' as u8) as u64;
+        let incoming = (digits[i] - b'0') as u64;
         if incoming == 0 {
             zeros += 1;
         } else {
             product *= incoming;
         }
-        let outgoing = if i < 13 {
-            1
-        } else {
-            digits[i - 13] - '0' as u8
-        } as u64;
+        let outgoing = if i < 13 { 1 } else { digits[i - 13] - b'0' } as u64;
         if outgoing == 0 {
             zeros -= 1;
         } else {

@@ -1,7 +1,7 @@
 pub fn solve() -> i64 {
     let cipher_bytes = std::fs::read_to_string("res/xor_decryption.txt")
         .unwrap()
-        .split(",")
+        .split(',')
         .map(|s| s.parse().unwrap())
         .collect::<Vec<u8>>();
     let mut key_bytes = [b'a', b'a', b'a'];

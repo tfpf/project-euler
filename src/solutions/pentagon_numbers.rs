@@ -10,8 +10,8 @@ fn minimum_pentagonal_difference() -> i64 {
         for j in 0..i {
             let sum = pentagons[i] + pentagons[j];
             let difference = pentagons[i] - pentagons[j];
-            if utils::Polygonal::invert(5, sum) != None
-                && utils::Polygonal::invert(5, difference) != None
+            if utils::Polygonal::invert(5, sum).is_some()
+                && utils::Polygonal::invert(5, difference).is_some()
             {
                 return difference;
             }
@@ -24,5 +24,5 @@ pub fn solve() -> i64 {
     let result = minimum_pentagonal_difference();
 
     assert_eq!(result, 5482660);
-    result as i64
+    result
 }
