@@ -8,7 +8,7 @@ impl CacheMap {
     fn new(triangle: Vec<Vec<i32>>) -> CacheMap {
         CacheMap {
             map: std::collections::HashMap::new(),
-            triangle: triangle,
+            triangle,
         }
     }
     /// Find the maximum path sum to the bottom, starting from the given row
@@ -43,7 +43,7 @@ pub fn solve() -> i64 {
         .map(|line| {
             line.unwrap()
                 .split(' ')
-                .map(|s| s.parse::<i32>().unwrap())
+                .map(|s| s.parse().unwrap())
                 .collect()
         })
         .collect();

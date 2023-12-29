@@ -563,8 +563,8 @@ impl PandigitalChecker {
     pub fn new(min_digit: usize, max_digit: usize) -> PandigitalChecker {
         PandigitalChecker {
             seen: [false; 10],
-            min_digit: min_digit,
-            max_digit: max_digit,
+            min_digit,
+            max_digit,
         }
     }
     pub fn renew(&mut self) {
@@ -625,7 +625,7 @@ impl SieveOfEratosthenes {
     pub fn new(limit: usize) -> SieveOfEratosthenes {
         let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
         let mut sieve_of_eratosthenes = SieveOfEratosthenes {
-            limit: limit,
+            limit,
             bitfields: vec![255; bitfields_len],
         };
         sieve_of_eratosthenes.init();
@@ -748,10 +748,7 @@ impl PokerHand {
                 (value, suit)
             })
             .collect();
-        let mut poker_hand = PokerHand {
-            hand: hand,
-            score: 0,
-        };
+        let mut poker_hand = PokerHand { hand, score: 0 };
         poker_hand.calculate_score();
         poker_hand
     }
@@ -930,7 +927,7 @@ pub struct Fibonacci {
 }
 impl Fibonacci {
     pub fn new(a: i64, b: i64) -> Fibonacci {
-        Fibonacci { a: a, b: b }
+        Fibonacci { a, b }
     }
 }
 impl Iterator for Fibonacci {
@@ -1022,10 +1019,7 @@ pub struct Collatz {
 }
 impl Collatz {
     pub fn new(num: i64) -> Collatz {
-        Collatz {
-            num: num,
-            done: false,
-        }
+        Collatz { num, done: false }
     }
 }
 impl Iterator for Collatz {
@@ -1056,7 +1050,7 @@ pub struct Divisors {
 impl Divisors {
     pub fn new(dividend: i64) -> Divisors {
         Divisors {
-            dividend: dividend,
+            dividend,
             limit: (dividend as f64).sqrt() as i64,
             current: 0,
             other: 0,
@@ -1099,7 +1093,7 @@ impl PrimeDivisors {
     pub fn new(num: i64) -> PrimeDivisors {
         PrimeDivisors {
             potential_primes: PotentialPrimes::new(num),
-            num: num,
+            num,
         }
     }
 }
@@ -1132,7 +1126,7 @@ pub struct Digits {
 }
 impl Digits {
     pub fn new(num: i64) -> Digits {
-        Digits { num: num }
+        Digits { num }
     }
 }
 impl Iterator for Digits {
@@ -1155,7 +1149,7 @@ pub struct Bits {
 }
 impl Bits {
     pub fn new(num: i64) -> Bits {
-        Bits { num: num }
+        Bits { num }
     }
 }
 impl Iterator for Bits {
@@ -1185,8 +1179,8 @@ impl PythagoreanTriplets {
         // Non-strict upper bound for the parameter `m`.
         let m_ub = (semiperimeter as f64).sqrt() as i64;
         PythagoreanTriplets {
-            semiperimeter: semiperimeter,
-            m_ub: m_ub,
+            semiperimeter,
+            m_ub,
             m: 1,
         }
     }
@@ -1236,7 +1230,7 @@ impl PotentialPrimes {
 impl PotentialPrimes {
     pub fn new(limit: i64) -> PotentialPrimes {
         PotentialPrimes {
-            limit: limit,
+            limit,
             num: 1,
             offsets_idx: 0,
         }
