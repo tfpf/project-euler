@@ -80,6 +80,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         67 => solutions::maximum_path_sum_ii::solve,
         69 => solutions::totient_maximum::solve,
         74 => solutions::digit_factorial_chains::solve,
+        75 => solutions::singular_integer_right_triangles::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
