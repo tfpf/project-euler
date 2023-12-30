@@ -178,6 +178,15 @@ pub fn gcd(a: i64, b: i64) -> i64 {
     a << twopower
 }
 
+#[test]
+fn gcd_test() {
+    let coprime_pairs = (0..10i64.pow(8))
+        .zip((0..10i64.pow(8)).rev())
+        .filter(|&(a, b)| gcd(a, b) == 1)
+        .count();
+    assert_eq!(coprime_pairs, 58752000);
+}
+
 /// Check for leap years.
 ///
 /// * `year`
