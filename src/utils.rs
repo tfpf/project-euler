@@ -155,21 +155,36 @@ pub fn is_palindrome(num: i64, radix: i32) -> bool {
 
 /// Calculate the greatest common divisor of two numbers.
 ///
-/// * `a`
-/// * `b`
+/// * `a` - Must be non-negative.
+/// * `b` - Must be non-negative.
 ///
 /// -> GCD of the inputs.
 pub fn gcd(a: i64, b: i64) -> i64 {
-    let (a, b) = if a > b { (a, b) } else { (b, a) };
+    if a == 0 {
+        return b;
+    }
     if b == 0 {
         return a;
     }
-    let remainder = a % b;
-    if remainder == 0 {
-        b
-    } else {
-        gcd(b, remainder)
+
+    // Binary GCD algorithm.
+    let twopower = (a | b).trailing_zeros();
+    let (mut a, mut b) = (a >> a.trailing_zeros(), b >> b.trailing_zeros());
+    while a != b {
+        (a, b) = if a > b { (a, b) } else { (b, a) };
+        a -= b;
+        a >>= a.trailing_zeros();
     }
+    a << twopower
+}
+
+#[test]
+fn gcd_test() {
+    let coprime_pairs = (0..10i64.pow(8))
+        .zip((0..10i64.pow(8)).rev())
+        .filter(|&(a, b)| gcd(a, b) == 1)
+        .count();
+    assert_eq!(coprime_pairs, 58752000);
 }
 
 /// Check for leap years.
