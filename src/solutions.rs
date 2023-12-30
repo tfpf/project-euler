@@ -50,6 +50,7 @@ pub mod prime_permutations;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
 pub mod self_powers;
+pub mod singular_integer_right_triangles;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
 pub mod spiral_primes;
