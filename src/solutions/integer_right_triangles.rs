@@ -5,7 +5,7 @@ pub fn solve() -> i64 {
     // always be even.
     let result = (12..=1000)
         .step_by(2)
-        .map(|p| (utils::PythagoreanTriplets::new(p).count(), p))
+        .map(|p| (utils::PythagoreanTripletsWithSum::new(p).count(), p))
         .max()
         .unwrap()
         .1;

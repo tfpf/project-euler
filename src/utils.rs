@@ -1183,24 +1183,24 @@ impl Iterator for Bits {
 /// Pythagorean triplets iterator. Generates all Pythagorean triplets with the
 /// given sum. The triplets are generated using a well-known parametrisation
 /// which can represent any primitive triplet. Positive numbers only!
-pub struct PythagoreanTriplets {
+pub struct PythagoreanTripletsWithSum {
     semiperimeter: i64,
     m_ub: i64,
     m: i64,
 }
-impl PythagoreanTriplets {
-    pub fn new(perimeter: i64) -> PythagoreanTriplets {
+impl PythagoreanTripletsWithSum {
+    pub fn new(perimeter: i64) -> PythagoreanTripletsWithSum {
         let semiperimeter = perimeter / 2;
         // Non-strict upper bound for the parameter `m`.
         let m_ub = (semiperimeter as f64).sqrt() as i64;
-        PythagoreanTriplets {
+        PythagoreanTripletsWithSum {
             semiperimeter,
             m_ub,
             m: 1,
         }
     }
 }
-impl Iterator for PythagoreanTriplets {
+impl Iterator for PythagoreanTripletsWithSum {
     type Item = (i64, i64, i64);
     fn next(&mut self) -> Option<(i64, i64, i64)> {
         loop {
