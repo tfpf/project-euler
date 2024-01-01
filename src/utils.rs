@@ -59,8 +59,7 @@ fn is_prime_large_test() {
     // Not reading the file line-by-line because that would require importing a
     // type, which I don't want to do.
     let contents = std::fs::read_to_string("res/is_prime_large_test.txt").unwrap();
-    let contents = contents.trim();
-    for line in contents.split('\n') {
+    for line in contents.trim().split('\n') {
         let num_primality = line
             .split_ascii_whitespace()
             .map(|s| s.parse().unwrap())
@@ -288,13 +287,13 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
     let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1);
     loop {
-        if exp & 1 == 1 {
+        if exp % 2 == 1 {
             multiplier = multiplier * base % modulus;
         }
         if exp <= 1 {
             return multiplier as i64;
         }
-        exp >>= 1;
+        exp /= 2;
         base = base.pow(2) % modulus;
     }
 }
@@ -377,8 +376,8 @@ impl Long {
         // Multiply the extremes, converting towards the centre. For example,
         // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
         // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
-        let partials = num >> 1;
-        let mut result = if num & 1 == 1 {
+        let partials = num / 2;
+        let mut result = if num % 2 == 1 {
             Long::from(partials + 1)
         } else {
             Long::from(1)
@@ -430,13 +429,13 @@ impl Long {
             return base;
         }
         loop {
-            if exp & 1 == 1 {
+            if exp % 2 == 1 {
                 multiplier = &multiplier * &base;
             }
             if exp == 1 {
                 return multiplier;
             }
-            exp >>= 1;
+            exp /= 2;
             base = &base * &base;
         }
     }
@@ -1196,7 +1195,7 @@ impl Iterator for PythagoreanTriplets {
             let m = self.m;
             let remaining_term = self.semiperimeter / m;
             let remaining_odd = remaining_term >> remaining_term.trailing_zeros();
-            let m_plus_n_lb = m + 1 + (m & 1);
+            let m_plus_n_lb = m + 1 + (m % 2);
             for m_plus_n in (m_plus_n_lb..)
                 .step_by(2)
                 .take_while(|&m_plus_n| m_plus_n < 2 * m && m_plus_n <= remaining_odd)
