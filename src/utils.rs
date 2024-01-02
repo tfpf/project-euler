@@ -77,12 +77,9 @@ fn is_prime_large_test() {
 fn is_prime_tbd(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
-    for potential_prime in PotentialPrimes::new((num as f64).sqrt() as i64).skip(3) {
-        if num % potential_prime == 0 {
-            return false;
-        }
-    }
-    true
+    PotentialPrimes::new((num as f64).sqrt() as i64)
+        .skip(3)
+        .all(|potential_prime| num % potential_prime != 0)
 }
 
 /// Check whether the given number is prime using the Miller-Rabin test.
@@ -1195,7 +1192,7 @@ impl Iterator for PythagoreanTriplets {
             let m = self.m;
             let remaining_term = self.semiperimeter / m;
             let remaining_odd = remaining_term >> remaining_term.trailing_zeros();
-            let m_plus_n_lb = m + 1 + (m % 2);
+            let m_plus_n_lb = m + 1 + m % 2;
             for m_plus_n in (m_plus_n_lb..)
                 .step_by(2)
                 .take_while(|&m_plus_n| m_plus_n < 2 * m && m_plus_n <= remaining_odd)
