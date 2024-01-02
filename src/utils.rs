@@ -43,14 +43,15 @@ pub fn is_prime(num: i64) -> bool {
 #[test]
 fn is_prime_small_test() {
     let step = 2usize.pow(30);
-    let mut thandles = vec![];
-    for start in (0..).step_by(step).take(8) {
-        thandles.push(std::thread::spawn(move || {
-            (start..).take(step).filter(|&num| is_prime(num)).count()
-        }));
-    }
-    let num_of_primes = thandles.into_iter().fold(0, |num_of_primes, thandle| {
-        num_of_primes + thandle.join().unwrap()
+    let workers = (0..)
+        .step_by(step)
+        .take(8)
+        .map(|start| {
+            std::thread::spawn(move || (start..).take(step).filter(|&num| is_prime(num)).count())
+        })
+        .collect::<Vec<std::thread::JoinHandle<usize>>>();
+    let num_of_primes = workers.into_iter().fold(0, |num_of_primes, worker| {
+        num_of_primes + worker.join().unwrap()
     });
     assert_eq!(num_of_primes, 393615806);
 }
