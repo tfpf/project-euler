@@ -41,17 +41,18 @@ pub fn is_prime(num: i64) -> bool {
 }
 
 #[test]
-fn is_prime_smaller_test() {
-    let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
-    assert_eq!(num_of_primes, 203280221);
-}
-
-#[test]
 fn is_prime_small_test() {
-    let num_of_primes = (2i64.pow(32)..2i64.pow(33))
-        .filter(|&num| is_prime(num))
-        .count();
-    assert_eq!(num_of_primes, 190335585);
+    let step = 2usize.pow(30);
+    let mut thandles = vec![];
+    for start in (0..).step_by(step).take(8) {
+        thandles.push(std::thread::spawn(move || {
+            (start..).take(step).filter(|&num| is_prime(num)).count()
+        }));
+    }
+    let num_of_primes = thandles.into_iter().fold(0, |num_of_primes, thandle| {
+        num_of_primes + thandle.join().unwrap()
+    });
+    assert_eq!(num_of_primes, 393615806);
 }
 
 #[test]
