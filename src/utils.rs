@@ -1192,7 +1192,7 @@ impl Iterator for PythagoreanTriplets {
             let m = self.m;
             let remaining_term = self.semiperimeter / m;
             let remaining_odd = remaining_term >> remaining_term.trailing_zeros();
-            let m_plus_n_lb = m + 1 + (m % 2);
+            let m_plus_n_lb = m + 1 + m % 2;
             for m_plus_n in (m_plus_n_lb..)
                 .step_by(2)
                 .take_while(|&m_plus_n| m_plus_n < 2 * m && m_plus_n <= remaining_odd)
