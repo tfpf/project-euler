@@ -42,10 +42,10 @@ pub fn is_prime(num: i64) -> bool {
 
 #[test]
 fn is_prime_small_test() {
-    let step = 2usize.pow(30);
+    let step = 2usize.pow(31);
     let workers = (0..)
         .step_by(step)
-        .take(8)
+        .take(4)
         .map(|start| {
             std::thread::spawn(move || (start..).take(step).filter(|&num| is_prime(num)).count())
         })
