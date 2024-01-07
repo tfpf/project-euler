@@ -1186,17 +1186,14 @@ impl Iterator for PythagoreanTriplets {
 pub struct PotentialPrimes {
     limit: i64,
     num: i64,
-    offsets_idx: usize,
-}
-impl PotentialPrimes {
-    const OFFSETS: [i64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+    offset: std::iter::Cycle<std::array::IntoIter<i64, 8>>,
 }
 impl PotentialPrimes {
     pub fn new(limit: i64) -> PotentialPrimes {
         PotentialPrimes {
             limit,
             num: 1,
-            offsets_idx: 0,
+            offset: [4, 2, 4, 2, 4, 6, 2, 6].into_iter().cycle()
         }
     }
 }
@@ -1207,10 +1204,7 @@ impl Iterator for PotentialPrimes {
             1 => 1,
             2 => 1,
             3 | 5 => 2,
-            _ => {
-                self.offsets_idx = (self.offsets_idx + 1) % 8;
-                PotentialPrimes::OFFSETS[self.offsets_idx]
-            }
+            _ => self.offset.next().unwrap()
         };
         if self.num > self.limit {
             None
