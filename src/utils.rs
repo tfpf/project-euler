@@ -77,7 +77,7 @@ fn is_prime_large_test() {
 fn is_prime_tbd(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
-    PotentialPrimes::new((num as f64).sqrt() as i64)
+    PotentialPrimes::new(isqrt(num))
         .skip(3)
         .all(|potential_prime| num % potential_prime != 0)
 }
@@ -1043,7 +1043,7 @@ impl Divisors {
     pub fn new(dividend: i64) -> Divisors {
         Divisors {
             dividend,
-            limit: (dividend as f64).sqrt() as i64,
+            limit: isqrt(dividend),
             current: 0,
             other: 0,
         }
@@ -1169,7 +1169,7 @@ impl PythagoreanTriplets {
     pub fn new(perimeter: i64) -> PythagoreanTriplets {
         let semiperimeter = perimeter / 2;
         // Non-strict upper bound for the parameter `m`.
-        let m_ub = (semiperimeter as f64).sqrt() as i64;
+        let m_ub = isqrt(semiperimeter);
         PythagoreanTriplets {
             semiperimeter,
             m_ub,

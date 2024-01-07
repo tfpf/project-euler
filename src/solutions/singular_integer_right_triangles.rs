@@ -6,7 +6,7 @@ pub fn solve() -> i64 {
     const SEMIPERIMETER_MAX: usize = PERIMETER_MAX / 2;
 
     // Find all primitive triplets with sum less than or equal to the maximum.
-    for m in 2..=(SEMIPERIMETER_MAX as f64).sqrt() as usize {
+    for m in 2..=utils::isqrt(SEMIPERIMETER_MAX as i64) as usize {
         for n in (1 + m % 2..m)
             .step_by(2)
             .filter(|&n| utils::gcd(m as i64, n as i64) == 1)
