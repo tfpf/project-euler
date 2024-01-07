@@ -1193,7 +1193,7 @@ impl PotentialPrimes {
         PotentialPrimes {
             limit,
             num: 1,
-            offset: [4, 2, 4, 2, 4, 6, 2, 6].into_iter().cycle()
+            offset: [4, 2, 4, 2, 4, 6, 2, 6].into_iter().cycle(),
         }
     }
 }
@@ -1204,7 +1204,7 @@ impl Iterator for PotentialPrimes {
             1 => 1,
             2 => 1,
             3 | 5 => 2,
-            _ => self.offset.next().unwrap()
+            _ => self.offset.next().unwrap(),
         };
         if self.num > self.limit {
             None
