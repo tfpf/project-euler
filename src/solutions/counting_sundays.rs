@@ -1,5 +1,3 @@
-use crate::utils;
-
 /// Check for leap years.
 ///
 /// * `year`
@@ -15,7 +13,7 @@ fn is_leap(year: i64) -> bool {
 /// * `month` - Number from 1 to 12.
 ///
 /// -> Number of days, or 0 if the month is invalid.
-pub fn days_in(year: i64, month: i64) -> i64 {
+fn days_in(year: i64, month: i64) -> i64 {
     match month {
         1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
         4 | 6 | 9 | 11 => 30,
@@ -30,7 +28,7 @@ pub fn days_in(year: i64, month: i64) -> i64 {
     }
 }
 
-fn solve() -> i64 {
+pub fn solve() -> i64 {
     // If 1 January 1900 was a Monday, then 1 January 1901 was a Tuesday.
     // Represent each day as an offset from Sunday. (e.g. Tuesday is 2.)
     let mut day = 2;
@@ -40,7 +38,7 @@ fn solve() -> i64 {
             if day == 0 {
                 sundays += 1;
             }
-            day = (day + utils::days_in(year, month)) % 7;
+            day = (day + days_in(year, month)) % 7;
         }
     }
 
