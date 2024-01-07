@@ -278,6 +278,35 @@ pub fn digits_frequencies(num: i64) -> [u8; 10] {
     frequency
 }
 
+/// Calculate the square root of an integer, rounded down. To be used until
+/// integer square roots are stabilised.
+///
+/// * `num` - Number to root.
+///
+/// -> Square root. If negative, the same number is returned.
+pub fn isqrt(mut num: i64) -> i64 {
+    if num < 2 {
+        return num;
+    }
+    let (mut result, mut one) = (0, 1 << (num.ilog2() & !1));
+    while one != 0 {
+        if num >= result + one {
+            num -= result + one;
+            result = (result >> 1) + one;
+        } else {
+            result >>= 1;
+        }
+        one >>= 2;
+    }
+    result
+}
+
+#[test]
+pub fn isqrt_test() {
+    assert_eq!(isqrt(2i64.pow(53) - 1), 94906265);
+    assert_eq!(isqrt(2i64.pow(54) - 1), 134217727);
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
