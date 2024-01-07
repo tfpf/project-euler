@@ -165,36 +165,6 @@ fn gcd_test() {
     assert_eq!(coprime_pairs, 58752000);
 }
 
-/// Check for leap years.
-///
-/// * `year`
-///
-/// -> Whether the input is a leap year.
-pub fn is_leap(year: i64) -> bool {
-    year % 4 == 0 && year % 100 != 0 || year % 400 == 0
-}
-
-/// Determine the number of days in the given month of the given year.
-///
-/// * `year`
-/// * `month` - Number from 1 to 12.
-///
-/// -> Number of days, or 0 if the month is invalid.
-pub fn days_in(year: i64, month: i64) -> i64 {
-    match month {
-        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
-        4 | 6 | 9 | 11 => 30,
-        2 => {
-            if is_leap(year) {
-                29
-            } else {
-                28
-            }
-        }
-        _ => 0,
-    }
-}
-
 /// Find the length of the repeating part of the decimal representation of the
 /// reciprocal of a prime number.
 ///
@@ -1216,17 +1186,14 @@ impl Iterator for PythagoreanTriplets {
 pub struct PotentialPrimes {
     limit: i64,
     num: i64,
-    offsets_idx: usize,
-}
-impl PotentialPrimes {
-    const OFFSETS: [i64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+    offset: std::iter::Cycle<std::array::IntoIter<i64, 8>>,
 }
 impl PotentialPrimes {
     pub fn new(limit: i64) -> PotentialPrimes {
         PotentialPrimes {
             limit,
             num: 1,
-            offsets_idx: 0,
+            offset: [4, 2, 4, 2, 4, 6, 2, 6].into_iter().cycle(),
         }
     }
 }
@@ -1237,10 +1204,7 @@ impl Iterator for PotentialPrimes {
             1 => 1,
             2 => 1,
             3 | 5 => 2,
-            _ => {
-                self.offsets_idx = (self.offsets_idx + 1) % 8;
-                PotentialPrimes::OFFSETS[self.offsets_idx]
-            }
+            _ => self.offset.next().unwrap(),
         };
         if self.num > self.limit {
             None
