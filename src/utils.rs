@@ -77,7 +77,7 @@ fn is_prime_large_test() {
 fn is_prime_tbd(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
-    PotentialPrimes::new((num as f64).sqrt() as i64)
+    PotentialPrimes::new(isqrt(num))
         .skip(3)
         .all(|potential_prime| num % potential_prime != 0)
 }
@@ -276,6 +276,35 @@ pub fn digits_frequencies(num: i64) -> [u8; 10] {
         frequency[digit as usize] += 1;
     }
     frequency
+}
+
+/// Calculate the square root of an integer, rounded down. To be used until
+/// integer square roots are stabilised.
+///
+/// * `num` - Number to root.
+///
+/// -> Square root. If negative, the same number is returned.
+pub fn isqrt(mut num: i64) -> i64 {
+    if num < 2 {
+        return num;
+    }
+    let (mut result, mut one) = (0, 1 << (num.ilog2() & !1));
+    while one != 0 {
+        if num >= result + one {
+            num -= result + one;
+            result = (result >> 1) + one;
+        } else {
+            result >>= 1;
+        }
+        one >>= 2;
+    }
+    result
+}
+
+#[test]
+pub fn isqrt_test() {
+    assert_eq!(isqrt(2i64.pow(53) - 1), 94906265);
+    assert_eq!(isqrt(2i64.pow(54) - 1), 134217727);
 }
 
 /******************************************************************************
@@ -1014,7 +1043,7 @@ impl Divisors {
     pub fn new(dividend: i64) -> Divisors {
         Divisors {
             dividend,
-            limit: (dividend as f64).sqrt() as i64,
+            limit: isqrt(dividend),
             current: 0,
             other: 0,
         }
@@ -1140,7 +1169,7 @@ impl PythagoreanTriplets {
     pub fn new(perimeter: i64) -> PythagoreanTriplets {
         let semiperimeter = perimeter / 2;
         // Non-strict upper bound for the parameter `m`.
-        let m_ub = (semiperimeter as f64).sqrt() as i64;
+        let m_ub = isqrt(semiperimeter);
         PythagoreanTriplets {
             semiperimeter,
             m_ub,
