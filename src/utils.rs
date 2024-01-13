@@ -576,6 +576,10 @@ impl SieveOfAtkin {
         16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
         12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
     ];
+    const ALGORITHM: [u8; 60] = [
+        0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1,
+        0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3,
+    ];
 }
 impl SieveOfAtkin {
     pub fn new(limit: usize) -> SieveOfAtkin {
@@ -593,10 +597,10 @@ impl SieveOfAtkin {
     }
     fn init(&mut self) {
         for delta in 1..60 {
-            match delta {
-                1 | 13 | 17 | 29 | 37 | 41 | 49 | 53 => self.algorithm_3_1(delta),
-                7 | 19 | 31 | 43 => self.algorithm_3_2(delta),
-                11 | 23 | 47 | 59 => self.algorithm_3_3(delta),
+            match SieveOfAtkin::ALGORITHM[delta as usize] {
+                1 => self.algorithm_3_1(delta),
+                2 => self.algorithm_3_2(delta),
+                3 => self.algorithm_3_3(delta),
                 _ => (),
             }
         }
