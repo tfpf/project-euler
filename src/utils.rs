@@ -561,6 +561,9 @@ impl PandigitalChecker {
     }
 }
 
+/// Generate prime numbers using the sieve of Atkin. This sieves prime numbers
+/// up to 1000000000 nearly twice as fast as my wheel-factorised sieve of
+/// Eratosthenes implementation (which I have now removed).
 pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
@@ -579,7 +582,7 @@ impl SieveOfAtkin {
     pub fn new(limit: usize) -> SieveOfAtkin {
         let limit_rounded = (limit - limit % 60)
             .checked_add(60)
-            .expect("Overflow detected. Argument too large.");
+            .expect("overflow detected; argument too large");
         let sieve_len = limit / 60 + 1;
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
@@ -706,6 +709,20 @@ impl SieveOfAtkin {
             (k0, x) = (k0 + x + 5, x + 10);
         }
     }
+    pub fn is_prime(&self, num: usize) -> bool {
+        if num < 2 {
+            return false;
+        }
+        if num == 2 || num == 3 || num == 5 {
+            return true;
+        }
+        let num_div_60 = num / 60;
+        let num_mod_60 = num % 60;
+        if num_div_60 >= self.sieve.len() {
+            panic!("queried number is out of range of the sieve")
+        }
+        self.sieve[num_div_60] & (1u32 << SieveOfAtkin::SHIFTS[num_mod_60]) as u16 != 0
+    }
     pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
@@ -729,117 +746,6 @@ impl SieveOfAtkin {
 #[test]
 fn sieve_of_atkin_test() {
     let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
-    assert_eq!(num_of_primes, 1480206279);
-}
-
-/// Construct the sieve of Eratosthenes. This is stored as an array of bytes
-/// in which the bits of the first byte (from least significant to most
-/// significant) indicate the primality of 1, 7, 11, 13, 17, 19, 23 and 29; the
-/// second byte, of 31, 37, 41, 43, 47, 49, 53 and 59; and so on. (These are
-/// the numbers coprime to 30. Any number not coprime to 30 is guaranteed to be
-/// composite, with 2, 3 and 5 being the only exceptions.) In effect, wheel
-/// factorisation with 2, 3 and 5 is used.
-pub struct SieveOfEratosthenes {
-    limit: usize,
-    bitfields: Vec<u8>,
-}
-impl SieveOfEratosthenes {
-    // Differences between consecutive elements of
-    // [1, 7, 11, 13, 17, 19, 23, 29]. Starting from 1, repeatedly adding these
-    // numbers cyclically will yield all numbers congruent to them.
-    const OFFSETS: [usize; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
-    // Indices are residues modulo 30. Values are indices into
-    // [1, 7, 11, 13, 17, 19, 23, 29] at which the residue appears. If the
-    // value is 8, it means that that residue does not appear in said array.
-    const RESIDUE_MAP: [usize; 30] = [
-        8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7,
-    ];
-}
-impl SieveOfEratosthenes {
-    pub fn new(limit: usize) -> SieveOfEratosthenes {
-        let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
-        let mut sieve_of_eratosthenes = SieveOfEratosthenes {
-            limit,
-            bitfields: vec![255; bitfields_len],
-        };
-        sieve_of_eratosthenes.init();
-        sieve_of_eratosthenes
-    }
-    fn init(&mut self) {
-        // In the first byte, only 1 is not prime.
-        self.bitfields[0] = 254;
-
-        // In the remaining bytes, sieve out the composite numbers.
-        let mut num = 1;
-        for bitfields_idx in 0..self.bitfields.len() {
-            if num * num > self.limit {
-                break;
-            }
-            for offsets_idx in 0..8 {
-                if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
-                    for multiple in (num * num..=self.limit).step_by(num) {
-                        let (bitfields_idx, offsets_idx) = (
-                            multiple / 30,
-                            SieveOfEratosthenes::RESIDUE_MAP[multiple % 30],
-                        );
-                        if offsets_idx < 8 {
-                            self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
-                        }
-                    }
-                }
-                num += SieveOfEratosthenes::OFFSETS[offsets_idx];
-            }
-        }
-    }
-    /// Determine whether the given number is prime. The number must be less
-    /// than or equal to the number with which this object was constructed.
-    ///
-    /// * `num` - Number to check.
-    pub fn is_prime(&self, num: usize) -> bool {
-        if num > self.limit {
-            panic!("primality is not determined for numbers beyond the limit");
-        }
-        if num < 2 {
-            return false;
-        }
-        if num == 2 || num == 3 || num == 5 {
-            return true;
-        }
-        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
-        if offsets_idx == 8 {
-            return false;
-        }
-        self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1
-    }
-    /// Iterate over all prime numbers until the number this object was
-    /// constructed with.
-    ///
-    /// -> Prime iterator.
-    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
-        let mut num = 1;
-        [2, 3, 5]
-            .into_iter()
-            .chain(
-                self.bitfields
-                    .iter()
-                    .flat_map(|bitfield| {
-                        (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
-                    })
-                    .map(move |(offsets_idx, bit)| {
-                        let pair = (bit, num);
-                        num += SieveOfEratosthenes::OFFSETS[offsets_idx];
-                        pair
-                    })
-                    .filter_map(|(bit, num)| if bit == 1 { Some(num) } else { None }),
-            )
-            .take_while(|&num| num <= self.limit)
-            .map(|num| num as i64)
-    }
-}
-
-#[test]
-fn sieve_of_eratosthenes_test() {
-    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(35)).iter().count();
     assert_eq!(num_of_primes, 1480206279);
 }
 
@@ -1352,8 +1258,7 @@ impl Iterator for PythagoreanTriplets {
 }
 
 /// Potential prime numbers. Generates some small prime numbers and numbers
-/// coprime to 30. Used for wheel factorisation with 2, 3 and 5. See
-/// `SieveOfEratosthenes` for details.
+/// coprime to 30. Used for wheel factorisation with 2, 3 and 5.
 pub struct PotentialPrimes {
     limit: i64,
     num: i64,

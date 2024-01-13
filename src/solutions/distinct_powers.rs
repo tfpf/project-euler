@@ -27,9 +27,7 @@ fn exponent(mut num: i64, primes: &Vec<i64>) -> i64 {
 }
 
 pub fn solve() -> i64 {
-    let primes = utils::SieveOfEratosthenes::new(100)
-        .iter()
-        .collect::<Vec<i64>>();
+    let primes = utils::SieveOfAtkin::new(100).iter().collect::<Vec<i64>>();
     let result: i64 = (2..=100)
         .map(|a| {
             let exp = exponent(a, &primes);
