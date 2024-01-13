@@ -590,105 +590,185 @@ impl PandigitalChecker {
     }
 }
 
-/// Construct the sieve of Eratosthenes. This is stored as an array of bytes
-/// in which the bits of the first byte (from least significant to most
-/// significant) indicate the primality of 1, 7, 11, 13, 17, 19, 23 and 29; the
-/// second byte, of 31, 37, 41, 43, 47, 49, 53 and 59; and so on. (These are
-/// the numbers coprime to 30. Any number not coprime to 30 is guaranteed to be
-/// composite, with 2, 3 and 5 being the only exceptions.) In effect, wheel
-/// factorisation with 2, 3 and 5 is used.
-pub struct SieveOfEratosthenes {
+/// Generate prime numbers using the sieve of Atkin. This sieves prime numbers
+/// up to 1000000000 nearly twice as fast as my wheel-factorised sieve of
+/// Eratosthenes implementation (which I have now removed).
+pub struct SieveOfAtkin {
     limit: usize,
-    bitfields: Vec<u8>,
+    limit_rounded: usize,
+    sieve: Vec<u16>,
 }
-impl SieveOfEratosthenes {
-    // Differences between consecutive elements of
-    // [1, 7, 11, 13, 17, 19, 23, 29]. Starting from 1, repeatedly adding these
-    // numbers cyclically will yield all numbers congruent to them.
-    const OFFSETS: [usize; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
-    // Indices are residues modulo 30. Values are indices into
-    // [1, 7, 11, 13, 17, 19, 23, 29] at which the residue appears. If the
-    // value is 8, it means that that residue does not appear in said array.
-    const RESIDUE_MAP: [usize; 30] = [
-        8, 0, 8, 8, 8, 8, 8, 1, 8, 8, 8, 2, 8, 3, 8, 8, 8, 4, 8, 5, 8, 8, 8, 6, 8, 8, 8, 8, 8, 7,
+impl SieveOfAtkin {
+    const OFFSETS: [usize; 16] = [6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2];
+    const SHIFTS: [u8; 60] = [
+        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
+        16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
+        12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
+    ];
+    const ALGORITHM: [u8; 60] = [
+        0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1,
+        0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3,
     ];
 }
-impl SieveOfEratosthenes {
-    pub fn new(limit: usize) -> SieveOfEratosthenes {
-        let bitfields_len = (limit + 1) / 30 + if (limit + 1) % 30 == 0 { 0 } else { 1 };
-        let mut sieve_of_eratosthenes = SieveOfEratosthenes {
+impl SieveOfAtkin {
+    pub fn new(limit: usize) -> SieveOfAtkin {
+        let limit_rounded = (limit - limit % 60)
+            .checked_add(60)
+            .expect("overflow detected; argument too large");
+        let sieve_len = limit / 60 + 1;
+        let mut sieve_of_atkin = SieveOfAtkin {
             limit,
-            bitfields: vec![255; bitfields_len],
+            limit_rounded,
+            sieve: vec![0; sieve_len],
         };
-        sieve_of_eratosthenes.init();
-        sieve_of_eratosthenes
+        sieve_of_atkin.init();
+        sieve_of_atkin
     }
     fn init(&mut self) {
-        // In the first byte, only 1 is not prime.
-        self.bitfields[0] = 254;
-
-        // In the remaining bytes, sieve out the composite numbers.
-        let mut num = 1;
-        for bitfields_idx in 0..self.bitfields.len() {
-            if num * num > self.limit {
-                break;
+        for delta in 1..60 {
+            match SieveOfAtkin::ALGORITHM[delta as usize] {
+                1 => self.algorithm_3_1(delta),
+                2 => self.algorithm_3_2(delta),
+                3 => self.algorithm_3_3(delta),
+                _ => (),
             }
-            for offsets_idx in 0..8 {
-                if self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1 {
-                    for multiple in (num * num..=self.limit).step_by(num) {
-                        let (bitfields_idx, offsets_idx) = (
-                            multiple / 30,
-                            SieveOfEratosthenes::RESIDUE_MAP[multiple % 30],
-                        );
-                        if offsets_idx < 8 {
-                            self.bitfields[bitfields_idx] &= !(1 << offsets_idx);
-                        }
+        }
+        let mut num: usize = 1;
+        let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
+        for sieve_idx in 0..self.sieve.len() {
+            for shift in 0..16 {
+                if self.sieve[sieve_idx] >> shift & 1 == 1 {
+                    let num_sqr = num.pow(2);
+                    for multiple in (num_sqr..)
+                        .step_by(num_sqr)
+                        .take_while(|&num_sqr| num_sqr < self.limit_rounded)
+                    {
+                        let multiple_div_60 = multiple / 60;
+                        let multiple_mod_60 = multiple % 60;
+                        self.sieve[multiple_div_60] &=
+                            !(1u32 << SieveOfAtkin::SHIFTS[multiple_mod_60]) as u16;
                     }
                 }
-                num += SieveOfEratosthenes::OFFSETS[offsets_idx];
+                num += offset.next().unwrap();
             }
         }
     }
-    /// Determine whether the given number is prime. The number must be less
-    /// than or equal to the number with which this object was constructed.
-    ///
-    /// * `num` - Number to check.
-    pub fn is_prime(&self, num: usize) -> bool {
-        if num > self.limit {
-            panic!("primality is not determined for numbers beyond the limit");
+    fn algorithm_3_1(&mut self, delta: i32) {
+        for f in 1..=15 {
+            for g in 1..=30 {
+                if delta == (4 * f * f + g * g) % 60 {
+                    self.algorithm_4_1(delta, f, g);
+                }
+            }
         }
+    }
+    fn algorithm_3_2(&mut self, delta: i32) {
+        for f in 1..=10 {
+            for g in 1..=30 {
+                if delta == (3 * f * f + g * g) % 60 {
+                    self.algorithm_4_2(delta, f, g);
+                }
+            }
+        }
+    }
+    fn algorithm_3_3(&mut self, delta: i32) {
+        for f in 1..=10 {
+            for g in 1..=30 {
+                let quadratic: i32 = 3 * f * f - g * g;
+                if delta == quadratic.rem_euclid(60) {
+                    self.algorithm_4_3(delta, f, g);
+                }
+            }
+        }
+    }
+    fn algorithm_4_1(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((4 * f.pow(2) + g.pow(2) - delta) / 60) as i64;
+        while k0 < self.sieve.len() as i64 {
+            (k0, x) = (k0 + 2 * x + 15, x + 15);
+        }
+        loop {
+            (k0, x) = (k0 - 2 * x + 15, x - 15);
+            if x <= 0 {
+                return;
+            }
+            while k0 < 0 {
+                (k0, y0) = (k0 + y0 + 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k + y + 15, y + 30);
+            }
+        }
+    }
+    fn algorithm_4_2(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((3 * f.pow(2) + g.pow(2) - delta) / 60) as i64;
+        while k0 < self.sieve.len() as i64 {
+            (k0, x) = (k0 + x + 5, x + 10);
+        }
+        loop {
+            (k0, x) = (k0 - x + 5, x - 10);
+            if x <= 0 {
+                return;
+            }
+            while k0 < 0 {
+                (k0, y0) = (k0 + y0 + 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k + y + 15, y + 30);
+            }
+        }
+    }
+    fn algorithm_4_3(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((3 * f.pow(2) - g.pow(2) - delta) / 60) as i64;
+        loop {
+            while k0 >= self.sieve.len() as i64 {
+                if x <= y0 {
+                    return;
+                }
+                (k0, y0) = (k0 - y0 - 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k >= 0 && y < x {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k - y - 15, y + 30);
+            }
+            (k0, x) = (k0 + x + 5, x + 10);
+        }
+    }
+    pub fn is_prime(&self, num: usize) -> bool {
         if num < 2 {
             return false;
         }
         if num == 2 || num == 3 || num == 5 {
             return true;
         }
-        let (bitfields_idx, offsets_idx) = (num / 30, SieveOfEratosthenes::RESIDUE_MAP[num % 30]);
-        if offsets_idx == 8 {
-            return false;
+        let num_div_60 = num / 60;
+        let num_mod_60 = num % 60;
+        if num_div_60 >= self.sieve.len() {
+            panic!("queried number is out of range of the sieve")
         }
-        self.bitfields[bitfields_idx] >> offsets_idx & 1 == 1
+        self.sieve[num_div_60] & (1u32 << SieveOfAtkin::SHIFTS[num_mod_60]) as u16 != 0
     }
-    /// Iterate over all prime numbers until the number this object was
-    /// constructed with.
-    ///
-    /// -> Prime iterator.
     pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
-        let mut num = 1;
+        let mut num: usize = 1;
+        let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
         [2, 3, 5]
             .into_iter()
             .chain(
-                self.bitfields
+                self.sieve
                     .iter()
-                    .flat_map(|bitfield| {
-                        (0..8).map(move |offsets_idx| (offsets_idx, bitfield >> offsets_idx & 1))
-                    })
-                    .map(move |(offsets_idx, bit)| {
-                        let pair = (bit, num);
-                        num += SieveOfEratosthenes::OFFSETS[offsets_idx];
-                        pair
-                    })
-                    .filter_map(|(bit, num)| if bit == 1 { Some(num) } else { None }),
+                    .flat_map(|bitfield| (0..16).map(move |shift| bitfield >> shift & 1 == 1))
+                    .filter_map(move |is_prime| {
+                        let filtered = if is_prime { Some(num) } else { None };
+                        num += offset.next().unwrap();
+                        filtered
+                    }),
             )
             .take_while(|&num| num <= self.limit)
             .map(|num| num as i64)
@@ -696,8 +776,8 @@ impl SieveOfEratosthenes {
 }
 
 #[test]
-fn sieve_of_eratosthenes_test() {
-    let num_of_primes = SieveOfEratosthenes::new(2usize.pow(35)).iter().count();
+fn sieve_of_atkin_test() {
+    let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
     assert_eq!(num_of_primes, 1480206279);
 }
 
@@ -1210,8 +1290,7 @@ impl Iterator for PythagoreanTriplets {
 }
 
 /// Potential prime numbers. Generates some small prime numbers and numbers
-/// coprime to 30. Used for wheel factorisation with 2, 3 and 5. See
-/// `SieveOfEratosthenes` for details.
+/// coprime to 30. Used for wheel factorisation with 2, 3 and 5.
 pub struct PotentialPrimes {
     limit: i64,
     num: i64,

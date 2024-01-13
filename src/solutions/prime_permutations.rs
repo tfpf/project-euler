@@ -5,7 +5,7 @@ use crate::utils;
 ///
 /// -> Tuple of prime numbers.
 fn prime_permutations() -> (i64, i64, i64) {
-    let sieve = utils::SieveOfEratosthenes::new(9999);
+    let sieve = utils::SieveOfAtkin::new(9999);
     let primes = sieve
         .iter()
         .skip_while(|&prime| prime < 1000)

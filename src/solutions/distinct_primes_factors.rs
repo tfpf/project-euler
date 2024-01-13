@@ -4,9 +4,7 @@ use crate::utils;
 ///
 /// -> First of the four integers.
 fn four_distinct() -> i64 {
-    let primes = utils::SieveOfEratosthenes::new(1000)
-        .iter()
-        .collect::<Vec<i64>>();
+    let primes = utils::SieveOfAtkin::new(1000).iter().collect::<Vec<i64>>();
     let mut num = 644;
     let mut obtained = 0;
     let mut required = 4;

@@ -11,7 +11,7 @@ pub fn solve() -> i64 {
     // the number of fractions multiplied. To do this, we choose our number as
     // the product of prime numbers.
     let mut product = 1;
-    for prime in utils::SieveOfEratosthenes::new(20).iter() {
+    for prime in utils::SieveOfAtkin::new(20).iter() {
         let product_ = product * prime;
         if product_ > 1000000 {
             break;

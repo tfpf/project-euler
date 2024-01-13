@@ -9,7 +9,7 @@ pub fn solve() -> i64 {
     // time by more than 100 µs.
     let mut goldbach_constructible = vec![false; LIMIT];
 
-    let sieve = utils::SieveOfEratosthenes::new(LIMIT);
+    let sieve = utils::SieveOfAtkin::new(LIMIT);
     for prime in sieve.iter() {
         // Squares are quadrilateral numbers. Generating them like this avoids
         // having to do multiplication.
