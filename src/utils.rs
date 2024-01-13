@@ -561,6 +561,177 @@ impl PandigitalChecker {
     }
 }
 
+pub struct SieveOfAtkin {
+    limit: usize,
+    limit_rounded: usize,
+    sieve: Vec<u16>,
+}
+impl SieveOfAtkin {
+    // const RESIDUES: [u8; 16] = [1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59];
+    const OFFSETS: [usize; 16] = [6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2];
+    const SHIFTS: [u8; 60] = [
+        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
+        16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
+        12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
+    ];
+}
+impl SieveOfAtkin {
+    pub fn new(limit: usize) -> SieveOfAtkin {
+        let limit_rounded = (limit - limit % 60)
+            .checked_add(60)
+            .expect("Overflow detected. Argument too large.");
+        let sieve_len = limit / 60 + 1;
+        let mut sieve_of_atkin = SieveOfAtkin {
+            limit,
+            limit_rounded,
+            sieve: vec![0; sieve_len],
+        };
+        sieve_of_atkin.init();
+        sieve_of_atkin
+    }
+    fn init(&mut self) {
+        for delta in 1..60 {
+            match delta {
+                1 | 13 | 17 | 29 | 37 | 41 | 49 | 53 => self.algorithm_3_1(delta),
+                7 | 19 | 31 | 43 => self.algorithm_3_2(delta),
+                11 | 23 | 47 | 59 => self.algorithm_3_3(delta),
+                _ => (),
+            }
+        }
+        let mut num: usize = 1;
+        let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
+        for sieve_idx in 0..self.sieve.len() {
+            for shift in 0..16 {
+                if self.sieve[sieve_idx] >> shift & 1 == 1 {
+                    let num_sqr = num.pow(2);
+                    for multiple in (num_sqr..)
+                        .step_by(num_sqr)
+                        .take_while(|&num_sqr| num_sqr < self.limit_rounded)
+                    {
+                        let multiple_div_60 = multiple / 60;
+                        let multiple_mod_60 = multiple % 60;
+                        self.sieve[multiple_div_60] &=
+                            !(1u32 << SieveOfAtkin::SHIFTS[multiple_mod_60]) as u16;
+                    }
+                }
+                num += offset.next().unwrap();
+            }
+        }
+    }
+    fn algorithm_3_1(&mut self, delta: i32) {
+        for f in 1..=15 {
+            for g in 1..=30 {
+                if delta == (4 * f * f + g * g) % 60 {
+                    self.algorithm_4_1(delta, f, g);
+                }
+            }
+        }
+    }
+    fn algorithm_3_2(&mut self, delta: i32) {
+        for f in 1..=10 {
+            for g in 1..=30 {
+                if delta == (3 * f * f + g * g) % 60 {
+                    self.algorithm_4_2(delta, f, g);
+                }
+            }
+        }
+    }
+    fn algorithm_3_3(&mut self, delta: i32) {
+        for f in 1..=10 {
+            for g in 1..=30 {
+                let quadratic: i32 = 3 * f * f - g * g;
+                if delta == quadratic.rem_euclid(60) {
+                    self.algorithm_4_3(delta, f, g);
+                }
+            }
+        }
+    }
+    fn algorithm_4_1(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((4 * f.pow(2) + g.pow(2) - delta) / 60) as i64;
+        while k0 < self.sieve.len() as i64 {
+            (k0, x) = (k0 + 2 * x + 15, x + 15);
+        }
+        loop {
+            (k0, x) = (k0 - 2 * x + 15, x - 15);
+            if x <= 0 {
+                return;
+            }
+            while k0 < 0 {
+                (k0, y0) = (k0 + y0 + 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k + y + 15, y + 30);
+            }
+        }
+    }
+    fn algorithm_4_2(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((3 * f.pow(2) + g.pow(2) - delta) / 60) as i64;
+        while k0 < self.sieve.len() as i64 {
+            (k0, x) = (k0 + x + 5, x + 10);
+        }
+        loop {
+            (k0, x) = (k0 - x + 5, x - 10);
+            if x <= 0 {
+                return;
+            }
+            while k0 < 0 {
+                (k0, y0) = (k0 + y0 + 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k + y + 15, y + 30);
+            }
+        }
+    }
+    fn algorithm_4_3(&mut self, delta: i32, f: i32, g: i32) {
+        let (mut x, mut y0) = (f as i64, g as i64);
+        let mut k0 = ((3 * f.pow(2) - g.pow(2) - delta) / 60) as i64;
+        loop {
+            while k0 >= self.sieve.len() as i64 {
+                if x <= y0 {
+                    return;
+                }
+                (k0, y0) = (k0 - y0 - 15, y0 + 30);
+            }
+            let (mut k, mut y) = (k0, y0);
+            while k >= 0 && y < x {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                (k, y) = (k - y - 15, y + 30);
+            }
+            (k0, x) = (k0 + x + 5, x + 10);
+        }
+    }
+    pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
+        let mut num: usize = 1;
+        let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
+        [2, 3, 5]
+            .into_iter()
+            .chain(
+                self.sieve
+                    .iter()
+                    .flat_map(|bitfield| (0..16).map(move |shift| bitfield >> shift & 1))
+                    .filter_map(move |bit| {
+                        let filtered = if bit == 1 { Some(num) } else { None };
+                        num += offset.next().unwrap();
+                        filtered
+                    }),
+            )
+            .take_while(|&num| num <= self.limit)
+            .map(|num| num as i64)
+    }
+}
+
+#[test]
+fn sieve_of_atkin_test() {
+    let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
+    assert_eq!(num_of_primes, 1480206279);
+}
+
 /// Construct the sieve of Eratosthenes. This is stored as an array of bytes
 /// in which the bits of the first byte (from least significant to most
 /// significant) indicate the primality of 1, 7, 11, 13, 17, 19, 23 and 29; the
