@@ -570,7 +570,6 @@ pub struct SieveOfAtkin {
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
-    // const RESIDUES: [u8; 16] = [1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59];
     const OFFSETS: [usize; 16] = [6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2];
     const SHIFTS: [u8; 60] = [
         16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
@@ -731,9 +730,9 @@ impl SieveOfAtkin {
             .chain(
                 self.sieve
                     .iter()
-                    .flat_map(|bitfield| (0..16).map(move |shift| bitfield >> shift & 1))
-                    .filter_map(move |bit| {
-                        let filtered = if bit == 1 { Some(num) } else { None };
+                    .flat_map(|bitfield| (0..16).map(move |shift| bitfield >> shift & 1 == 1))
+                    .filter_map(move |is_prime| {
+                        let filtered = if is_prime { Some(num) } else { None };
                         num += offset.next().unwrap();
                         filtered
                     }),
