@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   sanity32:
-    name: sanity on 32-bit alpine
+    name: sanity on 32-bit alpine-3.19
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
