@@ -14,22 +14,15 @@ pub fn solve() -> i64 {
         .collect();
 
     // Bottom-to-top dynamic programming.
-    for row in (0..80).rev() {
-        for col in (0..80).rev() {
-            let down = if row + 1 < 80 {
-                matrix[row + 1][col]
-            } else {
-                i32::MAX
-            };
-            let right = if col + 1 < 80 {
-                matrix[row][col + 1]
-            } else {
-                i32::MAX
-            };
-            let shorter = std::cmp::min(down, right);
-            if shorter != i32::MAX {
-                matrix[row][col] += shorter;
-            }
+    for row in (0..80).rev().skip(1) {
+        matrix[row][79] += matrix[row + 1][79];
+    }
+    for col in (0..80).rev().skip(1) {
+        matrix[79][col] += matrix[79][col + 1];
+    }
+    for row in (0..80).rev().skip(1) {
+        for col in (0..80).rev().skip(1) {
+            matrix[row][col] += std::cmp::min(matrix[row + 1][col], matrix[row][col + 1]);
         }
     }
     let result = matrix[0][0];
