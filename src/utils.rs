@@ -646,6 +646,8 @@ impl SieveOfAtkin {
                 _ => (),
             }
         }
+
+        // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
         for sieve_idx in 0..self.sieve.len() {
