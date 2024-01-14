@@ -165,25 +165,6 @@ fn gcd_test() {
     assert_eq!(coprime_pairs, 58752000);
 }
 
-/// Find the length of the repeating part of the decimal representation of the
-/// reciprocal of a prime number.
-///
-/// * `prime` - Prime number.
-///
-/// -> Recurrence cycle length.
-pub fn recurrence_length(prime: i64) -> i64 {
-    // The digits (i.e. the sequence of quotients) will start repeating when
-    // the remainder becomes 1 for the second time.
-    let mut rem = 1;
-    for length in 1.. {
-        rem = rem * 10 % prime;
-        if rem == 1 {
-            return length;
-        }
-    }
-    unreachable!();
-}
-
 /// Generate the next permutation.
 ///
 /// * `slice` - Object containing the unique items to permute.
