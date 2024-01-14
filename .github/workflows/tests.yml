@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - src/utils.rs
+  workflow_dispatch:
 
 jobs:
   tests:
