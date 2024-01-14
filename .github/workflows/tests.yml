@@ -5,14 +5,8 @@ on:
       - src/utils.rs
 
 jobs:
-  tests-i686:
-    name: tests-i686
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker build .
-  tests-amd64:
-    name: tests-amd64
+  tests:
+    name: tests
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
