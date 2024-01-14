@@ -40,6 +40,7 @@ pub mod odd_period_square_roots;
 pub mod pandigital_multiples;
 pub mod pandigital_prime;
 pub mod pandigital_products;
+pub mod path_sum_two_ways;
 pub mod pentagon_numbers;
 pub mod permuted_multiples;
 pub mod poker_hands;
