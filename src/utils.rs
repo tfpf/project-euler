@@ -579,6 +579,7 @@ impl PandigitalChecker {
 pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
+    limit_rounded_root: usize,
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
@@ -612,6 +613,7 @@ impl SieveOfAtkin {
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
             limit_rounded,
+            limit_rounded_root: isqrt(limit_rounded as i64) as usize,
             sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
@@ -631,7 +633,7 @@ impl SieveOfAtkin {
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
-        for sieve_idx in 0..self.sieve.len() {
+        'sieve: for sieve_idx in 0..self.sieve.len() {
             for shift in 0..16 {
                 if self.sieve[sieve_idx] >> shift & 1 == 1 {
                     let num_sqr = num.pow(2);
@@ -646,6 +648,9 @@ impl SieveOfAtkin {
                     }
                 }
                 num += offset.next().unwrap();
+                if num > self.limit_rounded_root {
+                    break 'sieve;
+                }
             }
         }
     }
