@@ -3,14 +3,14 @@ on: [push, workflow_dispatch]
 
 jobs:
   sanity32:
-    name: sanity on alpine (32-bit)
+    name: sanity on 32-bit alpine
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t sanity32 .
       - run: docker run sanity32
   sanity64:
-    name: sanity on ${{ matrix.os }} (64-bit)
+    name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
