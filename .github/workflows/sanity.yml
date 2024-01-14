@@ -2,13 +2,19 @@ name: sanity
 on: [push, workflow_dispatch]
 
 jobs:
-  sanity:
-    name: sanity on ${{ matrix.os }}
+  sanity32:
+    name: sanity on 32-bit alpine:3.19
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t sanity32 .
+      - run: docker run sanity32
+  sanity64:
+    name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-12, ubuntu-22.04, windows-2022]
     steps:
       - uses: actions/checkout@v4
-      - run: cargo -vv build --release
       - run: cargo -vv run --release
