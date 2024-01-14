@@ -592,47 +592,62 @@ impl PandigitalChecker {
 
 /// Generate prime numbers using the sieve of Atkin. This sieves prime numbers
 /// up to 1000000000 nearly twice as fast as my wheel-factorised sieve of
-/// Eratosthenes implementation (which I have now removed).
+/// Eratosthenes implementation (which I have now removed). It only determines
+/// the primality of numbers coprime to 60, because other numbers are
+/// guaranteed to be composite. (Exceptions 2, 3 and 5 are handled separately.)
 pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
+    // Consecutive differences between coprime residues modulo 60: 1, 7, 11,
+    // 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53 and 59.
     const OFFSETS: [usize; 16] = [6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2];
+    // Position of the bit indicating the primality of a coprime residue modulo
+    // 60 in a 16-element bitfield. For non-coprime residues, the value is 16.
     const SHIFTS: [u8; 60] = [
         16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
         16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
         12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
     ];
-    const ALGORITHM: [u8; 60] = [
+    // Which algorithm to apply for each residue.
+    const ALGORITHMS: [u8; 60] = [
         0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1,
         0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3,
     ];
 }
 impl SieveOfAtkin {
+    /// Construct the sieve of Atkin up to and including the given number.
+    ///
+    /// * `limit` - Non-strict upper bound.
+    ///
+    /// -> Sieve of Atkin.
     pub fn new(limit: usize) -> SieveOfAtkin {
+        // Strict upper bound divisible by 60.
         let limit_rounded = (limit - limit % 60)
             .checked_add(60)
             .expect("overflow detected; argument too large");
-        let sieve_len = limit / 60 + 1;
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
             limit_rounded,
-            sieve: vec![0; sieve_len],
+            sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
         sieve_of_atkin
     }
     fn init(&mut self) {
-        for delta in 1..60 {
-            match SieveOfAtkin::ALGORITHM[delta as usize] {
+        for (delta, algorithm) in SieveOfAtkin::ALGORITHMS.iter().enumerate() {
+            let delta = delta as i32;
+            match algorithm {
                 1 => self.algorithm_3_1(delta),
                 2 => self.algorithm_3_2(delta),
                 3 => self.algorithm_3_3(delta),
                 _ => (),
             }
         }
+
+        // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
         for sieve_idx in 0..self.sieve.len() {
@@ -776,7 +791,13 @@ impl SieveOfAtkin {
 }
 
 #[test]
-fn sieve_of_atkin_test() {
+fn sieve_of_atkin_small_test() {
+    let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
+    assert_eq!(num_of_primes, 50847534);
+}
+
+#[test]
+fn sieve_of_atkin_large_test() {
     let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
     assert_eq!(num_of_primes, 1480206279);
 }
