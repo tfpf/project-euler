@@ -639,7 +639,7 @@ impl SieveOfAtkin {
                     let num_sqr = num.pow(2);
                     for multiple in (num_sqr..)
                         .step_by(num_sqr)
-                        .take_while(|&num_sqr| num_sqr < self.limit_rounded)
+                        .take_while(|&multiple| multiple < self.limit_rounded)
                     {
                         let multiple_div_60 = multiple / 60;
                         let multiple_mod_60 = multiple % 60;
