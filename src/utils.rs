@@ -40,12 +40,14 @@ pub fn is_prime(num: i64) -> bool {
     }
 }
 
+#[cfg(target_pointer_width = "64")]
 #[test]
 fn is_prime_smaller_test() {
     let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
 }
 
+#[cfg(target_pointer_width = "64")]
 #[test]
 fn is_prime_small_test() {
     let num_of_primes = (2i64.pow(32)..2i64.pow(33))
@@ -776,12 +778,14 @@ impl SieveOfAtkin {
     }
 }
 
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 #[test]
 fn sieve_of_atkin_small_test() {
     let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
     assert_eq!(num_of_primes, 50847534);
 }
 
+#[cfg(target_pointer_width = "64")]
 #[test]
 fn sieve_of_atkin_large_test() {
     let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();

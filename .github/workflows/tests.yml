@@ -6,8 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
-    name: tests
+  tests32:
+    name: tests on 32-bit alpine:3.19
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          push: false
+          load: true
+          tags: tests32
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: tests32
+          run: cargo test --release
+  tests64:
+    name: tests on 64-bit ubuntu-22.04
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4

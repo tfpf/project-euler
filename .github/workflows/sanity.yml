@@ -6,9 +6,16 @@ jobs:
     name: sanity on 32-bit alpine:3.19
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - run: docker build -t sanity32 .
-      - run: docker run sanity32
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          push: false
+          load: true
+          tags: sanity32
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: sanity32
+          run: cargo -vv run --release
   sanity64:
     name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
