@@ -595,11 +595,6 @@ impl SieveOfAtkin {
         16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
         12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
     ];
-    // Which algorithm to apply for each residue.
-    const ALGORITHMS: [u8; 60] = [
-        0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1,
-        0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3,
-    ];
 }
 impl SieveOfAtkin {
     /// Construct the sieve of Atkin up to and including the given number.
@@ -622,15 +617,22 @@ impl SieveOfAtkin {
         sieve_of_atkin
     }
     fn init(&mut self) {
-        for (delta, algorithm) in SieveOfAtkin::ALGORITHMS.iter().enumerate() {
-            let delta = delta as i32;
-            match algorithm {
-                1 => self.algorithm_3_1(delta),
-                2 => self.algorithm_3_2(delta),
-                3 => self.algorithm_3_3(delta),
-                _ => (),
-            }
-        }
+        self.algorithm_3_1(1);
+        self.algorithm_3_1(13);
+        self.algorithm_3_1(17);
+        self.algorithm_3_1(29);
+        self.algorithm_3_1(37);
+        self.algorithm_3_1(41);
+        self.algorithm_3_1(49);
+        self.algorithm_3_1(53);
+        self.algorithm_3_2(7);
+        self.algorithm_3_2(19);
+        self.algorithm_3_2(31);
+        self.algorithm_3_2(43);
+        self.algorithm_3_3(11);
+        self.algorithm_3_3(23);
+        self.algorithm_3_3(47);
+        self.algorithm_3_3(59);
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
