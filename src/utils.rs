@@ -778,13 +778,19 @@ impl SieveOfAtkin {
 
 #[test]
 fn sieve_of_atkin_small_test() {
-    let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
+    let Some(limit) = 10usize.checked_pow(9) else {
+        return;
+    };
+    let num_of_primes = SieveOfAtkin::new(limit).iter().count();
     assert_eq!(num_of_primes, 50847534);
 }
 
 #[test]
 fn sieve_of_atkin_large_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
+    let Some(limit) = 2usize.checked_pow(35) else {
+        return;
+    };
+    let num_of_primes = SieveOfAtkin::new(limit).iter().count();
     assert_eq!(num_of_primes, 1480206279);
 }
 
