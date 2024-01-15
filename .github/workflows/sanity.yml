@@ -10,6 +10,7 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           push: false
+          load: true
           tags: sanity32
       - uses: addnab/docker-run-action@v3
         with:
