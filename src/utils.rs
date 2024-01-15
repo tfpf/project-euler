@@ -42,12 +42,18 @@ pub fn is_prime(num: i64) -> bool {
 
 #[test]
 fn is_prime_smaller_test() {
+    if isize::MAX <= i32::MAX {
+        return;
+    }
     let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 203280221);
 }
 
 #[test]
 fn is_prime_small_test() {
+    if isize::MAX <= i32::MAX {
+        return;
+    }
     let num_of_primes = (2i64.pow(32)..2i64.pow(33))
         .filter(|&num| is_prime(num))
         .count();
