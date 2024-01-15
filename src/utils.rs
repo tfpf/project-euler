@@ -780,6 +780,12 @@ impl SieveOfAtkin {
     }
 }
 
+#[test]
+fn sieve_of_atkin_smaller_test() {
+    let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
+    assert_eq!(num_of_primes, 1900);
+}
+
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 #[test]
 fn sieve_of_atkin_small_test() {
