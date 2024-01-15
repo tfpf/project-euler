@@ -617,15 +617,22 @@ impl SieveOfAtkin {
         sieve_of_atkin
     }
     fn init(&mut self) {
-        for delta in [1, 13, 17, 29, 37, 41, 49, 53] {
-            self.algorithm_3_1(delta);
-        }
-        for delta in [7, 19, 31, 43] {
-            self.algorithm_3_2(delta);
-        }
-        for delta in [11, 23, 47, 59] {
-            self.algorithm_3_3(delta);
-        }
+        self.algorithm_3_1(1);
+        self.algorithm_3_1(13);
+        self.algorithm_3_1(17);
+        self.algorithm_3_1(29);
+        self.algorithm_3_1(37);
+        self.algorithm_3_1(41);
+        self.algorithm_3_1(49);
+        self.algorithm_3_1(53);
+        self.algorithm_3_2(7);
+        self.algorithm_3_2(19);
+        self.algorithm_3_2(31);
+        self.algorithm_3_2(43);
+        self.algorithm_3_3(11);
+        self.algorithm_3_3(23);
+        self.algorithm_3_3(47);
+        self.algorithm_3_3(59);
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
