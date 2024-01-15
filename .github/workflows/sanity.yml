@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t sanity32 .
-      - run: docker run sanity32
+      - uses: addnab/docker-run-action@v3
+        with:
+          run: cargo -vv run release
   sanity64:
     name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
