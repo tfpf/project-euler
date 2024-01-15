@@ -780,6 +780,12 @@ impl SieveOfAtkin {
     }
 }
 
+#[test]
+fn sieve_of_atkin_smaller_test() {
+    let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
+    assert_eq!(num_of_primes, 1900);
+}
+
 #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
 #[test]
 fn sieve_of_atkin_small_test() {
@@ -790,8 +796,8 @@ fn sieve_of_atkin_small_test() {
 #[cfg(target_pointer_width = "64")]
 #[test]
 fn sieve_of_atkin_large_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(35)).iter().count();
-    assert_eq!(num_of_primes, 1480206279);
+    let num_of_primes = SieveOfAtkin::new(2usize.pow(36)).iter().count();
+    assert_eq!(num_of_primes, 2874398515);
 }
 
 /// A hand of poker.
