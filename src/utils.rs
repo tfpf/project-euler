@@ -660,7 +660,7 @@ impl SieveOfAtkin {
     }
     fn algorithm_3_1(&mut self, delta: i32) {
         for f in 1..=15 {
-            for g in 1..=30 {
+            for g in (1..=30).step_by(2) {
                 if delta == (4 * f * f + g * g) % 60 {
                     self.algorithm_4_1(delta, f, g);
                 }
