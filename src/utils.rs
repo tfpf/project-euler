@@ -660,7 +660,7 @@ impl SieveOfAtkin {
     }
     fn algorithm_3_1(&mut self, delta: i32) {
         for f in 1..=15 {
-            for g in 1..=30 {
+            for g in (1..=30).step_by(2) {
                 if delta == (4 * f * f + g * g) % 60 {
                     self.algorithm_4_1(delta, f, g);
                 }
@@ -668,8 +668,8 @@ impl SieveOfAtkin {
         }
     }
     fn algorithm_3_2(&mut self, delta: i32) {
-        for f in 1..=10 {
-            for g in 1..=30 {
+        for f in (1..=10).step_by(2) {
+            for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 if delta == (3 * f * f + g * g) % 60 {
                     self.algorithm_4_2(delta, f, g);
                 }
@@ -677,10 +677,10 @@ impl SieveOfAtkin {
         }
     }
     fn algorithm_3_3(&mut self, delta: i32) {
-        for f in 1..=10 {
-            for g in 1..=30 {
-                let quadratic: i32 = 3 * f * f - g * g;
-                if delta == quadratic.rem_euclid(60) {
+        for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
+            for g in (gstart..=30).step_by(2) {
+                // Remainder can be negative, so perform modulo operation.
+                if delta == (3i32 * f * f - g * g).rem_euclid(60) {
                     self.algorithm_4_3(delta, f, g);
                 }
             }
