@@ -573,6 +573,8 @@ impl PandigitalChecker {
     }
 }
 
+/// A. O. L. Atkin and D. J. Bernstein, "Prime Sieves Using Binary Quadratic
+/// Forms", in Mathematics of Computation, vol. 73, no. 246, pp. 1023–1030.
 /// Generate prime numbers using the sieve of Atkin. This sieves prime numbers
 /// up to 1000000000 nearly twice as fast as my wheel-factorised sieve of
 /// Eratosthenes implementation (which I have now removed). It only determines
@@ -581,7 +583,7 @@ impl PandigitalChecker {
 pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
-    limit_rounded_root: usize,
+    limit_rounded_isqrt: usize,
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
@@ -610,7 +612,7 @@ impl SieveOfAtkin {
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
             limit_rounded,
-            limit_rounded_root: isqrt(limit_rounded as i64) as usize,
+            limit_rounded_isqrt: isqrt(limit_rounded as i64) as usize,
             sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
@@ -645,14 +647,12 @@ impl SieveOfAtkin {
                         .step_by(num_sqr)
                         .take_while(|&multiple| multiple < self.limit_rounded)
                     {
-                        let multiple_div_60 = multiple / 60;
-                        let multiple_mod_60 = multiple % 60;
-                        self.sieve[multiple_div_60] &=
-                            !(1u32 << SieveOfAtkin::SHIFTS[multiple_mod_60]) as u16;
+                        self.sieve[multiple / 60] &=
+                            !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
                     }
                 }
                 num += offset.next().unwrap();
-                if num > self.limit_rounded_root {
+                if num > self.limit_rounded_isqrt {
                     break 'sieve;
                 }
             }
@@ -753,8 +753,7 @@ impl SieveOfAtkin {
         if num == 2 || num == 3 || num == 5 {
             return true;
         }
-        let num_div_60 = num / 60;
-        let num_mod_60 = num % 60;
+        let (num_div_60, num_mod_60) = (num / 60, num % 60);
         if num_div_60 >= self.sieve.len() {
             panic!("queried number is out of range of the sieve")
         }
