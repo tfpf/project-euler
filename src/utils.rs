@@ -1051,7 +1051,7 @@ impl Polygonal {
     /// * `num` - Number whose index is to be found.
     ///
     /// -> Index.
-    pub fn invert(sides: i64, num: i64) -> Option<i64> {
+    pub fn invert(sides: i64, num: i64) -> Result<i64, i64> {
         // A polygonal number is a quadratic function of the index it appears
         // at. Solve for the positive root of the corresponding quadratic
         // equation.
@@ -1060,10 +1060,11 @@ impl Polygonal {
         let c = -2 * num;
         let discriminant = b.pow(2) - 4 * a * c;
         let idx = (-b as f64 + (discriminant as f64).sqrt()) / (2.0 * a as f64);
+        let idx_rounded = idx.round() as i64;
         if idx.fract() == 0.0 {
-            Some(idx as i64)
+            Ok(idx_rounded)
         } else {
-            None
+            Err(idx_rounded)
         }
     }
 }

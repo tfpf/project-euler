@@ -82,6 +82,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         74 => solutions::digit_factorial_chains::solve,
         75 => solutions::singular_integer_right_triangles::solve,
         81 => solutions::path_sum_two_ways::solve,
+        85 => solutions::counting_rectangles::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
