@@ -5,7 +5,8 @@ pub fn solve() -> i64 {
     // element.
     let mut p234sum_expressible = vec![0u64; 781250];
 
-    // The largest number whose square is within the limit is 7071.
+    // The largest number whose square is within the limit is 7071. The largest
+    // whose cube is, is 368.
     let primes = utils::SieveOfAtkin::new(7071).iter().collect::<Vec<i64>>();
     let primes_pow_2 = primes
         .iter()
