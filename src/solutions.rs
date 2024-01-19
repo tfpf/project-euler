@@ -49,6 +49,7 @@ pub mod power_digit_sum;
 pub mod powerful_digit_counts;
 pub mod powerful_digit_sum;
 pub mod prime_permutations;
+pub mod prime_power_triples;
 pub mod quadratic_primes;
 pub mod reciprocal_cycles;
 pub mod self_powers;
