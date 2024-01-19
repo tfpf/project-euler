@@ -4,7 +4,7 @@ pub fn solve() -> i64 {
     // The number of rectangles in a rectangular grid measuring `a` units by
     // `b` units is obtained by multiplying the sum of all positive integers
     // till `a` and the sum of all positive integers till `b`. Said product is
-    // approximately `a.pow(2) * b.pow(2) / 4`, which be close to 2000000.
+    // approximately `a.pow(2) * b.pow(2) / 4`, which must be close to 2000000.
     // Hence, we can make an educated guess about the range to test `a` and `b`
     // for.
     let mut result = (0, 0, i64::MAX);
