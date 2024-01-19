@@ -13,13 +13,13 @@ pub fn solve() -> i64 {
         .collect::<Vec<i64>>();
     let primes_pow_3 = primes
         .iter()
+        .take_while(|&&prime| prime <= 368)
         .map(|prime| prime.pow(3))
-        .take_while(|&prime_pow_3| prime_pow_3 < 50000000)
         .collect::<Vec<i64>>();
     let primes_pow_4 = primes_pow_2
         .iter()
+        .take_while(|&&prime_pow_2| prime_pow_2 <= 7071)
         .map(|prime_pow_2| prime_pow_2.pow(2))
-        .take_while(|&prime_pow_4| prime_pow_4 < 50000000)
         .collect::<Vec<i64>>();
 
     for a in primes_pow_2 {
