@@ -1,21 +1,15 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let primes = utils::SieveOfAtkin::new(9000).iter().collect::<Vec<i64>>();
+    // The largest number whose square is within the limit is 7071.
+    let primes = utils::SieveOfAtkin::new(7071).iter().collect::<Vec<i64>>();
+    // Space optimisation: store the indicators of 64 numbers in a single
+    // element.
     let mut p234sum_expressible = vec![0u64; 781250];
-    for a in 0..primes.len() {
-        let num = primes[a].pow(2);
-        for b in 0..primes.len() {
-            let num = num + primes[b].pow(3);
-            if num as usize / 64 > p234sum_expressible.len() {
-                break;
-            }
-            for c in 0..primes.len() {
-                let num = num + primes[c].pow(4);
-                let num = num as usize;
-                if num / 64 > p234sum_expressible.len() {
-                    break;
-                }
+    for a in primes.iter().map(|prime| prime.pow(2)) {
+        for b in primes.iter().map(|prime| prime.pow(3)).take_while(|b| a + b < 50000000) {
+            for c in primes.iter().map(|prime| prime.pow(4)).take_while(|c| a + b + c < 50000000) {
+                let num = (a + b + c) as usize;
                 p234sum_expressible[num / 64] |= 1 << (num % 64);
             }
         }
