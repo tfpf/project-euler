@@ -65,3 +65,4 @@ pub mod totient_maximum;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
 pub mod xor_decryption;
+pub mod counting_rectangles;

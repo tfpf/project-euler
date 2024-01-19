@@ -115,3 +115,4 @@ fn main() {
         }
     }
 }
+        85 => solutions::counting_rectangles::solve,
