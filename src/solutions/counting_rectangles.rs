@@ -15,10 +15,8 @@ pub fn solve() -> i64 {
             let off_abs = off.abs();
             if off_abs < result.2 {
                 result = (a, b, off_abs);
-            } else {
-                if off < 0 {
-                    break;
-                }
+            } else if off < 0 {
+                break;
             }
         }
     }
