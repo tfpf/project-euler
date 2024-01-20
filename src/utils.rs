@@ -745,11 +745,12 @@ impl SieveOfAtkin {
             let sieve_len = self.sieve.len() as i64;
             if k0 >= sieve_len {
                 let radicand = (y0.pow(2) + 60 * (k0 - sieve_len)) as f64;
-                let n = ((radicand.sqrt() - y0 as f64) / 30.0 + 1.0).floor() as i64;
+                let n = ((radicand.sqrt() - y0 as f64) / 30.0).floor() as i64;
                 (k0, y0) = (k0 - y0 * n - 15 * n.pow(2), y0 + 30 * n);
                 if x <= y0 {
                     return;
                 }
+                (k0, y0) = (k0 - y0 - 15, y0 + 30);
             }
             let (mut k, mut y) = (k0, y0);
             while k >= 0 && y < x {
