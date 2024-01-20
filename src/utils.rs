@@ -27,7 +27,7 @@ pub fn is_prime(num: i64) -> bool {
         return false;
     }
     match num {
-        ..=100000 => is_prime_tbd(num),
+        ..=100000 => is_prime_td(num),
         // The Miller-Rabin tests as performed below are deterministic for all
         // possible inputs. I chose the thresholds (after consulting some
         // tables) such that each is two digits longer than the previous.
@@ -71,12 +71,12 @@ fn is_prime_large_test() {
     }
 }
 
-/// Check whether the given number is prime using trial by division.
+/// Check whether the given number is prime using trial division.
 ///
 /// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
-fn is_prime_tbd(num: i64) -> bool {
+fn is_prime_td(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
     PotentialPrimes::new(isqrt(num))
