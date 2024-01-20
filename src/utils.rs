@@ -691,8 +691,11 @@ impl SieveOfAtkin {
     }
     fn algorithm_4_1(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
-        while k0 < self.sieve.len() as i64 {
-            (k0, x) = (k0 + 2 * x + 15, x + 15);
+        let sieve_len = self.sieve.len() as i64;
+        if k0 < sieve_len {
+            let radicand = (x.pow(2) - 15 * (k0 - sieve_len)) as f64;
+            let n = ((radicand.sqrt() - x as f64) / 15.0).ceil() as i64;
+            (k0, x) = (k0 + 2 * x * n + 15 * n.pow(2), x + 15 * n);
         }
         loop {
             (k0, x) = (k0 - 2 * x + 15, x - 15);
@@ -703,7 +706,7 @@ impl SieveOfAtkin {
                 (k0, y0) = (k0 + y0 + 15, y0 + 30);
             }
             let (mut k, mut y) = (k0, y0);
-            while k < self.sieve.len() as i64 {
+            while k < sieve_len {
                 self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
                 (k, y) = (k + y + 15, y + 30);
             }
