@@ -702,8 +702,10 @@ impl SieveOfAtkin {
             if x <= 0 {
                 return;
             }
-            while k0 < 0 {
-                (k0, y0) = (k0 + y0 + 15, y0 + 30);
+            if k0 < 0 {
+                let radicand = (y0.pow(2) - 60 * k0) as f64;
+                let n = ((radicand.sqrt() - y0 as f64) / 30.0).ceil() as i64;
+                (k0, y0) = (k0 + y0 * n + 15 * n.pow(2), y0 + 30 * n);
             }
             let (mut k, mut y) = (k0, y0);
             while k < sieve_len {
