@@ -102,11 +102,30 @@ fn solve_and_time_all() {
     }
 }
 
+/// Perform minimal setup to start solving a new problem.
+///
+/// * `problem_number`
+fn add_skeleton(problem_number: i32) {
+    let url = format!("https://projecteuler.net/problem={}", problem_number);
+    let output = std::process::Command::new("curl")
+        .args([url])
+        .output()
+        .unwrap();
+    let html = std::str::from_utf8(&output.stdout).unwrap();
+    println!("{:?}", html);
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() <= 1 {
         solve_and_time_all();
         return;
+    }
+    if args.len() == 3 && args[1] == "--add" {
+        if let Ok(problem_number) = args[2].parse() {
+            add_skeleton(problem_number);
+            return;
+        }
     }
     for arg in &args[1..] {
         match arg.parse() {
