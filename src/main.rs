@@ -4,6 +4,8 @@
 #![allow(clippy::match_overlapping_arm)]
 #![allow(clippy::new_without_default)]
 
+use std::io::Write;
+
 pub mod solutions;
 pub mod utils;
 
@@ -112,7 +114,24 @@ fn add_skeleton(problem_number: i32) {
         .output()
         .unwrap();
     let html = std::str::from_utf8(&output.stdout).unwrap();
-    println!("{:?}", html);
+    let begin = html.find("<title>").unwrap() + 7;
+    let begin = begin + html[begin..].find(' ').unwrap() + 1;
+    let end = begin + html[begin..].find(" - Project Euler").unwrap();
+    let title = html[begin..end]
+        .chars()
+        .filter_map(|c| match c {
+            'A'..='Z' | 'a'..='z' | '0'..='9' => Some(c.to_ascii_lowercase()),
+            ' ' => Some('_'),
+            _ => None,
+        })
+        .collect::<String>();
+
+    let mut solution = std::fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(format!("src/solutions/{}.rs", title))
+        .unwrap();
+    writeln!(solution, "pub fn solve()->i64{{0}}").unwrap();
 }
 
 fn main() {
