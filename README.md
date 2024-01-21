@@ -102,3 +102,4 @@ such as (but not limited to) Bard and ChatGPT.
 |[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
 |[85](https://projecteuler.net/problem=85)|[`counting_rectangles.rs`](src/solutions/counting_rectangles.rs)|
 |[87](https://projecteuler.net/problem=87)|[`prime_power_triples.rs`](src/solutions/prime_power_triples.rs)|
+|[92](https://projecteuler.net/problem=92)|[`square_digit_chains.rs`](src/solutions/square_digit_chains.rs)|
