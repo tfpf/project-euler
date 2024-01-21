@@ -126,12 +126,24 @@ fn add_skeleton(problem_number: i32) {
         })
         .collect::<String>();
 
-    let mut solution = std::fs::OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(format!("src/solutions/{}.rs", title))
-        .unwrap();
-    writeln!(solution, "pub fn solve()->i64{{0}}").unwrap();
+    writeln!(
+        std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(format!("src/solutions/{}.rs", title))
+            .unwrap(),
+        "pub fn solve()->i64{{0}}"
+    )
+    .unwrap();
+    writeln!(
+        std::fs::OpenOptions::new()
+            .append(true)
+            .open(format!("src/solutions.rs"))
+            .unwrap(),
+        "pub mod {};",
+        title
+    )
+    .unwrap();
 }
 
 fn main() {
