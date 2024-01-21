@@ -49,7 +49,10 @@ fn generate_ascending(chain_stuck: &[u8; 568], digits: &mut Vec<usize>, sqsum: u
         for digit in digits {
             frequencies[*digit] += 1;
         }
-        let denominator: i32 = frequencies.iter().map(|&frequency| FACTORIAL[frequency as usize]).product();
+        let denominator: i32 = frequencies
+            .iter()
+            .map(|&frequency| FACTORIAL[frequency as usize])
+            .product();
         let numerator = 5040;
         return numerator / denominator;
     }
@@ -58,12 +61,14 @@ fn generate_ascending(chain_stuck: &[u8; 568], digits: &mut Vec<usize>, sqsum: u
         Some(&last) => last,
         None => 0,
     };
-    (last..=9).map(|digit| {
-        digits.push(digit);
-        let count = generate_ascending(chain_stuck, digits, sqsum + digit.pow(2));
-        digits.pop();
-        count
-    }).sum()
+    (last..=9)
+        .map(|digit| {
+            digits.push(digit);
+            let count = generate_ascending(chain_stuck, digits, sqsum + digit.pow(2));
+            digits.pop();
+            count
+        })
+        .sum()
 }
 
 pub fn solve() -> i64 {
