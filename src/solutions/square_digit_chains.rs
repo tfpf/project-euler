@@ -1,6 +1,10 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
+    // TODO Recursively build 7-digit numbers whose digits are in ascending
+    // order. For each such number, if it gets stuck on 89, so will the numbers
+    // formed by permuting its digits.
+
     // The greatest possible sum of digit squares in this problem is 567. Find
     // out how many numbers from 1 to 567 get stuck at 89.
     let mut chain_stuck = vec![0u8; 568];
