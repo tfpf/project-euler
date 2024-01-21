@@ -57,6 +57,7 @@ pub mod singular_integer_right_triangles;
 pub mod smallest_multiple;
 pub mod special_pythagorean_triplet;
 pub mod spiral_primes;
+pub mod square_digit_chains;
 pub mod square_root_convergents;
 pub mod sub_string_divisibility;
 pub mod sum_square_difference;
