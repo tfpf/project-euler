@@ -161,6 +161,10 @@ fn add_skels(problem_number: i32) {
         true,
         &format!("        {} => solutions::{}::solve,", problem_number, title),
     );
+    std::process::Command::new("git")
+        .args(["checkout", "-b", &format!("p{}", problem_number)])
+        .output()
+        .unwrap();
 }
 
 fn main() {
