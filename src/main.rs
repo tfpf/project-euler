@@ -104,6 +104,17 @@ fn solve_and_time_all() {
     }
 }
 
+/// Write a file with the given contents.
+fn add_skeleton_file(fname: &str, append: bool, contents: &str) {
+    let mut fhandle = std::fs::OpenOptions::new()
+        .append(append)
+        .create_new(!append)
+        .write(true)
+        .open(fname)
+        .unwrap();
+    writeln!(fhandle, "{}", contents).unwrap();
+}
+
 /// Perform minimal setup to start solving a new problem.
 ///
 /// * `problem_number`
@@ -126,24 +137,12 @@ fn add_skeleton(problem_number: i32) {
         })
         .collect::<String>();
 
-    writeln!(
-        std::fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(format!("src/solutions/{}.rs", title))
-            .unwrap(),
-        "pub fn solve()->i64{{0}}"
-    )
-    .unwrap();
-    writeln!(
-        std::fs::OpenOptions::new()
-            .append(true)
-            .open(format!("src/solutions.rs"))
-            .unwrap(),
-        "pub mod {};",
-        title
-    )
-    .unwrap();
+    add_skeleton_file(
+        &format!("src/solutions/{}.rs", title),
+        false,
+        "pub fn solve()->i64{0}",
+    );
+    add_skeleton_file("src/solutions.rs", true, &format!("pub mod {};", title));
 }
 
 fn main() {
