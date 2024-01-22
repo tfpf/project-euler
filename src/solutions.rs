@@ -23,6 +23,7 @@ pub mod highly_divisible_triangular_number;
 pub mod integer_right_triangles;
 pub mod large_non_mersenne_prime;
 pub mod large_sum;
+pub mod largest_exponential;
 pub mod largest_palindrome_product;
 pub mod largest_prime_factor;
 pub mod largest_product_in_a_grid;
