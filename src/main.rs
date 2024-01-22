@@ -87,6 +87,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         85 => solutions::counting_rectangles::solve,
         87 => solutions::prime_power_triples::solve,
         92 => solutions::square_digit_chains::solve,
+        97 => solutions::large_non_mersenne_prime::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
