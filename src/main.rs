@@ -4,6 +4,8 @@
 #![allow(clippy::match_overlapping_arm)]
 #![allow(clippy::new_without_default)]
 
+use std::io::Write;
+
 pub mod solutions;
 pub mod utils;
 
@@ -102,11 +104,80 @@ fn solve_and_time_all() {
     }
 }
 
+/// Write a file with the given contents.
+///
+/// * `fname` - File name.
+/// * `append` - Whether to append to an existing file or create a new file.
+/// * `contents` - What to write in the file.
+fn add_skel(fname: &str, append: bool, contents: &str) {
+    let mut fhandle = std::fs::OpenOptions::new()
+        .append(append)
+        .create_new(!append)
+        .write(true)
+        .open(fname)
+        .unwrap();
+    writeln!(fhandle, "{}", contents).unwrap();
+}
+
+/// Perform minimal setup (providing a skeleton) to start solving a new
+/// problem.
+///
+/// * `problem_number`
+fn add_skels(problem_number: i32) {
+    let url = format!("https://projecteuler.net/problem={}", problem_number);
+    let output = std::process::Command::new("curl")
+        .args([&url])
+        .output()
+        .unwrap();
+    let html = std::str::from_utf8(&output.stdout).unwrap();
+    let begin = html.find("<title>").unwrap() + 7;
+    let begin = begin + html[begin..].find(' ').unwrap() + 1;
+    let end = begin + html[begin..].find(" - Project Euler").unwrap();
+    let title = html[begin..end]
+        .chars()
+        .filter_map(|c| match c {
+            '0'..='9' | 'A'..='Z' | 'a'..='z' => Some(c.to_ascii_lowercase()),
+            ' ' | '-' | '_' => Some('_'),
+            _ => None,
+        })
+        .collect::<String>();
+
+    add_skel(
+        &format!("src/solutions/{}.rs", title),
+        false,
+        "pub fn solve()->i64{0}",
+    );
+    add_skel("src/solutions.rs", true, &format!("pub mod {};", title));
+    add_skel(
+        "README.md",
+        true,
+        &format!(
+            "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|",
+            problem_number, url, title, title
+        ),
+    );
+    add_skel(
+        "src/main.rs",
+        true,
+        &format!("        {} => solutions::{}::solve,", problem_number, title),
+    );
+    std::process::Command::new("git")
+        .args(["checkout", "-b", &format!("p{}", problem_number)])
+        .output()
+        .unwrap();
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() <= 1 {
         solve_and_time_all();
         return;
+    }
+    if args.len() == 3 && args[1] == "--add" {
+        if let Ok(problem_number) = args[2].parse() {
+            add_skels(problem_number);
+            return;
+        }
     }
     for arg in &args[1..] {
         match arg.parse() {
