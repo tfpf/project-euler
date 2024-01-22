@@ -6,7 +6,7 @@ pub fn solve() -> i64 {
     let result = reader
         .lines()
         .map(|line| {
-            let [base, exp] = line
+            let [base, exp]: [f64; 2] = line
                 .unwrap()
                 .split(',')
                 .map(|s| s.parse().unwrap())
