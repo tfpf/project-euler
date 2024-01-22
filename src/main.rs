@@ -136,8 +136,8 @@ fn add_skels(problem_number: i32) {
     let title = html[begin..end]
         .chars()
         .filter_map(|c| match c {
-            'A'..='Z' | 'a'..='z' | '0'..='9' => Some(c.to_ascii_lowercase()),
-            ' ' => Some('_'),
+            '0'..='9' | 'A'..='Z' | 'a'..='z' => Some(c.to_ascii_lowercase()),
+            ' ' | '-' | '_' => Some('_'),
             _ => None,
         })
         .collect::<String>();
