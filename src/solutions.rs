@@ -21,6 +21,7 @@ pub mod factorial_digit_sum;
 pub mod goldbachs_other_conjecture;
 pub mod highly_divisible_triangular_number;
 pub mod integer_right_triangles;
+pub mod large_non_mersenne_prime;
 pub mod large_sum;
 pub mod largest_palindrome_product;
 pub mod largest_prime_factor;
