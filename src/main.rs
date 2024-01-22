@@ -88,6 +88,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         87 => solutions::prime_power_triples::solve,
         92 => solutions::square_digit_chains::solve,
         97 => solutions::large_non_mersenne_prime::solve,
+        99 => solutions::largest_exponential::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
