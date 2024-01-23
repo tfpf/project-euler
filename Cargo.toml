@@ -5,4 +5,4 @@ edition = "2021"
 
 [profile.release]
 incremental = true
-strip = true
+strip = "debuginfo"
