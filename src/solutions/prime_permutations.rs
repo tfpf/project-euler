@@ -1,24 +1,11 @@
 use crate::utils;
 
-/// Find the frequencies of all digits in the given number.
-///
-/// * `num` - Number to analyse.
-///
-/// -> Map between digits and frequencies.
-fn digits_frequencies(num: i64) -> [u8; 10] {
-    let mut freq = [0; 10];
-    for digit in utils::Digits::new(num) {
-        freq[digit as usize] += 1;
-    }
-    freq
-}
-
 /// Find three prime numbers which are in arithmetic progression and consist of
 /// the same digits.
 ///
 /// -> Tuple of prime numbers.
 fn prime_permutations() -> (i64, i64, i64) {
-    let sieve = utils::SieveOfEratosthenes::new(9999);
+    let sieve = utils::SieveOfAtkin::new(9999);
     let primes = sieve
         .iter()
         .skip_while(|&prime| prime < 1000)
@@ -30,13 +17,13 @@ fn prime_permutations() -> (i64, i64, i64) {
         if primes[i] == 8147 {
             continue;
         }
-        let freqi = digits_frequencies(primes[i]);
+        let freqi = utils::digits_frequencies(primes[i]);
         for j in (0..i).rev() {
             let candidate = 2 * primes[j] - primes[i];
             if candidate >= 1000
                 && sieve.is_prime(candidate as usize)
-                && digits_frequencies(primes[j]) == freqi
-                && digits_frequencies(candidate) == freqi
+                && utils::digits_frequencies(primes[j]) == freqi
+                && utils::digits_frequencies(candidate) == freqi
             {
                 return (candidate, primes[j], primes[i]);
             }

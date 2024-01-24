@@ -6,7 +6,7 @@ impl CacheMap {
     fn new(denominations: [i32; 8]) -> CacheMap {
         CacheMap {
             map: std::collections::HashMap::new(),
-            denominations: denominations,
+            denominations,
         }
     }
     /// Count the number of ways to obtain the remaining amount of money using

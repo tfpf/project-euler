@@ -27,9 +27,7 @@ fn exponent(mut num: i64, primes: &Vec<i64>) -> i64 {
 }
 
 pub fn solve() -> i64 {
-    let primes = utils::SieveOfEratosthenes::new(100)
-        .iter()
-        .collect::<Vec<i64>>();
+    let primes = utils::SieveOfAtkin::new(100).iter().collect::<Vec<i64>>();
     let result: i64 = (2..=100)
         .map(|a| {
             let exp = exponent(a, &primes);
@@ -46,14 +44,14 @@ pub fn solve() -> i64 {
                     // would be the power of its corresponding first-power
                     // number? If that power has already been counted, ignore
                     // it.
-                    .map(|b| b * exp)
-                    .filter(|num| {
+                    .filter_map(|b| {
+                        let num = b * exp;
                         for e in 1..exp {
-                            if *num % e == 0 && *num <= 100 * e {
-                                return false;
+                            if num % e == 0 && num <= 100 * e {
+                                return None;
                             }
                         }
-                        true
+                        Some(num)
                     })
                     .count() as i64
             }

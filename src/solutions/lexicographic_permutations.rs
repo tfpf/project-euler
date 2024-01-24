@@ -8,7 +8,7 @@
 ///   `digits`.
 ///
 /// -> The correct digit of the 1_000_000th permutation.
-fn overshoot(digits: &Vec<i32>, count: &mut i32, step: i32) -> i32 {
+fn overshoot(digits: &[i32], count: &mut i32, step: i32) -> i32 {
     for (&prev, &_) in digits.iter().zip(digits.iter().skip(1)) {
         // If I set the digit `_`, how many permutations will I have seen
         // before any number containing `_` at this position?
@@ -30,7 +30,7 @@ pub fn solve() -> i64 {
     // used; it's there just to make the code simpler.
     let mut digits = (0..=10).collect::<Vec<i32>>();
 
-    let mut result: Vec<i32> = vec![];
+    let mut result = vec![];
     let mut count = 0;
     let mut step = 3628800;
     for position in 0..=9 {

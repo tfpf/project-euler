@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let sieve = utils::SieveOfEratosthenes::new(1000000);
+    let sieve = utils::SieveOfAtkin::new(1000000);
 
     let mut sum = 0;
     let primes_prefix_sum = sieve

@@ -3,8 +3,10 @@ Trying my hand at [Project Euler](https://projecteuler.net) as I stumble along l
 solutions to the first hundred problems here with the intention being to showcase whatever useful data structures I
 build along the way. This is permitted according to the Project Euler guidelines.
 
-![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)
-![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)
+[![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/style.yml)
+[![lint](https://github.com/tfpf/project-euler/actions/workflows/lint.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/lint.yml)
+[![sanity](https://github.com/tfpf/project-euler/actions/workflows/sanity.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/sanity.yml)
+[![tests](https://github.com/tfpf/project-euler/actions/workflows/tests.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/tests.yml)
 
 To solve, say, problem 16, enter the following command.
 
@@ -82,4 +84,25 @@ such as (but not limited to) Bard and ChatGPT.
 |[49](https://projecteuler.net/problem=49)|[`prime_permutations.rs`](src/solutions/prime_permutations.rs)|
 |[50](https://projecteuler.net/problem=50)|[`consecutive_prime_sum.rs`](src/solutions/consecutive_prime_sum.rs)|
 |[51](https://projecteuler.net/problem=51)|[`prime_digit_replacements.rs`](src/solutions/prime_digit_replacements.rs)|
+|[52](https://projecteuler.net/problem=52)|[`permuted_multiples.rs`](src/solutions/permuted_multiples.rs)|
+|[53](https://projecteuler.net/problem=53)|[`combinatoric_selections.rs`](src/solutions/combinatoric_selections.rs)|
+|[54](https://projecteuler.net/problem=54)|[`poker_hands.rs`](src/solutions/poker_hands.rs)|
+|[55](https://projecteuler.net/problem=55)|[`lychrel_numbers.rs`](src/solutions/lychrel_numbers.rs)|
+|[56](https://projecteuler.net/problem=56)|[`powerful_digit_sum.rs`](src/solutions/powerful_digit_sum.rs)|
+|[57](https://projecteuler.net/problem=57)|[`square_root_convergents.rs`](src/solutions/square_root_convergents.rs)|
+|[58](https://projecteuler.net/problem=58)|[`spiral_primes.rs`](src/solutions/spiral_primes.rs)|
+|[59](https://projecteuler.net/problem=59)|[`xor_decryption.rs`](src/solutions/xor_decryption.rs)|
+|[62](https://projecteuler.net/problem=62)|[`cubic_permutations.rs`](src/solutions/cubic_permutations.rs)|
+|[63](https://projecteuler.net/problem=63)|[`powerful_digit_counts.rs`](src/solutions/powerful_digit_counts.rs)|
+|[64](https://projecteuler.net/problem=64)|[`odd_period_square_roots.rs`](src/solutions/odd_period_square_roots.rs)|
+|[65](https://projecteuler.net/problem=65)|[`convergents_of_e.rs`](src/solutions/convergents_of_e.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
+|[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
+|[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|
+|[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
+|[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
+|[85](https://projecteuler.net/problem=85)|[`counting_rectangles.rs`](src/solutions/counting_rectangles.rs)|
+|[87](https://projecteuler.net/problem=87)|[`prime_power_triples.rs`](src/solutions/prime_power_triples.rs)|
+|[92](https://projecteuler.net/problem=92)|[`square_digit_chains.rs`](src/solutions/square_digit_chains.rs)|
+|[97](https://projecteuler.net/problem=97)|[`large_non_mersenne_prime.rs`](src/solutions/large_non_mersenne_prime.rs)|
+|[99](https://projecteuler.net/problem=99)|[`largest_exponential.rs`](src/solutions/largest_exponential.rs)|
