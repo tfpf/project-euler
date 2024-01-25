@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    const LIMIT: usize = 1000000000;
+    const LIMIT: usize = 1000000;
     let sieve = utils::SieveOfAtkin::new(LIMIT);
     for prime in sieve.iter() {
         let idx_digits = utils::Digits::new(prime)
@@ -22,7 +22,7 @@ pub fn solve() -> i64 {
                             .count()
                             == 8
                         {
-                            println!("{}", prime);
+                            return prime;
                         }
                     }
                 }
