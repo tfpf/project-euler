@@ -9,6 +9,7 @@ pub mod convergents_of_e;
 pub mod counting_rectangles;
 pub mod counting_sundays;
 pub mod cubic_permutations;
+pub mod cyclical_figurate_numbers;
 pub mod digit_cancelling_fractions;
 pub mod digit_factorial_chains;
 pub mod digit_factorials;
