@@ -4,8 +4,7 @@ use crate::utils;
 /// those in some fixed positions; said positions have the same digit.
 ///
 /// The number of fixed positions must be 3, 6 or 9. Otherwise, at least one
-/// of the 8 numbers in the family will be divisible by 3. We get lucky with
-/// assuming that it is 3.
+/// of the 8 numbers in the family will be divisible by 3.
 ///
 /// -> Smallest member of the family.
 fn prime_digit_replacements() -> i64 {
