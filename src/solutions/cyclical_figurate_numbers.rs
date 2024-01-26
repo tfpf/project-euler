@@ -1,6 +1,6 @@
 use crate::utils;
 
-fn set_polygonal(is_polygonal: &mut Vec<u8>, sides: i64, num: i64) {
+fn set_polygonal(is_polygonal: &mut [u8], sides: i64, num: i64) {
     is_polygonal[num as usize - 1000] |= 1 << (sides - 3);
 }
 
