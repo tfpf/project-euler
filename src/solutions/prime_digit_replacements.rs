@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub fn solve() -> i64 {
+fn prime_digit_replacements() -> i64 {
     const LIMIT: usize = 1000000;
     let sieve = utils::SieveOfAtkin::new(LIMIT);
     for prime in sieve.iter() {
@@ -29,6 +29,12 @@ pub fn solve() -> i64 {
             }
         }
     }
+    unreachable!();
+}
 
-    0
+pub fn solve() -> i64 {
+    let result = prime_digit_replacements();
+
+    assert_eq!(result, 121313);
+    result
 }
