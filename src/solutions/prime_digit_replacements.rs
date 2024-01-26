@@ -17,6 +17,9 @@ fn prime_digit_replacements() -> i64 {
         let mut digitpos: [Vec<usize>; 3] = [vec![], vec![], vec![]];
         for (position, digit) in utils::Digits::new(prime)
             .enumerate()
+            // The units digit cannot be replaced, since we would then have
+            // even numbers.
+            .skip(1)
             // If the digit is 3 or more, we cannot have an 8-family.
             .filter(|&(_, digit)| digit <= 2)
         {
