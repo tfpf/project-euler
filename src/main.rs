@@ -67,6 +67,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         48 => solutions::self_powers::solve,
         49 => solutions::prime_permutations::solve,
         50 => solutions::consecutive_prime_sum::solve,
+        51 => solutions::prime_digit_replacements::solve,
         52 => solutions::permuted_multiples::solve,
         53 => solutions::combinatoric_selections::solve,
         54 => solutions::poker_hands::solve,

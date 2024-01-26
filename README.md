@@ -83,6 +83,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[48](https://projecteuler.net/problem=48)|[`self_powers.rs`](src/solutions/self_powers.rs)|
 |[49](https://projecteuler.net/problem=49)|[`prime_permutations.rs`](src/solutions/prime_permutations.rs)|
 |[50](https://projecteuler.net/problem=50)|[`consecutive_prime_sum.rs`](src/solutions/consecutive_prime_sum.rs)|
+|[51](https://projecteuler.net/problem=51)|[`prime_digit_replacements.rs`](src/solutions/prime_digit_replacements.rs)|
 |[52](https://projecteuler.net/problem=52)|[`permuted_multiples.rs`](src/solutions/permuted_multiples.rs)|
 |[53](https://projecteuler.net/problem=53)|[`combinatoric_selections.rs`](src/solutions/combinatoric_selections.rs)|
 |[54](https://projecteuler.net/problem=54)|[`poker_hands.rs`](src/solutions/poker_hands.rs)|

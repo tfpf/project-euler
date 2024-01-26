@@ -50,6 +50,7 @@ pub mod poker_hands;
 pub mod power_digit_sum;
 pub mod powerful_digit_counts;
 pub mod powerful_digit_sum;
+pub mod prime_digit_replacements;
 pub mod prime_permutations;
 pub mod prime_power_triples;
 pub mod quadratic_primes;
