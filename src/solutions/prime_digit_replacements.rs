@@ -41,7 +41,7 @@ fn prime_digit_replacements() -> i64 {
                 .sum::<usize>();
             // How many times should it be added? Until the replaced digit
             // becomes 9.
-            let candidates = 9 - digit as usize;
+            let candidates = 9 - digit;
 
             if (prime as usize..)
                 .step_by(jump)
