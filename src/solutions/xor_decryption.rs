@@ -13,9 +13,7 @@ pub fn solve() -> i64 {
             .collect::<Vec<u8>>();
         let plaintext = std::str::from_utf8(&plain_bytes).unwrap();
         if plaintext.contains(" the ") {
-            break plain_bytes
-                .iter()
-                .fold(0i64, |sum, &byte| sum + byte as i64);
+            break plain_bytes.iter().fold(0i64, |sum, &byte| sum + byte as i64);
         }
 
         // Set up the next key.

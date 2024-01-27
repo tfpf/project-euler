@@ -79,12 +79,7 @@ pub fn solve() -> i64 {
     let reader = std::io::BufReader::new(fhandle);
     let grid: Vec<Vec<i32>> = reader
         .lines()
-        .map(|line| {
-            line.unwrap()
-                .split(' ')
-                .map(|s| s.parse().unwrap())
-                .collect()
-        })
+        .map(|line| line.unwrap().split(' ').map(|s| s.parse().unwrap()).collect())
         .collect();
 
     let horizontal = find_largest(&grid, 0, 0, 1, 0, 0, 1);

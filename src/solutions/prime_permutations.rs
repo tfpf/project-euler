@@ -6,10 +6,7 @@ use crate::utils;
 /// -> Tuple of prime numbers.
 fn prime_permutations() -> (i64, i64, i64) {
     let sieve = utils::SieveOfAtkin::new(9999);
-    let primes = sieve
-        .iter()
-        .skip_while(|&prime| prime < 1000)
-        .collect::<Vec<i64>>();
+    let primes = sieve.iter().skip_while(|&prime| prime < 1000).collect::<Vec<i64>>();
 
     // The outer index will find the largest required number. The inner index
     // will find the middle number. Hence, it makes sense to go in reverse.
