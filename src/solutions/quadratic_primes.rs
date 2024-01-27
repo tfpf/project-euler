@@ -12,7 +12,7 @@ pub fn solve() -> i64 {
         for a in (-b..=999).step_by(2) {
             let primes = (0i64..)
                 .map(|n| n.pow(2) + a * n + b)
-                .take_while(|num| utils::is_prime(*num))
+                .take_while(|&num| utils::is_prime(num))
                 .count();
             if primes > max_primes {
                 (a_times_b, max_primes) = (a * b, primes);
