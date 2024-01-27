@@ -13,10 +13,7 @@ pub fn solve() -> i64 {
         {
             let perimeter = 2 * m * (m + n);
             // Increment the counter for it and its multiples.
-            for p in (perimeter..)
-                .step_by(perimeter)
-                .take_while(|&p| p <= PERIMETER_MAX)
-            {
+            for p in (perimeter..).step_by(perimeter).take_while(|&p| p <= PERIMETER_MAX) {
                 triangles[p] += 1;
             }
         }

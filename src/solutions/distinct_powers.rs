@@ -21,9 +21,7 @@ fn exponent(mut num: i64, primes: &Vec<i64>) -> i64 {
     }
 
     // Calculate the greatest common divisor of those.
-    exponents
-        .iter()
-        .fold(gcd, |gcd, exponent| utils::gcd(gcd, *exponent))
+    exponents.iter().fold(gcd, |gcd, exponent| utils::gcd(gcd, *exponent))
 }
 
 pub fn solve() -> i64 {

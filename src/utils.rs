@@ -50,9 +50,7 @@ fn is_prime_smaller_test() {
 #[cfg(target_pointer_width = "64")]
 #[test]
 fn is_prime_small_test() {
-    let num_of_primes = (2i64.pow(32)..2i64.pow(33))
-        .filter(|&num| is_prime(num))
-        .count();
+    let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| is_prime(num)).count();
     assert_eq!(num_of_primes, 190335585);
 }
 
@@ -174,10 +172,7 @@ fn gcd_test() {
 /// -> Whether the next permutation was generated.
 pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an inversion from the right.
-    let Some(sorted_until) = (1..slice.len())
-        .rev()
-        .find(|&idx| slice[idx - 1] < slice[idx])
-    else {
+    let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] < slice[idx]) else {
         return false;
     };
 
@@ -187,8 +182,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // looking from the right to looking from the left.
     let search_key = slice[sorted_until - 1];
     let target = sorted_until
-        + match slice[sorted_until..].binary_search_by(|element| element.cmp(&search_key).reverse())
-        {
+        + match slice[sorted_until..].binary_search_by(|element| element.cmp(&search_key).reverse()) {
             Ok(idx) => idx,
             Err(idx) => idx,
         }
@@ -205,10 +199,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// -> Whether the previous permutation was generated.
 pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
-    let Some(sorted_until) = (1..slice.len())
-        .rev()
-        .find(|&idx| slice[idx - 1] > slice[idx])
-    else {
+    let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] > slice[idx]) else {
         return false;
     };
 
@@ -327,9 +318,7 @@ impl Long {
         Long::create(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
-        Long {
-            digits: vec![digit],
-        }
+        Long { digits: vec![digit] }
     }
     /// Calculate the factorial of a non-negative number.
     ///
@@ -428,10 +417,7 @@ impl Long {
     }
     fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
         let product = a as i64 * b as i64 + carry as i64;
-        (
-            (product % 1_000_000_000) as i32,
-            (product / 1_000_000_000) as i32,
-        )
+        ((product % 1_000_000_000) as i32, (product / 1_000_000_000) as i32)
     }
 }
 impl std::ops::AddAssign<&Long> for Long {
@@ -482,9 +468,7 @@ impl std::ops::Mul<&Long> for &Long {
     fn mul(self, other: &Long) -> Long {
         let mut result = Long { digits: vec![] };
         for (pad, od) in other.digits.iter().enumerate() {
-            let mut partial_product = Long {
-                digits: vec![0; pad],
-            };
+            let mut partial_product = Long { digits: vec![0; pad] };
             let mut carry = 0;
             for sd in self.digits.iter() {
                 let sum_carry = Long::mlc(*sd, *od, carry);
@@ -593,9 +577,9 @@ impl SieveOfAtkin {
     // Position of the bit indicating the primality of a coprime residue modulo
     // 60 in a 16-element bitfield. For non-coprime residues, the value is 16.
     const SHIFTS: [u8; 60] = [
-        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
-        16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
-        12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
+        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6, 16, 16, 16, 16, 16,
+        7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16, 16, 14, 16, 16, 16,
+        16, 16, 15,
     ];
 }
 impl SieveOfAtkin {
@@ -647,8 +631,7 @@ impl SieveOfAtkin {
                         .step_by(num_sqr)
                         .take_while(|&multiple| multiple < self.limit_rounded)
                     {
-                        self.sieve[multiple / 60] &=
-                            !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
+                        self.sieve[multiple / 60] &= !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
                     }
                 }
                 num += offset.next().unwrap();
@@ -846,11 +829,7 @@ impl PokerHand {
         // Sorting the cards by descending order of value makes analysing them
         // easier.
         self.hand.sort_by(|a, b| b.cmp(a));
-        let same_suit = self
-            .hand
-            .iter()
-            .skip(1)
-            .all(|card| card.1 == self.hand[0].1);
+        let same_suit = self.hand.iter().skip(1).all(|card| card.1 == self.hand[0].1);
         let consecutive_values = self
             .hand
             .iter()

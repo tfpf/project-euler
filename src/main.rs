@@ -129,10 +129,7 @@ fn add_skel(fname: &str, append: bool, contents: &str) {
 /// * `problem_number`
 fn add_skels(problem_number: i32) {
     let url = format!("https://projecteuler.net/problem={}", problem_number);
-    let output = std::process::Command::new("curl")
-        .args([&url])
-        .output()
-        .unwrap();
+    let output = std::process::Command::new("curl").args([&url]).output().unwrap();
     let html = std::str::from_utf8(&output.stdout).unwrap();
     let begin = html.find("<title>").unwrap() + 7;
     let begin = begin + html[begin..].find(' ').unwrap() + 1;
@@ -146,11 +143,7 @@ fn add_skels(problem_number: i32) {
         })
         .collect::<String>();
 
-    add_skel(
-        &format!("src/solutions/{}.rs", title),
-        false,
-        "pub fn solve()->i64{0}",
-    );
+    add_skel(&format!("src/solutions/{}.rs", title), false, "pub fn solve()->i64{0}");
     add_skel("src/solutions.rs", true, &format!("pub mod {};", title));
     add_skel(
         "README.md",
@@ -186,10 +179,7 @@ fn main() {
     for arg in &args[1..] {
         match arg.parse() {
             Ok(problem_number) if solve_and_time_one(problem_number) => (),
-            _ => eprintln!(
-                "Problem {} does not exist or its solution is not implemented.",
-                arg
-            ),
+            _ => eprintln!("Problem {} does not exist or its solution is not implemented.", arg),
         }
     }
 }

@@ -17,9 +17,7 @@ fn minimal_stuck() -> [u8; 568] {
         let mut num = num;
         while chain_stuck[num] == 0 {
             chain.push(num);
-            num = utils::Digits::new(num as i64)
-                .map(|digit| digit.pow(2))
-                .sum::<i64>() as usize;
+            num = utils::Digits::new(num as i64).map(|digit| digit.pow(2)).sum::<i64>() as usize;
         }
         for chain_node in chain {
             chain_stuck[chain_node] = chain_stuck[num];

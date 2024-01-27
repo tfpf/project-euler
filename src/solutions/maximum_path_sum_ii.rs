@@ -40,12 +40,7 @@ pub fn solve() -> i64 {
     let reader = std::io::BufReader::new(fhandle);
     let triangle: Vec<Vec<i32>> = reader
         .lines()
-        .map(|line| {
-            line.unwrap()
-                .split(' ')
-                .map(|s| s.parse().unwrap())
-                .collect()
-        })
+        .map(|line| line.unwrap().split(' ').map(|s| s.parse().unwrap()).collect())
         .collect();
 
     let mut cache_map = CacheMap::new(triangle);
