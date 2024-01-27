@@ -16,8 +16,8 @@ fn generate_cyclical(numbitfield: &Vec<(i64, u8)>, mask: u8, cyclical: &mut Vec<
         return cyclical.first().unwrap() / 100 == cyclical.last().unwrap() % 100;
     }
 
-    // If no numbers have been produced yet, start with each number in turn.
-    // Otherwise, start with the number whose two most significant digits match
+    // If no numbers have been produced yet, earmark all the numbers.
+    // Otherwise, earmark the numbers whose two most significant digits match
     // the two least significant digits of the last produced number.
     let (begin_val, begin_idx, difference) = if cyclical.is_empty() {
         (0, 0, i64::MAX)
