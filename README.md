@@ -21,7 +21,20 @@ cargo r
 ```
 
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
-intent of the code by hiding confounding implementation details.
+intent of the code by hiding confounding implementation details. Items of particular note in that file are the
+following.
+* `is_prime`: fast prime checker which combines trial division and the Miller-Rabin algorithm.
+* `pow`: modular exponentiation calculator, emulating the `pow` function of Python.
+* `Long`: arbitrary-precision integer type with support for addition and multiplication.
+  * `Long::factorial`: factorial calculator.
+  * `Long::pow`: exponentiation calculator.
+* `SieveOfAtkin`: fast prime-generating sieve. (The sieve of Atkin is faster than the sieve of Eratosthenes.)
+  * `SieveOfAtkin::is_prime`: prime checker for numbers the sieve is generated up to.
+  * `SieveOfAtkin::iter`: iterator over generated primes.
+* `Polygonal`: figurate (triangle, quadrilateral, pentagon, hexagon, …) number generator. Uses only additions and
+  subtractions.
+  * `Polygonal::invert`: figurate number checker.
+* `PythagoreanTriplets`: Pythagorean triplets generator.
 
 <p align="center">
  <img src="res/certified_human.svg" />
