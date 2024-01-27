@@ -29,6 +29,8 @@ fn generate_cyclical(numbitfield: &Vec<(i64, u8)>, mask: u8, cyclical: &mut Vec<
         };
         (begin_val, begin_idx, 100)
     };
+
+    // Try to use each of the earmarked numbers as the next number.
     for &(num, bitfield) in numbitfield[begin_idx..]
         .iter()
         .take_while(|&&(num, _)| num < begin_val + difference)
