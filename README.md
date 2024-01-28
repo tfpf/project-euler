@@ -110,6 +110,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[63](https://projecteuler.net/problem=63)|[`powerful_digit_counts.rs`](src/solutions/powerful_digit_counts.rs)|
 |[64](https://projecteuler.net/problem=64)|[`odd_period_square_roots.rs`](src/solutions/odd_period_square_roots.rs)|
 |[65](https://projecteuler.net/problem=65)|[`convergents_of_e.rs`](src/solutions/convergents_of_e.rs)|
+|[66](https://projecteuler.net/problem=66)|[`diophantine_equation.rs`](src/solutions/diophantine_equation.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
 |[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
 |[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|

@@ -81,6 +81,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         63 => solutions::powerful_digit_counts::solve,
         64 => solutions::odd_period_square_roots::solve,
         65 => solutions::convergents_of_e::solve,
+        66 => solutions::diophantine_equation::solve,
         67 => solutions::maximum_path_sum_ii::solve,
         69 => solutions::totient_maximum::solve,
         74 => solutions::digit_factorial_chains::solve,

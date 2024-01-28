@@ -14,6 +14,7 @@ pub mod digit_cancelling_fractions;
 pub mod digit_factorial_chains;
 pub mod digit_factorials;
 pub mod digit_fifth_powers;
+pub mod diophantine_equation;
 pub mod distinct_powers;
 pub mod distinct_primes_factors;
 pub mod double_base_palindromes;
