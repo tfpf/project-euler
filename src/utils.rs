@@ -1363,3 +1363,14 @@ impl Iterator for ContinuedFraction {
         Some(a)
     }
 }
+
+#[test]
+fn continued_fraction_test() {
+    let contents = std::fs::read_to_string("res/continued_fraction_test.txt").unwrap();
+    for line in contents.trim().split('\n') {
+        let num_terms = line.split_ascii_whitespace().collect::<Vec<&str>>();
+        let num = num_terms[0].parse().unwrap();
+        let terms = num_terms[1].split(',').map(|s| s.parse().unwrap());
+        assert!(ContinuedFraction::new(num).eq(terms));
+    }
+}
