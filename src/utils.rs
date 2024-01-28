@@ -281,39 +281,6 @@ pub fn isqrt_test() {
     assert_eq!(isqrt(2i64.pow(54) - 1), 134217727);
 }
 
-/// Determine the continued fraction representation of the square root of a
-/// number. This shall be a vector in which the elements after the first are
-/// the repeating terms in the continued fraction.
-///
-/// * `num` - Positive number.
-///
-/// -> Terms in the continued fraction of the square root of the given number.
-pub fn sqrt_continued_fraction(num: i64) -> Vec<i64> {
-    // Handle perfect squares.
-    let a0 = isqrt(num);
-    if a0.pow(2) == num {
-        return vec![a0];
-    }
-
-    // If a part of the continued fraction is
-    //     (num.sqrt() + numerator_addend) / denominator
-    // then the next term of the continued fraction, `numerator_addend` and
-    // `denominator` can be found using a recurrence relation.
-    let (mut numerator_addend, mut denominator) = (0, 1);
-    let mut cf_terms = vec![];
-    loop {
-        let a = (a0 + numerator_addend) / denominator;
-        numerator_addend = a * denominator - numerator_addend;
-        denominator = (num - numerator_addend.pow(2)) / denominator;
-        cf_terms.push(a);
-        // When this happens, the terms will start repeating.
-        if a == 2 * cf_terms[0] {
-            break;
-        }
-    }
-    cf_terms
-}
-
 /******************************************************************************
  * Objects.
  *****************************************************************************/
@@ -1350,5 +1317,49 @@ impl Iterator for PotentialPrimes {
         } else {
             Some(self.num)
         }
+    }
+}
+
+/// Generate the continued fraction representation of the square root of a
+/// number. The elements generated after the first shall constitute the
+/// repeating terms in the continued fraction.
+pub struct ContinuedFraction {
+    num: i64,
+    a0: i64,
+    numerator_addend: i64,
+    denominator: i64,
+}
+impl ContinuedFraction {
+    pub fn new(num: i64) -> ContinuedFraction {
+        ContinuedFraction {
+            num,
+            a0: isqrt(num),
+            numerator_addend: 0,
+            denominator: 1,
+        }
+    }
+}
+impl Iterator for ContinuedFraction {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        // This will happen if the given number was a perfect square. We will
+        // also use this as the condition for detecting repeating terms.
+        if self.denominator == 0 {
+            return None;
+        }
+
+        // If a part of the continued fraction is
+        //     (num.sqrt() + numerator_addend) / denominator
+        // then the next term of the continued fraction, `numerator_addend` and
+        // `denominator` can be found using a recurrence relation.
+        let a = (self.a0 + self.numerator_addend) / self.denominator;
+        self.numerator_addend = a * self.denominator - self.numerator_addend;
+        self.denominator = (self.num - self.numerator_addend.pow(2)) / self.denominator;
+
+        // When this happens, the terms will start repeating.
+        if a == self.a0 * 2 {
+            self.denominator = 0;
+        }
+        Some(a)
     }
 }
