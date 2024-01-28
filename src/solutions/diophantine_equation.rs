@@ -35,5 +35,6 @@ pub fn solve() -> i64 {
         .unwrap()
         .1;
 
+    assert_eq!(result, 661);
     result
 }
