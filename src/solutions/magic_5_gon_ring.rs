@@ -9,15 +9,16 @@ pub fn solve() -> i64 {
     const INDICES: [usize; 15] = [0, 1, 2, 3, 2, 4, 5, 4, 6, 7, 6, 8, 9, 8, 1];
 
     // These will be written into the nodes. Starting with this order ensures
-    // that the first solution we find is the largest one.
+    // that we find the answer early.
     let mut numbers = [7, 1, 2, 3, 4, 5, 6, 8, 9, 10];
 
-    let mut result = 0;
+    let result = 'numbers: loop {
+        // Skipping the first permutation is safe because it cannot be the
+        // answer. If any permutation is a solution, it must begin with at most
+        // 6 (because the first external node must be the smallest of all
+        // external nodes) which the first call to this function will ensure.
+        utils::prev_permutation(&mut numbers);
 
-    // Skipping the first permutation is safe because it cannot be the answer.
-    // If any permutation is a solution, it must begin with at most 6, because
-    // the first external node must be the smallest of all external nodes.
-    'numbers: while utils::prev_permutation(&mut numbers) {
         let sum = numbers.iter().take(3).sum();
         for i in (0..INDICES.len()).step_by(3).skip(1) {
             // The first external node must be the smallest of all external
@@ -36,10 +37,13 @@ pub fn solve() -> i64 {
             solution * multiplier + numbers[index]
         });
         if solution < 10i64.pow(16) {
-            result = solution;
-            break;
+            // Technically, the first solution we find need not be the largest
+            // one, because the solution is not a true permutation. (It is an
+            // expansion, since a 10-size permutation was expanded to 15
+            // elements.) Luckily, though, it is the answer!
+            break solution;
         }
-    }
+    };
 
     assert_eq!(result, 6531031914842725);
     result
