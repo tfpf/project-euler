@@ -28,7 +28,8 @@ following.
 * `Long`: arbitrary-precision integer type with support for addition and multiplication.
   * `Long::factorial`: factorial calculator.
   * `Long::pow`: exponentiation calculator.
-* `SieveOfAtkin`: fast prime-generating sieve. (The sieve of Atkin is faster than the sieve of Eratosthenes.)
+* `SieveOfAtkin`: fast prime-generating sieve.
+  [The sieve of Atkin is faster than the sieve of Eratosthenes.](https://github.com/tfpf/sieve-of-atkin)
   * `SieveOfAtkin::is_prime`: prime checker for numbers the sieve is generated up to.
   * `SieveOfAtkin::iter`: iterator over generated primes.
 * `Polygonal`: figurate (triangle, quadrilateral, pentagon, hexagon, …) number generator. Uses only additions and
