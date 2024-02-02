@@ -8,17 +8,16 @@ pub fn solve() -> i64 {
     // permutation to a potential solution.
     const INDICES: [usize; 15] = [0, 1, 2, 3, 2, 4, 5, 4, 6, 7, 6, 8, 9, 8, 1];
 
-    // These will be written into the nodes.
-    let mut numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    // These will be written into the nodes. Starting with this order ensures
+    // that the first solution we find is the largest one.
+    let mut numbers = [7, 1, 2, 3, 4, 5, 6, 8, 9, 10];
 
     let mut result = 0;
 
     // Skipping the first permutation is safe because it cannot be the answer.
-    'numbers: while utils::next_permutation(&mut numbers) {
-        if numbers[0] > 6 {
-            break;
-        }
-
+    // If any permutation is a solution, it must begin with at most 6, because
+    // the first external node must be the smallest of all external nodes.
+    'numbers: while utils::prev_permutation(&mut numbers) {
         let sum = numbers.iter().take(3).sum();
         for i in (0..INDICES.len()).step_by(3).skip(1) {
             // The first external node must be the smallest of all external
@@ -37,7 +36,8 @@ pub fn solve() -> i64 {
             solution * multiplier + numbers[index]
         });
         if solution < 10i64.pow(16) {
-            result = std::cmp::max(result, solution);
+            result = solution;
+            break;
         }
     }
 
