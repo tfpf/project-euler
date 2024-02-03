@@ -1315,9 +1315,9 @@ mod tests {
         let reader = std::io::BufReader::new(fhandle);
         for line in reader.lines() {
             let line = line.unwrap();
-            let mut num_primality = line.split_ascii_whitespace().map(|s| s.parse().unwrap());
-            let num = num_primality.next().unwrap();
-            let primality = num_primality.next().unwrap() != 0;
+            let mut num_primality = line.split_ascii_whitespace();
+            let num = num_primality.next().unwrap().parse().unwrap();
+            let primality = num_primality.next().unwrap().parse().unwrap();
             assert_eq!(utils::is_prime(num), primality);
         }
     }
