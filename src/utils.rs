@@ -1314,12 +1314,10 @@ mod tests {
         let fhandle = std::fs::File::open("res/is_prime_large_test.txt").unwrap();
         let reader = std::io::BufReader::new(fhandle);
         for line in reader.lines() {
-            let num_primality = line
-                .unwrap()
-                .split_ascii_whitespace()
-                .map(|s| s.parse().unwrap())
-                .collect::<Vec<i64>>();
-            let (num, primality) = (num_primality[0], num_primality[1] != 0);
+            let line = line.unwrap();
+            let mut num_primality = line.split_ascii_whitespace().map(|s| s.parse().unwrap());
+            let num = num_primality.next().unwrap();
+            let primality = num_primality.next().unwrap() != 0;
             assert_eq!(utils::is_prime(num), primality);
         }
     }
@@ -1351,21 +1349,21 @@ mod tests {
 
     #[test]
     fn sieve_of_atkin_smaller_test() {
-        let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
+        let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(14)).iter().count();
         assert_eq!(num_of_primes, 1900);
     }
 
     #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
     #[test]
     fn sieve_of_atkin_small_test() {
-        let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
+        let num_of_primes = utils::SieveOfAtkin::new(10usize.pow(9)).iter().count();
         assert_eq!(num_of_primes, 50847534);
     }
 
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn sieve_of_atkin_large_test() {
-        let num_of_primes = SieveOfAtkin::new(2usize.pow(36)).iter().count();
+        let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(36)).iter().count();
         assert_eq!(num_of_primes, 2874398515);
     }
 
@@ -1374,10 +1372,11 @@ mod tests {
         let fhandle = std::fs::File::open("res/continued_fraction_test.txt").unwrap();
         let reader = std::io::BufReader::new(fhandle);
         for line in reader.lines() {
-            let num_terms = line.split_ascii_whitespace().collect::<Vec<&str>>();
-            let num = num_terms[0].parse().unwrap();
-            let terms = num_terms[1].split(',').map(|s| s.parse().unwrap());
-            assert!(ContinuedFraction::new(num).eq(terms));
+            let line = line.unwrap();
+            let mut num_terms = line.split_ascii_whitespace();
+            let num = num_terms.next().unwrap().parse().unwrap();
+            let terms = num_terms.next().unwrap().split(',').map(|s| s.parse().unwrap());
+            assert!(utils::ContinuedFraction::new(num).eq(terms));
         }
     }
 }
