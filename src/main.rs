@@ -179,9 +179,8 @@ fn main() {
         }
     }
     for arg in &args[1..] {
-        match arg.parse() {
-            Ok(problem_number) if solve_and_time_one(problem_number) => (),
-            _ => eprintln!("Problem {} does not exist or its solution is not implemented.", arg),
+        if !arg.parse().is_ok_and(solve_and_time_one) {
+            eprintln!("Problem {} does not exist or its solution is not implemented.", arg);
         }
     }
 }
