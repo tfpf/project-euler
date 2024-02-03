@@ -71,7 +71,7 @@ pub mod summation_of_primes;
 pub mod ten_thousand_and_first_prime;
 pub mod thousand_digit_fibonacci_number;
 pub mod totient_maximum;
+pub mod totient_permutation;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
 pub mod xor_decryption;
-pub mod totient_permutation;
