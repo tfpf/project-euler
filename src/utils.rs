@@ -40,35 +40,6 @@ pub fn is_prime(num: i64) -> bool {
     }
 }
 
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn is_prime_smaller_test() {
-    let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
-    assert_eq!(num_of_primes, 203280221);
-}
-
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn is_prime_small_test() {
-    let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| is_prime(num)).count();
-    assert_eq!(num_of_primes, 190335585);
-}
-
-#[test]
-fn is_prime_large_test() {
-    // Not reading the file line-by-line because that would require importing a
-    // type, which I don't want to do.
-    let contents = std::fs::read_to_string("res/is_prime_large_test.txt").unwrap();
-    for line in contents.trim().split('\n') {
-        let num_primality = line
-            .split_ascii_whitespace()
-            .map(|s| s.parse().unwrap())
-            .collect::<Vec<i64>>();
-        let (num, primality) = (num_primality[0], num_primality[1] != 0);
-        assert_eq!(is_prime(num), primality);
-    }
-}
-
 /// Check whether the given number is prime using trial division.
 ///
 /// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
@@ -154,15 +125,6 @@ pub fn gcd(a: i64, b: i64) -> i64 {
         a >>= a.trailing_zeros();
     }
     a << twopower
-}
-
-#[test]
-fn gcd_test() {
-    let coprime_pairs = (0..10i64.pow(8))
-        .zip((0..10i64.pow(8)).rev())
-        .filter(|&(a, b)| gcd(a, b) == 1)
-        .count();
-    assert_eq!(coprime_pairs, 58752000);
 }
 
 /// Generate the next permutation.
@@ -273,12 +235,6 @@ pub fn isqrt(mut num: i64) -> i64 {
         one >>= 2;
     }
     result
-}
-
-#[test]
-pub fn isqrt_test() {
-    assert_eq!(isqrt(2i64.pow(53) - 1), 94906265);
-    assert_eq!(isqrt(2i64.pow(54) - 1), 134217727);
 }
 
 /******************************************************************************
@@ -499,16 +455,6 @@ impl std::fmt::Display for Long {
                 })
             })
     }
-}
-
-#[test]
-fn long_test() {
-    let mut num = &Long::new("43").pow(37) * &Long::from(745683);
-    num += &Long::factorial(51);
-    assert_eq!(
-        num.to_string(),
-        "3597031455246992664728898500113748859466269359952342048214143659169"
-    );
 }
 
 /// Check whether a bunch of numbers are pandigital with respect to the given
@@ -760,26 +706,6 @@ impl SieveOfAtkin {
             .take_while(|&num| num <= self.limit)
             .map(|num| num as i64)
     }
-}
-
-#[test]
-fn sieve_of_atkin_smaller_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
-    assert_eq!(num_of_primes, 1900);
-}
-
-#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
-#[test]
-fn sieve_of_atkin_small_test() {
-    let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
-    assert_eq!(num_of_primes, 50847534);
-}
-
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn sieve_of_atkin_large_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(36)).iter().count();
-    assert_eq!(num_of_primes, 2874398515);
 }
 
 /// A hand of poker.
@@ -1364,13 +1290,94 @@ impl Iterator for ContinuedFraction {
     }
 }
 
-#[test]
-fn continued_fraction_test() {
-    let contents = std::fs::read_to_string("res/continued_fraction_test.txt").unwrap();
-    for line in contents.trim().split('\n') {
-        let num_terms = line.split_ascii_whitespace().collect::<Vec<&str>>();
-        let num = num_terms[0].parse().unwrap();
-        let terms = num_terms[1].split(',').map(|s| s.parse().unwrap());
-        assert!(ContinuedFraction::new(num).eq(terms));
+#[cfg(test)]
+mod tests {
+    use crate::utils;
+    use std::io::BufRead;
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn is_prime_smaller_test() {
+        let num_of_primes = (0..2i64.pow(32)).filter(|&num| utils::is_prime(num)).count();
+        assert_eq!(num_of_primes, 203280221);
+    }
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn is_prime_small_test() {
+        let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| utils::is_prime(num)).count();
+        assert_eq!(num_of_primes, 190335585);
+    }
+
+    #[test]
+    fn is_prime_large_test() {
+        let fhandle = std::fs::File::open("res/is_prime_large_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let num_primality = line
+                .unwrap()
+                .split_ascii_whitespace()
+                .map(|s| s.parse().unwrap())
+                .collect::<Vec<i64>>();
+            let (num, primality) = (num_primality[0], num_primality[1] != 0);
+            assert_eq!(utils::is_prime(num), primality);
+        }
+    }
+
+    #[test]
+    fn gcd_test() {
+        let coprime_pairs = (0..10i64.pow(8))
+            .zip((0..10i64.pow(8)).rev())
+            .filter(|&(a, b)| utils::gcd(a, b) == 1)
+            .count();
+        assert_eq!(coprime_pairs, 58752000);
+    }
+
+    #[test]
+    fn isqrt_test() {
+        assert_eq!(utils::isqrt(2i64.pow(53) - 1), 94906265);
+        assert_eq!(utils::isqrt(2i64.pow(54) - 1), 134217727);
+    }
+
+    #[test]
+    fn long_test() {
+        let mut num = &utils::Long::new("43").pow(37) * &utils::Long::from(745683);
+        num += &utils::Long::factorial(51);
+        assert_eq!(
+            num.to_string(),
+            "3597031455246992664728898500113748859466269359952342048214143659169"
+        );
+    }
+
+    #[test]
+    fn sieve_of_atkin_smaller_test() {
+        let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
+        assert_eq!(num_of_primes, 1900);
+    }
+
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+    #[test]
+    fn sieve_of_atkin_small_test() {
+        let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
+        assert_eq!(num_of_primes, 50847534);
+    }
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn sieve_of_atkin_large_test() {
+        let num_of_primes = SieveOfAtkin::new(2usize.pow(36)).iter().count();
+        assert_eq!(num_of_primes, 2874398515);
+    }
+
+    #[test]
+    fn continued_fraction_test() {
+        let fhandle = std::fs::File::open("res/continued_fraction_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let num_terms = line.split_ascii_whitespace().collect::<Vec<&str>>();
+            let num = num_terms[0].parse().unwrap();
+            let terms = num_terms[1].split(',').map(|s| s.parse().unwrap());
+            assert!(ContinuedFraction::new(num).eq(terms));
+        }
     }
 }
