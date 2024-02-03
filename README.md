@@ -115,6 +115,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
 |[68](https://projecteuler.net/problem=68)|[`magic_5_gon_ring.rs`](src/solutions/magic_5_gon_ring.rs)|
 |[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
+|[70](https://projecteuler.net/problem=70)|[`totient_permutation.rs`](src/solutions/totient_permutation.rs)|
 |[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|
 |[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
 |[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
