@@ -144,7 +144,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // looking from the right to looking from the left.
     let search_key = slice[sorted_until - 1];
     let target = sorted_until
-        + match slice[sorted_until..].binary_search_by(|element| element.cmp(&search_key).reverse()) {
+        + match slice[sorted_until..].binary_search_by(|element| search_key.cmp(element)) {
             Ok(idx) => idx,
             Err(idx) => idx,
         }
