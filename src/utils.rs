@@ -27,7 +27,7 @@ pub fn is_prime(num: i64) -> bool {
         return false;
     }
     match num {
-        ..=100000 => is_prime_tbd(num),
+        ..=100000 => is_prime_td(num),
         // The Miller-Rabin tests as performed below are deterministic for all
         // possible inputs. I chose the thresholds (after consulting some
         // tables) such that each is two digits longer than the previous.
@@ -40,43 +40,12 @@ pub fn is_prime(num: i64) -> bool {
     }
 }
 
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn is_prime_smaller_test() {
-    let num_of_primes = (0..2i64.pow(32)).filter(|&num| is_prime(num)).count();
-    assert_eq!(num_of_primes, 203280221);
-}
-
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn is_prime_small_test() {
-    let num_of_primes = (2i64.pow(32)..2i64.pow(33))
-        .filter(|&num| is_prime(num))
-        .count();
-    assert_eq!(num_of_primes, 190335585);
-}
-
-#[test]
-fn is_prime_large_test() {
-    // Not reading the file line-by-line because that would require importing a
-    // type, which I don't want to do.
-    let contents = std::fs::read_to_string("res/is_prime_large_test.txt").unwrap();
-    for line in contents.trim().split('\n') {
-        let num_primality = line
-            .split_ascii_whitespace()
-            .map(|s| s.parse().unwrap())
-            .collect::<Vec<i64>>();
-        let (num, primality) = (num_primality[0], num_primality[1] != 0);
-        assert_eq!(is_prime(num), primality);
-    }
-}
-
-/// Check whether the given number is prime using trial by division.
+/// Check whether the given number is prime using trial division.
 ///
 /// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
-fn is_prime_tbd(num: i64) -> bool {
+fn is_prime_td(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
     PotentialPrimes::new(isqrt(num))
@@ -158,15 +127,6 @@ pub fn gcd(a: i64, b: i64) -> i64 {
     a << twopower
 }
 
-#[test]
-fn gcd_test() {
-    let coprime_pairs = (0..10i64.pow(8))
-        .zip((0..10i64.pow(8)).rev())
-        .filter(|&(a, b)| gcd(a, b) == 1)
-        .count();
-    assert_eq!(coprime_pairs, 58752000);
-}
-
 /// Generate the next permutation.
 ///
 /// * `slice` - Object containing the unique items to permute.
@@ -174,10 +134,7 @@ fn gcd_test() {
 /// -> Whether the next permutation was generated.
 pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an inversion from the right.
-    let Some(sorted_until) = (1..slice.len())
-        .rev()
-        .find(|&idx| slice[idx - 1] < slice[idx])
-    else {
+    let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] < slice[idx]) else {
         return false;
     };
 
@@ -187,8 +144,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // looking from the right to looking from the left.
     let search_key = slice[sorted_until - 1];
     let target = sorted_until
-        + match slice[sorted_until..].binary_search_by(|element| element.cmp(&search_key).reverse())
-        {
+        + match slice[sorted_until..].binary_search_by(|element| search_key.cmp(element)) {
             Ok(idx) => idx,
             Err(idx) => idx,
         }
@@ -205,10 +161,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// -> Whether the previous permutation was generated.
 pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
-    let Some(sorted_until) = (1..slice.len())
-        .rev()
-        .find(|&idx| slice[idx - 1] > slice[idx])
-    else {
+    let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] > slice[idx]) else {
         return false;
     };
 
@@ -284,12 +237,6 @@ pub fn isqrt(mut num: i64) -> i64 {
     result
 }
 
-#[test]
-pub fn isqrt_test() {
-    assert_eq!(isqrt(2i64.pow(53) - 1), 94906265);
-    assert_eq!(isqrt(2i64.pow(54) - 1), 134217727);
-}
-
 /******************************************************************************
  * Objects.
  *****************************************************************************/
@@ -327,9 +274,7 @@ impl Long {
         Long::create(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
-        Long {
-            digits: vec![digit],
-        }
+        Long { digits: vec![digit] }
     }
     /// Calculate the factorial of a non-negative number.
     ///
@@ -428,10 +373,7 @@ impl Long {
     }
     fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
         let product = a as i64 * b as i64 + carry as i64;
-        (
-            (product % 1_000_000_000) as i32,
-            (product / 1_000_000_000) as i32,
-        )
+        ((product % 1_000_000_000) as i32, (product / 1_000_000_000) as i32)
     }
 }
 impl std::ops::AddAssign<&Long> for Long {
@@ -482,9 +424,7 @@ impl std::ops::Mul<&Long> for &Long {
     fn mul(self, other: &Long) -> Long {
         let mut result = Long { digits: vec![] };
         for (pad, od) in other.digits.iter().enumerate() {
-            let mut partial_product = Long {
-                digits: vec![0; pad],
-            };
+            let mut partial_product = Long { digits: vec![0; pad] };
             let mut carry = 0;
             for sd in self.digits.iter() {
                 let sum_carry = Long::mlc(*sd, *od, carry);
@@ -515,16 +455,6 @@ impl std::fmt::Display for Long {
                 })
             })
     }
-}
-
-#[test]
-fn long_test() {
-    let mut num = &Long::new("43").pow(37) * &Long::from(745683);
-    num += &Long::factorial(51);
-    assert_eq!(
-        num.to_string(),
-        "3597031455246992664728898500113748859466269359952342048214143659169"
-    );
 }
 
 /// Check whether a bunch of numbers are pandigital with respect to the given
@@ -593,9 +523,9 @@ impl SieveOfAtkin {
     // Position of the bit indicating the primality of a coprime residue modulo
     // 60 in a 16-element bitfield. For non-coprime residues, the value is 16.
     const SHIFTS: [u8; 60] = [
-        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6,
-        16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16,
-        12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15,
+        16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6, 16, 16, 16, 16, 16,
+        7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16, 16, 14, 16, 16, 16,
+        16, 16, 15,
     ];
 }
 impl SieveOfAtkin {
@@ -647,8 +577,7 @@ impl SieveOfAtkin {
                         .step_by(num_sqr)
                         .take_while(|&multiple| multiple < self.limit_rounded)
                     {
-                        self.sieve[multiple / 60] &=
-                            !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
+                        self.sieve[multiple / 60] &= !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
                     }
                 }
                 num += offset.next().unwrap();
@@ -793,26 +722,6 @@ impl SieveOfAtkin {
     }
 }
 
-#[test]
-fn sieve_of_atkin_smaller_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(14)).iter().count();
-    assert_eq!(num_of_primes, 1900);
-}
-
-#[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
-#[test]
-fn sieve_of_atkin_small_test() {
-    let num_of_primes = SieveOfAtkin::new(10usize.pow(9)).iter().count();
-    assert_eq!(num_of_primes, 50847534);
-}
-
-#[cfg(target_pointer_width = "64")]
-#[test]
-fn sieve_of_atkin_large_test() {
-    let num_of_primes = SieveOfAtkin::new(2usize.pow(36)).iter().count();
-    assert_eq!(num_of_primes, 2874398515);
-}
-
 /// A hand of poker.
 #[derive(Eq, PartialEq)]
 pub struct PokerHand {
@@ -860,11 +769,7 @@ impl PokerHand {
         // Sorting the cards by descending order of value makes analysing them
         // easier.
         self.hand.sort_by(|a, b| b.cmp(a));
-        let same_suit = self
-            .hand
-            .iter()
-            .skip(1)
-            .all(|card| card.1 == self.hand[0].1);
+        let same_suit = self.hand.iter().skip(1).all(|card| card.1 == self.hand[0].1);
         let consecutive_values = self
             .hand
             .iter()
@@ -1351,6 +1256,141 @@ impl Iterator for PotentialPrimes {
             None
         } else {
             Some(self.num)
+        }
+    }
+}
+
+/// Generate the continued fraction representation of the square root of a
+/// number. The elements generated after the first shall constitute the
+/// repeating terms in the continued fraction.
+pub struct ContinuedFraction {
+    num: i64,
+    a0: i64,
+    numerator_addend: i64,
+    denominator: i64,
+}
+impl ContinuedFraction {
+    pub fn new(num: i64) -> ContinuedFraction {
+        ContinuedFraction {
+            num,
+            a0: isqrt(num),
+            numerator_addend: 0,
+            denominator: 1,
+        }
+    }
+}
+impl Iterator for ContinuedFraction {
+    type Item = i64;
+    fn next(&mut self) -> Option<i64> {
+        // This will happen if the given number was a perfect square. We will
+        // also use this as the condition for detecting repeating terms.
+        if self.denominator == 0 {
+            return None;
+        }
+
+        // If a part of the continued fraction is
+        //     (num.sqrt() + numerator_addend) / denominator
+        // then the next term of the continued fraction, `numerator_addend` and
+        // `denominator` can be found using a recurrence relation.
+        let a = (self.a0 + self.numerator_addend) / self.denominator;
+        self.numerator_addend = a * self.denominator - self.numerator_addend;
+        self.denominator = (self.num - self.numerator_addend.pow(2)) / self.denominator;
+
+        // When this happens, the terms will start repeating.
+        if a == self.a0 * 2 {
+            self.denominator = 0;
+        }
+        Some(a)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::utils;
+    use std::io::BufRead;
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn is_prime_smaller_test() {
+        let num_of_primes = (0..2i64.pow(32)).filter(|&num| utils::is_prime(num)).count();
+        assert_eq!(num_of_primes, 203280221);
+    }
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn is_prime_small_test() {
+        let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| utils::is_prime(num)).count();
+        assert_eq!(num_of_primes, 190335585);
+    }
+
+    #[test]
+    fn is_prime_large_test() {
+        let fhandle = std::fs::File::open("res/is_prime_large_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let line = line.unwrap();
+            let mut num_primality = line.split_ascii_whitespace();
+            let num = num_primality.next().unwrap().parse().unwrap();
+            let primality = num_primality.next().unwrap().parse().unwrap();
+            assert_eq!(utils::is_prime(num), primality);
+        }
+    }
+
+    #[test]
+    fn gcd_test() {
+        let coprime_pairs = (0..10i64.pow(8))
+            .zip((0..10i64.pow(8)).rev())
+            .filter(|&(a, b)| utils::gcd(a, b) == 1)
+            .count();
+        assert_eq!(coprime_pairs, 58752000);
+    }
+
+    #[test]
+    fn isqrt_test() {
+        assert_eq!(utils::isqrt(2i64.pow(53) - 1), 94906265);
+        assert_eq!(utils::isqrt(2i64.pow(54) - 1), 134217727);
+    }
+
+    #[test]
+    fn long_test() {
+        let mut num = &utils::Long::new("43").pow(37) * &utils::Long::from(745683);
+        num += &utils::Long::factorial(51);
+        assert_eq!(
+            num.to_string(),
+            "3597031455246992664728898500113748859466269359952342048214143659169"
+        );
+    }
+
+    #[test]
+    fn sieve_of_atkin_smaller_test() {
+        let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(14)).iter().count();
+        assert_eq!(num_of_primes, 1900);
+    }
+
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+    #[test]
+    fn sieve_of_atkin_small_test() {
+        let num_of_primes = utils::SieveOfAtkin::new(10usize.pow(9)).iter().count();
+        assert_eq!(num_of_primes, 50847534);
+    }
+
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn sieve_of_atkin_large_test() {
+        let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(36)).iter().count();
+        assert_eq!(num_of_primes, 2874398515);
+    }
+
+    #[test]
+    fn continued_fraction_test() {
+        let fhandle = std::fs::File::open("res/continued_fraction_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let line = line.unwrap();
+            let mut num_terms = line.split_ascii_whitespace();
+            let num = num_terms.next().unwrap().parse().unwrap();
+            let terms = num_terms.next().unwrap().split(',').map(|s| s.parse().unwrap());
+            assert!(utils::ContinuedFraction::new(num).eq(terms));
         }
     }
 }

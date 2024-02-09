@@ -12,9 +12,7 @@ pub fn solve() -> i64 {
         .rev()
         .find(|&num| {
             pandigital_checker.renew();
-            pandigital_checker.update(num)
-                && pandigital_checker.update(num * 2)
-                && pandigital_checker.check()
+            pandigital_checker.update(num) && pandigital_checker.update(num * 2) && pandigital_checker.check()
         })
         .unwrap();
 

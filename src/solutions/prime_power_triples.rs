@@ -8,10 +8,7 @@ pub fn solve() -> i64 {
     // The largest number whose square is within the limit is 7071. The largest
     // whose cube is, is 368.
     let primes = utils::SieveOfAtkin::new(7071).iter().collect::<Vec<i64>>();
-    let primes_pow_2 = primes
-        .iter()
-        .map(|prime| prime.pow(2))
-        .collect::<Vec<i64>>();
+    let primes_pow_2 = primes.iter().map(|prime| prime.pow(2)).collect::<Vec<i64>>();
     let primes_pow_3 = primes
         .iter()
         .take_while(|&&prime| prime <= 368)

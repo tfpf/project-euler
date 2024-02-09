@@ -1,7 +1,8 @@
 # Project Euler
 Trying my hand at [Project Euler](https://projecteuler.net) as I stumble along learning Rust. I shall only add the
 solutions to the first hundred problems here with the intention being to showcase whatever useful data structures I
-build along the way. This is permitted according to the Project Euler guidelines.
+build along the way. (This is permitted according to the Project Euler guidelines.) Further, I shall restrict myself to
+the standard library.
 
 [![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/style.yml)
 [![lint](https://github.com/tfpf/project-euler/actions/workflows/lint.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/lint.yml)
@@ -21,7 +22,21 @@ cargo r
 ```
 
 Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
-intent of the code by hiding confounding implementation details.
+intent of the code by hiding confounding implementation details. Items of particular note in that file are the
+following.
+* `is_prime`: fast prime checker which combines trial division and the Miller-Rabin algorithm.
+* `pow`: modular exponentiation calculator, emulating the `pow` function of Python.
+* `Long`: arbitrary-precision integer type with support for addition and multiplication.
+  * `Long::factorial`: factorial calculator.
+  * `Long::pow`: exponentiation calculator.
+* `SieveOfAtkin`: fast prime-generating sieve.
+  [The sieve of Atkin is faster than the sieve of Eratosthenes.](https://github.com/tfpf/sieve-of-atkin)
+  * `SieveOfAtkin::is_prime`: prime checker for numbers the sieve is generated up to.
+  * `SieveOfAtkin::iter`: iterator over generated primes.
+* `Polygonal`: figurate (triangle, quadrilateral, pentagon, hexagon, …) number generator. Uses only additions and
+  subtractions.
+  * `Polygonal::invert`: figurate number checker.
+* `PythagoreanTriplets`: Pythagorean triplets generator.
 
 <p align="center">
  <img src="res/certified_human.svg" />
@@ -83,6 +98,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[48](https://projecteuler.net/problem=48)|[`self_powers.rs`](src/solutions/self_powers.rs)|
 |[49](https://projecteuler.net/problem=49)|[`prime_permutations.rs`](src/solutions/prime_permutations.rs)|
 |[50](https://projecteuler.net/problem=50)|[`consecutive_prime_sum.rs`](src/solutions/consecutive_prime_sum.rs)|
+|[51](https://projecteuler.net/problem=51)|[`prime_digit_replacements.rs`](src/solutions/prime_digit_replacements.rs)|
 |[52](https://projecteuler.net/problem=52)|[`permuted_multiples.rs`](src/solutions/permuted_multiples.rs)|
 |[53](https://projecteuler.net/problem=53)|[`combinatoric_selections.rs`](src/solutions/combinatoric_selections.rs)|
 |[54](https://projecteuler.net/problem=54)|[`poker_hands.rs`](src/solutions/poker_hands.rs)|
@@ -91,14 +107,21 @@ such as (but not limited to) Bard and ChatGPT.
 |[57](https://projecteuler.net/problem=57)|[`square_root_convergents.rs`](src/solutions/square_root_convergents.rs)|
 |[58](https://projecteuler.net/problem=58)|[`spiral_primes.rs`](src/solutions/spiral_primes.rs)|
 |[59](https://projecteuler.net/problem=59)|[`xor_decryption.rs`](src/solutions/xor_decryption.rs)|
+|[61](https://projecteuler.net/problem=61)|[`cyclical_figurate_numbers.rs`](src/solutions/cyclical_figurate_numbers.rs)|
 |[62](https://projecteuler.net/problem=62)|[`cubic_permutations.rs`](src/solutions/cubic_permutations.rs)|
 |[63](https://projecteuler.net/problem=63)|[`powerful_digit_counts.rs`](src/solutions/powerful_digit_counts.rs)|
 |[64](https://projecteuler.net/problem=64)|[`odd_period_square_roots.rs`](src/solutions/odd_period_square_roots.rs)|
 |[65](https://projecteuler.net/problem=65)|[`convergents_of_e.rs`](src/solutions/convergents_of_e.rs)|
+|[66](https://projecteuler.net/problem=66)|[`diophantine_equation.rs`](src/solutions/diophantine_equation.rs)|
 |[67](https://projecteuler.net/problem=67)|[`maximum_path_sum_ii.rs`](src/solutions/maximum_path_sum_ii.rs)|
+|[68](https://projecteuler.net/problem=68)|[`magic_5_gon_ring.rs`](src/solutions/magic_5_gon_ring.rs)|
 |[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
+|[71](https://projecteuler.net/problem=71)|[`ordered_fractions.rs`](src/solutions/ordered_fractions.rs)|
 |[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|
 |[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
 |[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
 |[85](https://projecteuler.net/problem=85)|[`counting_rectangles.rs`](src/solutions/counting_rectangles.rs)|
 |[87](https://projecteuler.net/problem=87)|[`prime_power_triples.rs`](src/solutions/prime_power_triples.rs)|
+|[92](https://projecteuler.net/problem=92)|[`square_digit_chains.rs`](src/solutions/square_digit_chains.rs)|
+|[97](https://projecteuler.net/problem=97)|[`large_non_mersenne_prime.rs`](src/solutions/large_non_mersenne_prime.rs)|
+|[99](https://projecteuler.net/problem=99)|[`largest_exponential.rs`](src/solutions/largest_exponential.rs)|

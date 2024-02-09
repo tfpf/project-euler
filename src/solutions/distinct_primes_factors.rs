@@ -15,13 +15,7 @@ fn four_distinct() -> i64 {
         for n in (num..num + 4).rev() {
             // Try to terminate the iterator as early as possible by taking
             // only as many prime divisors as required.
-            if primes
-                .iter()
-                .filter(|&&prime| n % prime == 0)
-                .take(4)
-                .count()
-                == 4
-            {
+            if primes.iter().filter(|&&prime| n % prime == 0).take(4).count() == 4 {
                 required -= 1;
                 if required == 0 {
                     return num;

@@ -12,14 +12,13 @@ fn double_base_palindrome_sum(num: i64) -> i64 {
     // reversed bits to the right.
     let num_shift_0 = num << 1;
     let num_shift_1 = num_shift_0 | 1;
-    let palindromes =
-        utils::Bits::new(num).fold([num, num_shift_0, num_shift_1], |accumulator, bit| {
-            [
-                accumulator[0] << 1 | bit,
-                accumulator[1] << 1 | bit,
-                accumulator[2] << 1 | bit,
-            ]
-        });
+    let palindromes = utils::Bits::new(num).fold([num, num_shift_0, num_shift_1], |accumulator, bit| {
+        [
+            accumulator[0] << 1 | bit,
+            accumulator[1] << 1 | bit,
+            accumulator[2] << 1 | bit,
+        ]
+    });
     let palindromes = palindromes
         .into_iter()
         .filter(|&palindrome| palindrome < 1000000)
