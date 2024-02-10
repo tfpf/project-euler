@@ -168,6 +168,11 @@ fn add_skels(problem_number: i32) {
 }
 
 fn main() {
+    for _ in 0..10000 {
+        solve_and_time_one(1);
+        solve_and_time_one(2);
+    }
+    return;
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() <= 1 {
         solve_and_time_all();
