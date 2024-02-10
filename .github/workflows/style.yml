@@ -1,5 +1,10 @@
 name: style
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - 'rustfmt.toml'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   style:

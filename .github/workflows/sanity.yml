@@ -1,5 +1,12 @@
 name: sanity
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+      - 'res/*.txt'
+      - '!res/*_test.txt'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   sanity32:
