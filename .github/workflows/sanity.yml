@@ -2,6 +2,7 @@ name: sanity
 on:
   push:
     paths:
+      - '.github/workflows/sanity.yml'
       - 'Dockerfile'
       - 'res/*.txt'
       - '!res/*_test.txt'
