@@ -30,7 +30,6 @@ fn four_distinct() -> i64 {
     }
 }
 
-
 pub fn solve() -> i64 {
     let result = four_distinct();
 
