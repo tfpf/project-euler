@@ -2,7 +2,8 @@ name: tests
 on:
   push:
     paths:
-      - src/utils.rs
+      - 'src/utils.rs'
+      - 'res/*_test.txt'
   workflow_dispatch:
 
 jobs:
