@@ -89,6 +89,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         74 => solutions::digit_factorial_chains::solve,
         75 => solutions::singular_integer_right_triangles::solve,
         76 => solutions::counting_summations::solve,
+        77 => solutions::prime_summations::solve,
         81 => solutions::path_sum_two_ways::solve,
         85 => solutions::counting_rectangles::solve,
         87 => solutions::prime_power_triples::solve,
