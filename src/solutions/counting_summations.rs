@@ -1,46 +1,30 @@
-struct CacheMap {
-    map: std::collections::HashMap<(usize, i32), i32>,
-    numbers: Vec<i32>,
-}
-impl CacheMap {
-    fn new(numbers: Vec<i32>) -> CacheMap {
-        CacheMap {
-            map: std::collections::HashMap::new(),
-            numbers,
-        }
-    }
-    /// Find the number of ways to obtain given sum using numbers at the given
-    /// index or higher.
-    ///
-    /// * `key` - Tuple of index and sum.
-    ///
-    /// -> Number of ways.
-    fn get(&mut self, key: (usize, i32)) -> i32 {
-        let (idx, remaining) = key;
-        if idx >= self.numbers.len() || remaining < 0 {
-            return 0;
-        }
-        if remaining == 0 {
-            return 1;
-        }
-        match self.map.get(&key) {
-            Some(&value) => value,
-            None => {
-                let without = self.get((idx + 1, remaining));
-                let with = self.get((idx, remaining - self.numbers[idx]));
-                let value = without + with;
-                self.map.insert(key, value);
-                value
-            }
-        }
-    }
-}
-
 pub fn solve() -> i64 {
-    // Approach is identical to that used for P31.
-    let numbers = (1..100).collect();
-    let mut cache_map = CacheMap::new(numbers);
-    let result = cache_map.get((0, 100));
+    // Approach is similar to that used for P31. The difference is that the
+    // maximum denomination (99) is not the same as the target sum (100).
+    let denominations: Vec<usize> = (1..100).collect();
+    let (rows, cols) = (denominations.len(), denominations.iter().max().unwrap() + 2);
+    let mut ways = vec![
+        std::iter::once(1)
+            .chain(std::iter::repeat(0).take(cols - 1))
+            .collect::<Vec<i32>>();
+        rows
+    ];
+
+    // Bottom-up dynamic programming.
+    for sum in 1..cols {
+        ways[0][sum] = if sum % denominations[0] == 0 { 1 } else { 0 };
+    }
+    for idx in 1..rows {
+        for sum in 1..cols {
+            ways[idx][sum] = ways[idx - 1][sum]
+                + if sum >= denominations[idx] {
+                    ways[idx][sum - denominations[idx]]
+                } else {
+                    0
+                };
+        }
+    }
+    let result = ways[rows - 1][cols - 1];
 
     assert_eq!(result, 190569291);
     result as i64
