@@ -3,10 +3,10 @@ struct CacheMap {
     numbers: Vec<i32>,
 }
 impl CacheMap {
-    fn new(target: i32) -> CacheMap {
+    fn new(numbers: Vec<i32>) -> CacheMap {
         CacheMap {
             map: std::collections::HashMap::new(),
-            numbers: (1..target).collect(),
+            numbers,
         }
     }
     /// Find the number of ways to obtain given sum using numbers at the given
@@ -17,7 +17,7 @@ impl CacheMap {
     /// -> Number of ways.
     fn get(&mut self, key: (usize, i32)) -> i32 {
         let (idx, remaining) = key;
-        if remaining < 0 || idx >= self.numbers.len() {
+        if idx >= self.numbers.len() || remaining < 0 {
             return 0;
         }
         if remaining == 0 {
@@ -26,9 +26,9 @@ impl CacheMap {
         match self.map.get(&key) {
             Some(&value) => value,
             None => {
-                let with = self.get((idx, remaining - self.numbers[idx]));
                 let without = self.get((idx + 1, remaining));
-                let value = with + without;
+                let with = self.get((idx, remaining - self.numbers[idx]));
+                let value = without + with;
                 self.map.insert(key, value);
                 value
             }
@@ -37,7 +37,9 @@ impl CacheMap {
 }
 
 pub fn solve() -> i64 {
-    let mut cache_map = CacheMap::new(100);
+    // Approach is identical to that used for P31.
+    let numbers = (1..100).collect();
+    let mut cache_map = CacheMap::new(numbers);
     let result = cache_map.get((0, 100));
 
     assert_eq!(result, 190569291);
