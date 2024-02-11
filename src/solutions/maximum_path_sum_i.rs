@@ -8,7 +8,7 @@ pub fn solve() -> i64 {
         .map(|line| line.unwrap().split(' ').map(|s| s.parse().unwrap()).collect())
         .collect();
 
-    // Bottom-to-top dynamic programming.
+    // Bottom-up dynamic programming.
     for row in (0..triangle.len()).rev().skip(1) {
         for col in 0..triangle[row].len() {
             triangle[row][col] += std::cmp::max(triangle[row + 1][col], triangle[row + 1][col + 1]);

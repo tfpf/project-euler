@@ -8,7 +8,7 @@ pub fn solve() -> i64 {
         .map(|line| line.unwrap().split(',').map(|s| s.parse().unwrap()).collect())
         .collect();
 
-    // Bottom-to-top dynamic programming.
+    // Bottom-up dynamic programming.
     for row in (0..80).rev().skip(1) {
         matrix[row][79] += matrix[row + 1][79];
     }
