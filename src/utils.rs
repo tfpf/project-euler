@@ -1328,7 +1328,7 @@ mod tests {
         let reader = std::io::BufReader::new(fhandle);
         for line in reader.lines() {
             let line = line.unwrap();
-            let [a, b, g] = line
+            let [a, b, g]: [i64; 3] = line
                 .split_ascii_whitespace()
                 .map(|s| s.parse().unwrap())
                 .collect::<Vec<i64>>()
