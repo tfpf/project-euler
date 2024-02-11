@@ -1,45 +1,34 @@
-struct CacheMap {
-    map: std::collections::HashMap<(usize, i32), i32>,
-    denominations: [i32; 8],
-}
-impl CacheMap {
-    fn new(denominations: [i32; 8]) -> CacheMap {
-        CacheMap {
-            map: std::collections::HashMap::new(),
-            denominations,
-        }
-    }
-    /// Count the number of ways to obtain the remaining amount of money using
-    /// denominations at the given index and above.
-    ///
-    /// * `key` - Tuple of the index and remaining amount.
-    ///
-    /// -> Number of ways.
-    fn get(&mut self, key: (usize, i32)) -> i32 {
-        let (index, remaining) = key;
-        if index >= 8 || remaining < 0 {
-            return 0;
-        }
-        if remaining == 0 {
-            return 1;
-        }
-        match self.map.get(&key) {
-            Some(&value) => value,
-            None => {
-                let without = self.get((index + 1, remaining));
-                let with = self.get((index, remaining - self.denominations[index]));
-                let value = without + with;
-                self.map.insert(key, value);
-                value
-            }
-        }
-    }
-}
-
 pub fn solve() -> i64 {
     let denominations = [1, 2, 5, 10, 20, 50, 100, 200];
-    let mut cache_map = CacheMap::new(denominations);
-    let result = cache_map.get((0, 200));
+
+    // Any element in this matrix shall be the number of ways to obtain a sum
+    // equal to the column index using coins at indices less than or equal to
+    // the row index. Note that there is only one way to obtain a sum of 0.
+    // Hence, as an optimisation, set the first element of each row of the
+    // matrix to 1 during initialisation.
+    let (rows, cols) = (denominations.len(), denominations.iter().max().unwrap() + 1);
+    let mut ways = vec![
+        std::iter::once(1)
+            .chain(std::iter::repeat(0).take(cols - 1))
+            .collect::<Vec<i32>>();
+        rows
+    ];
+
+    // Bottom-up dynamic programming.
+    for sum in 1..cols {
+        ways[0][sum] = if sum % denominations[0] == 0 { 1 } else { 0 };
+    }
+    for idx in 1..rows {
+        for sum in 1..cols {
+            ways[idx][sum] = ways[idx - 1][sum]
+                + if sum >= denominations[idx] {
+                    ways[idx][sum - denominations[idx]]
+                } else {
+                    0
+                };
+        }
+    }
+    let result = ways[rows - 1][cols - 1];
 
     assert_eq!(result, 73682);
     result as i64
