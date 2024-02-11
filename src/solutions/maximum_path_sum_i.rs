@@ -14,7 +14,6 @@ pub fn solve() -> i64 {
             triangle[row][col] += std::cmp::max(triangle[row + 1][col], triangle[row + 1][col + 1]);
         }
     }
-
     let result = triangle[0][0];
 
     assert_eq!(result, 1074);
