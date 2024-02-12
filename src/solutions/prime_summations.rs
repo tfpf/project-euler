@@ -30,5 +30,6 @@ pub fn solve() -> i64 {
     }
     let result = curr.iter().enumerate().find(|(_, &count)| count >= 5000).unwrap().0;
 
+    assert_eq!(result, 71);
     result as i64
 }
