@@ -4,10 +4,13 @@
 #![allow(clippy::match_overlapping_arm)]
 #![allow(clippy::new_without_default)]
 
-use std::io::Write;
-
 pub mod solutions;
 pub mod utils;
+
+#[cfg(test)]
+mod tests;
+
+use std::io::Write;
 
 /// Execute the solution (if available) of the specified problem. Also measure
 /// its running time.
