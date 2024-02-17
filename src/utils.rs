@@ -677,6 +677,11 @@ impl SieveOfAtkin {
     fn algorithm_4_3(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
+            // Notice how we run this tight loop in this algorithm instead of
+            // calculating the number of iterations (using the quadratic
+            // formula) and performing them at once (as has been done in the
+            // previous two algorithms). It's because the number of iterations
+            // here is so small that calculating is counter-productive.
             while k0 >= self.sieve.len() as i64 {
                 if x <= y0 {
                     return;
