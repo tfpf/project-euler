@@ -1,10 +1,8 @@
 use project_euler::utils;
 
-#[divan::bench]
-fn sieve_of_atkin() {
-    utils::SieveOfAtkin::new(100000000);
+pub fn sieve_of_atkin(c: &mut criterion::Criterion) {
+    c.bench_function("sieve_of_atkin", |b| b.iter(|| utils::SieveOfAtkin::new(100000000)));
 }
 
-fn main() {
-    divan::main();
-}
+criterion::criterion_group!(benches, sieve_of_atkin);
+criterion::criterion_main!(benches);
