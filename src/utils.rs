@@ -15,23 +15,14 @@
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
     // Fast checks.
-    match num {
-        ..=1 => return false,
-        2 | 3 | 5 => return true,
-        _ => (),
+    if num == 2 || num == 3 || num == 5 {
+        return true;
     }
-    if num % 2 == 0 {
+    if num < 2 || num % 2 == 0 || num % 3 == 0 || num % 5 == 0 {
         return false;
-    }
-    let idx = (num - 7) / 2;
-    if idx < 64 {
-        return 0x502DA2534C96996Di64 >> idx & 1 == 1;
     }
 
     // Slow checks.
-    if num % 3 == 0 || num % 5 == 0 {
-        return false;
-    }
     match num {
         ..=100000 => is_prime_td(num),
         // The Miller-Rabin tests as performed below are deterministic for all
