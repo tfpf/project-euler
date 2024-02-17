@@ -3,6 +3,13 @@ name = "project-euler"
 version = "1.0.0"
 edition = "2021"
 
+[dev-dependencies]
+criterion = "0.4.0"
+
+[[bench]]
+name = "benches"
+harness = false
+
 [profile.release]
 incremental = true
 strip = "debuginfo"

@@ -1,5 +1,10 @@
 name: lint
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - '.github/workflows/lint.yml'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   lint:

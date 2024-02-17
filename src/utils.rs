@@ -1,3 +1,9 @@
+#![deny(clippy::all)]
+#![allow(clippy::len_without_is_empty)]
+#![allow(clippy::manual_try_fold)]
+#![allow(clippy::match_overlapping_arm)]
+#![allow(clippy::new_without_default)]
+
 /******************************************************************************
  * Functions.
  *****************************************************************************/
@@ -1338,11 +1344,22 @@ mod tests {
 
     #[test]
     fn gcd_test() {
-        let coprime_pairs = (0..10i64.pow(8))
-            .zip((0..10i64.pow(8)).rev())
-            .filter(|&(a, b)| utils::gcd(a, b) == 1)
-            .count();
-        assert_eq!(coprime_pairs, 58752000);
+        let fhandle = std::fs::File::open("res/gcd_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let line = line.unwrap();
+            let [a, b, g]: [i64; 3] = line
+                .split_ascii_whitespace()
+                .map(|s| s.parse().unwrap())
+                .collect::<Vec<i64>>()
+                .try_into()
+                .unwrap();
+            assert_eq!(a, utils::gcd(a, a));
+            assert_eq!(b, utils::gcd(b, b));
+            assert_eq!(g, utils::gcd(g, g));
+            assert_eq!(g, utils::gcd(a, b));
+            assert_eq!(g, utils::gcd(b, a));
+        }
     }
 
     #[test]

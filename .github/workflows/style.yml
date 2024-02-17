@@ -1,5 +1,11 @@
 name: style
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - '.github/workflows/style.yml'
+      - 'rustfmt.toml'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   style:

@@ -1,5 +1,13 @@
 name: sanity
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - '.github/workflows/sanity.yml'
+      - 'Dockerfile'
+      - 'res/*.txt'
+      - '!res/*_test.txt'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   sanity32:
