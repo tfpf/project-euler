@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/tests.yml'
+      - 'Dockerfile'
       - 'src/utils.rs'
       - 'res/*_test.txt'
   workflow_dispatch:
