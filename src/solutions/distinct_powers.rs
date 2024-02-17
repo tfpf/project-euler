@@ -8,7 +8,7 @@ use crate::utils;
 /// * `primes` - Prime numbers to use to calculate the exponent.
 ///
 /// -> Exponent.
-fn exponent(mut num: i64, primes: &Vec<i64>) -> i64 {
+fn exponent(mut num: i64, primes: &[i64]) -> i64 {
     // Calculate the greatest exponent of every prime in the given number.
     let mut exponents = vec![0i64; primes.len()];
     let mut gcd = 0;
