@@ -677,11 +677,7 @@ impl SieveOfAtkin {
     fn algorithm_4_3(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
-            let sieve_len = self.sieve.len() as i64;
-            if k0 >= sieve_len {
-                let radicand = (y0.pow(2) + 60 * (k0 - sieve_len)) as f64;
-                let n = ((radicand.sqrt() - y0 as f64) / 30.0).floor() as i64;
-                (k0, y0) = (k0 - y0 * n - 15 * n.pow(2), y0 + 30 * n);
+            while k0 >= self.sieve.len() as i64 {
                 if x <= y0 {
                     return;
                 }
