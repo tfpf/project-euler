@@ -1359,7 +1359,7 @@ mod tests {
             let mut expression = line.split_ascii_whitespace();
 
             // The first operation is always exponentiation. Hard-code it.
-            let base = utils::Long::from(expression.next().unwrap().parse().unwrap());
+            let base = utils::Long::new(expression.next().unwrap());
             expression.next();
             let exp = expression.next().unwrap().parse().unwrap();
             let mut result = base.pow(exp);
