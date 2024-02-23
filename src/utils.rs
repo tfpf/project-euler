@@ -240,7 +240,7 @@ pub fn isqrt(mut num: i64) -> i64 {
 
 /// Arbitrary-precision integer type which stores digits of a positive number
 /// in base 1_000_000_000.
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct Long {
     digits: Vec<i32>,
 }
@@ -271,7 +271,11 @@ impl Long {
         Long::create(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
-        Long { digits: vec![digit] }
+        if digit < 1_000_000_000 {
+            Long { digits: vec![digit] }
+        } else {
+            panic!("argument is too large to be a digit of this arbitrary-precision type");
+        }
     }
     /// Calculate the factorial of a non-negative number.
     ///
@@ -360,12 +364,12 @@ impl Long {
             base = &base * &base;
         }
     }
-    fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
-        let sum = a + b + carry;
+    fn adc(a: i32, b: i32, carry: bool) -> (i32, bool) {
+        let sum = a + b + carry as i32;
         if sum >= 1_000_000_000 {
-            (sum - 1_000_000_000, 1)
+            (sum - 1_000_000_000, true)
         } else {
-            (sum, 0)
+            (sum, false)
         }
     }
     fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
@@ -375,17 +379,20 @@ impl Long {
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        let mut carry = 0;
-        for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
-            (*sd, carry) = Long::adc(*sd, *od, carry);
+        let (slen, olen) = (self.digits.len(), other.digits.len());
+        let mut carry = false;
+        for i in 0..std::cmp::max(slen, olen) {
+            let oi = if i < olen { other.digits[i] } else { 0 };
+            if i < slen {
+                (self.digits[i], carry) = Long::adc(self.digits[i], oi, carry);
+            } else {
+                let (sum, carry_) = Long::adc(0, oi, carry);
+                self.digits.push(sum);
+                carry = carry_;
+            }
         }
-        for od in other.digits.iter().skip(self.digits.len()) {
-            let sum_carry = Long::adc(0, *od, carry);
-            self.digits.push(sum_carry.0);
-            carry = sum_carry.1;
-        }
-        if carry > 0 {
-            self.digits.push(carry);
+        if carry {
+            self.digits.push(1);
         }
     }
 }
@@ -451,6 +458,11 @@ impl std::fmt::Display for Long {
                     }
                 })
             })
+    }
+}
+impl std::fmt::Debug for Long {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self)
     }
 }
 
@@ -1347,12 +1359,34 @@ mod tests {
 
     #[test]
     fn long_test() {
-        let mut num = &utils::Long::new("43").pow(37) * &utils::Long::from(745683);
-        num += &utils::Long::factorial(51);
-        assert_eq!(
-            num.to_string(),
-            "3597031455246992664728898500113748859466269359952342048214143659169"
-        );
+        let fhandle = std::fs::File::open("res/long_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let line = line.unwrap();
+            let mut expression = line.split_ascii_whitespace();
+
+            // The first operation is always exponentiation. Hard-code it.
+            let base = utils::Long::new(expression.next().unwrap());
+            expression.next();
+            let exp = expression.next().unwrap().parse().unwrap();
+            let mut result = base.pow(exp);
+
+            // The following operations can be done in order, because all
+            // multiplications come before any additions.
+            loop {
+                let oper = expression.next().unwrap();
+                let num = utils::Long::new(expression.next().unwrap());
+                match oper {
+                    "*" => result = &result * &num,
+                    "+" => result += &num,
+                    "=" => {
+                        assert_eq!(result, num);
+                        break;
+                    }
+                    _ => unreachable!(),
+                }
+            }
+        }
     }
 
     #[test]
