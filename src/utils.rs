@@ -364,23 +364,6 @@ impl Long {
             base = &base * &base;
         }
     }
-    fn accumulate(accumulator: &mut Vec<i32>, operand: &[i32]) {
-        let (alen, olen) = (accumulator.len(), operand.len());
-        let mut carry = false;
-        for i in 0..std::cmp::max(alen, olen) {
-            let oi = if i < olen { operand[i] } else { 0 };
-            if i < alen {
-                (accumulator[i], carry) = Long::adc(accumulator[i], oi, carry);
-            } else {
-                let (sum, carry_) = Long::adc(0, oi, carry);
-                accumulator.push(sum);
-                carry = carry_;
-            }
-        }
-        if carry {
-            accumulator.push(1);
-        }
-    }
     fn adc(a: i32, b: i32, carry: bool) -> (i32, bool) {
         let sum = a + b + carry as i32;
         if sum >= 1_000_000_000 {
@@ -396,7 +379,21 @@ impl Long {
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        Long::accumulate(&mut self.digits, &other.digits);
+        let (slen, olen) = (self.digits.len(), other.digits.len());
+        let mut carry = false;
+        for i in 0..std::cmp::max(slen, olen) {
+            let oi = if i < olen { other.digits[i] } else { 0 };
+            if i < slen {
+                (self.digits[i], carry) = Long::adc(self.digits[i], oi, carry);
+            } else {
+                let (sum, carry_) = Long::adc(0, oi, carry);
+                self.digits.push(sum);
+                carry = carry_;
+            }
+        }
+        if carry {
+            self.digits.push(1);
+        }
     }
 }
 impl std::ops::Add<&Long> for &Long {
