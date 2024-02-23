@@ -240,7 +240,7 @@ pub fn isqrt(mut num: i64) -> i64 {
 
 /// Arbitrary-precision integer type which stores digits of a positive number
 /// in base 1_000_000_000.
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct Long {
     digits: Vec<i32>,
 }
@@ -274,7 +274,7 @@ impl Long {
         if digit < 1_000_000_000 {
             Long { digits: vec![digit] }
         } else {
-            panic!("argument is too large to be a multiple-precision digit");
+            panic!("argument is too large to be a digit of this arbitrary-precision type");
         }
     }
     /// Calculate the factorial of a non-negative number.
@@ -364,12 +364,29 @@ impl Long {
             base = &base * &base;
         }
     }
-    fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
-        let sum = a + b + carry;
+    fn accumulate(accumulator: &mut Vec<i32>, operand: &[i32]) {
+        let (alen, olen) = (accumulator.len(), operand.len());
+        let mut carry = false;
+        for i in 0..std::cmp::max(alen, olen) {
+            let oi = if i < olen { operand[i] } else { 0 };
+            if i < alen {
+                (accumulator[i], carry) = Long::adc(accumulator[i], oi, carry);
+            } else {
+                let (sum, carry_) = Long::adc(0, oi, carry);
+                accumulator.push(sum);
+                carry = carry_;
+            }
+        }
+        if carry {
+            accumulator.push(1);
+        }
+    }
+    fn adc(a: i32, b: i32, carry: bool) -> (i32, bool) {
+        let sum = a + b + carry as i32;
         if sum >= 1_000_000_000 {
-            (sum - 1_000_000_000, 1)
+            (sum - 1_000_000_000, true)
         } else {
-            (sum, 0)
+            (sum, false)
         }
     }
     fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
@@ -379,18 +396,7 @@ impl Long {
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        let mut carry = 0;
-        for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
-            (*sd, carry) = Long::adc(*sd, *od, carry);
-        }
-        for od in other.digits.iter().skip(self.digits.len()) {
-            let sum_carry = Long::adc(0, *od, carry);
-            self.digits.push(sum_carry.0);
-            carry = sum_carry.1;
-        }
-        if carry > 0 {
-            self.digits.push(carry);
-        }
+        Long::accumulate(&mut self.digits, &other.digits);
     }
 }
 impl std::ops::Add<&Long> for &Long {
@@ -1376,7 +1382,10 @@ mod tests {
                 match oper {
                     "*" => result = &result * &num,
                     "+" => result += &num,
-                    "=" => assert_eq!(result, num),
+                    "=" => {
+                        assert_eq!(result, num);
+                        break;
+                    }
                     _ => unreachable!(),
                 }
             }
