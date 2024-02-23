@@ -1347,12 +1347,31 @@ mod tests {
 
     #[test]
     fn long_test() {
-        let mut num = &utils::Long::new("43").pow(37) * &utils::Long::from(745683);
-        num += &utils::Long::factorial(51);
-        assert_eq!(
-            num.to_string(),
-            "3597031455246992664728898500113748859466269359952342048214143659169"
-        );
+        let fhandle = std::fs::File::open("res/long_test.txt").unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        for line in reader.lines() {
+            let line = line.unwrap();
+            let mut expression = line.split_ascii_whitespace();
+
+            // The first operation is always exponentiation. Hard-code it.
+            let base = utils::Long::from(expression.next().unwrap().parse().unwrap());
+            expression.next();
+            let exp = expression.next().unwrap().parse().unwrap();
+            let mut result = base.pow(exp);
+
+            // The following operations can be done in order, because all
+            // multiplications come before any additions.
+            loop {
+                let token = expression.next().unwrap();
+                let num = utils::Long::new(expression.next().unwrap());
+                match token {
+                    "*" => result = &result * &num,
+                    "+" => result += &num,
+                    "=" => assert_eq!(result.digits, num.digits),
+                    _ => unreachable!(),
+                }
+            }
+        }
     }
 
     #[test]
