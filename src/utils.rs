@@ -1367,9 +1367,9 @@ mod tests {
             // The following operations can be done in order, because all
             // multiplications come before any additions.
             loop {
-                let token = expression.next().unwrap();
+                let oper = expression.next().unwrap();
                 let num = utils::Long::new(expression.next().unwrap());
-                match token {
+                match oper {
                     "*" => result = &result * &num,
                     "+" => result += &num,
                     "=" => assert_eq!(result, num),
