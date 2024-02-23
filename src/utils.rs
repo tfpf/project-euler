@@ -271,7 +271,11 @@ impl Long {
         Long::create(s.bytes().rev())
     }
     pub fn from(digit: i32) -> Long {
-        Long { digits: vec![digit] }
+        if digit < 1_000_000_000 {
+            Long { digits: vec![digit] }
+        } else {
+            panic!("argument is too large to be a multiple-precision digit");
+        }
     }
     /// Calculate the factorial of a non-negative number.
     ///
