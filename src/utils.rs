@@ -453,6 +453,11 @@ impl std::fmt::Display for Long {
             })
     }
 }
+impl std::fmt::Debug for Long {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
 
 /// Check whether a bunch of numbers are pandigital with respect to the given
 /// range.
@@ -1367,7 +1372,7 @@ mod tests {
                 match token {
                     "*" => result = &result * &num,
                     "+" => result += &num,
-                    "=" => assert_eq!(result.digits, num.digits),
+                    "=" => assert_eq!(result, num),
                     _ => unreachable!(),
                 }
             }
