@@ -285,20 +285,10 @@ impl Long {
             ..=-1 => panic!("factorials are not defined for negative integers"),
             0 | 1 => return Long::from(1),
             2 => return Long::from(2),
-            3 => return Long::from(6),
-            4 => return Long::from(24),
-            5 => return Long::from(120),
-            6 => return Long::from(720),
-            7 => return Long::from(5040),
-            8 => return Long::from(40320),
-            9 => return Long::from(362880),
-            10 => return Long::from(3628800),
-            11 => return Long::from(39916800),
-            12 => return Long::from(479001600),
             _ => (),
         }
 
-        // Multiply the extremes, converting towards the centre. For example,
+        // Multiply the extremes, converging towards the centre. For example,
         // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
         // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
         let partials = num / 2;
@@ -1304,6 +1294,12 @@ mod tests {
     use crate::utils;
     use std::io::BufRead;
 
+    fn lines(fname: &str) -> impl Iterator<Item = String> {
+        let fhandle = std::fs::File::open(fname).unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        reader.lines().map(|line| line.unwrap())
+    }
+
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_smaller_test() {
@@ -1320,10 +1316,7 @@ mod tests {
 
     #[test]
     fn is_prime_large_test() {
-        let fhandle = std::fs::File::open("res/is_prime_large_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/is_prime_large_test.txt") {
             let mut num_primality = line.split_ascii_whitespace();
             let num = num_primality.next().unwrap().parse().unwrap();
             let primality = num_primality.next().unwrap().parse().unwrap();
@@ -1333,21 +1326,18 @@ mod tests {
 
     #[test]
     fn gcd_test() {
-        let fhandle = std::fs::File::open("res/gcd_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/gcd_test.txt") {
             let [a, b, g]: [i64; 3] = line
                 .split_ascii_whitespace()
                 .map(|s| s.parse().unwrap())
                 .collect::<Vec<i64>>()
                 .try_into()
                 .unwrap();
-            assert_eq!(a, utils::gcd(a, a));
-            assert_eq!(b, utils::gcd(b, b));
-            assert_eq!(g, utils::gcd(g, g));
-            assert_eq!(g, utils::gcd(a, b));
-            assert_eq!(g, utils::gcd(b, a));
+            assert_eq!(utils::gcd(a, a), a);
+            assert_eq!(utils::gcd(b, b), b);
+            assert_eq!(utils::gcd(g, g), g);
+            assert_eq!(utils::gcd(a, b), g);
+            assert_eq!(utils::gcd(b, a), g);
         }
     }
 
@@ -1358,11 +1348,8 @@ mod tests {
     }
 
     #[test]
-    fn long_test() {
-        let fhandle = std::fs::File::open("res/long_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+    fn long_arithmetic_test() {
+        for line in lines("res/long_arithmetic_test.txt") {
             let mut expression = line.split_ascii_whitespace();
 
             // The first operation is always exponentiation. Hard-code it.
@@ -1390,6 +1377,16 @@ mod tests {
     }
 
     #[test]
+    fn long_factorial_test() {
+        for line in lines("res/long_factorial_test.txt") {
+            let mut num_factorial = line.split_ascii_whitespace();
+            let num = num_factorial.next().unwrap().parse().unwrap();
+            let factorial = utils::Long::new(num_factorial.next().unwrap());
+            assert_eq!(utils::Long::factorial(num), factorial);
+        }
+    }
+
+    #[test]
     fn sieve_of_atkin_smaller_test() {
         let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(14)).iter().count();
         assert_eq!(num_of_primes, 1900);
@@ -1411,10 +1408,7 @@ mod tests {
 
     #[test]
     fn continued_fraction_test() {
-        let fhandle = std::fs::File::open("res/continued_fraction_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/continued_fraction_test.txt") {
             let mut num_terms = line.split_ascii_whitespace();
             let num = num_terms.next().unwrap().parse().unwrap();
             let terms = num_terms.next().unwrap().split(',').map(|s| s.parse().unwrap());
