@@ -1343,11 +1343,11 @@ mod tests {
                 .collect::<Vec<i64>>()
                 .try_into()
                 .unwrap();
-            assert_eq!(a, utils::gcd(a, a));
-            assert_eq!(b, utils::gcd(b, b));
-            assert_eq!(g, utils::gcd(g, g));
-            assert_eq!(g, utils::gcd(a, b));
-            assert_eq!(g, utils::gcd(b, a));
+            assert_eq!(utils::gcd(a, a), a);
+            assert_eq!(utils::gcd(b, b), b);
+            assert_eq!(utils::gcd(g, g), g);
+            assert_eq!(utils::gcd(a, b), g);
+            assert_eq!(utils::gcd(b, a), g);
         }
     }
 
@@ -1388,6 +1388,12 @@ mod tests {
 
     #[test]
     fn long_factorial_test() {
+        for line in lines("res/long_factorial_test.txt") {
+            let mut expression = line.split_ascii_whitespace();
+            let num = expression.next().unwrap().parse().unwrap();
+            let f = utils::Long::new(expression.next().unwrap());
+            assert_eq!(utils::Long::factorial(num), f);
+        }
     }
 
     #[test]
