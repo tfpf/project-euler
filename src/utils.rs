@@ -1389,10 +1389,10 @@ mod tests {
     #[test]
     fn long_factorial_test() {
         for line in lines("res/long_factorial_test.txt") {
-            let mut expression = line.split_ascii_whitespace();
-            let num = expression.next().unwrap().parse().unwrap();
-            let f = utils::Long::new(expression.next().unwrap());
-            assert_eq!(utils::Long::factorial(num), f);
+            let mut num_factorial = line.split_ascii_whitespace();
+            let num = num_factorial.next().unwrap().parse().unwrap();
+            let factorial = utils::Long::new(num_factorial.next().unwrap());
+            assert_eq!(utils::Long::factorial(num), factorial);
         }
     }
 
