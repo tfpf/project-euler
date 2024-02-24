@@ -285,20 +285,10 @@ impl Long {
             ..=-1 => panic!("factorials are not defined for negative integers"),
             0 | 1 => return Long::from(1),
             2 => return Long::from(2),
-            3 => return Long::from(6),
-            4 => return Long::from(24),
-            5 => return Long::from(120),
-            6 => return Long::from(720),
-            7 => return Long::from(5040),
-            8 => return Long::from(40320),
-            9 => return Long::from(362880),
-            10 => return Long::from(3628800),
-            11 => return Long::from(39916800),
-            12 => return Long::from(479001600),
             _ => (),
         }
 
-        // Multiply the extremes, converting towards the centre. For example,
+        // Multiply the extremes, converging towards the centre. For example,
         // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
         // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
         let partials = num / 2;
