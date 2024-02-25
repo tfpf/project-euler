@@ -242,7 +242,7 @@ pub fn isqrt(mut num: i64) -> i64 {
 /// in base 1_000_000_000.
 #[derive(Clone, Eq, PartialEq)]
 pub struct Long {
-    digits: Vec<i32>,
+    digits: Vec<u32>,
 }
 impl Long {
     /// Construct an arbitrary-precision integer from an iterator over decimal
@@ -254,7 +254,7 @@ impl Long {
     fn create(bytes: impl Iterator<Item = u8>) -> Long {
         let mut long = Long { digits: vec![] };
         let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
-            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
+            let digit = digit + 10u32.pow(idx) * (byte - b'0') as u32;
             if idx == 8 {
                 long.digits.push(digit);
                 (0, 0)
@@ -270,22 +270,21 @@ impl Long {
     pub fn new(s: &str) -> Long {
         Long::create(s.bytes().rev())
     }
-    pub fn from(digit: i32) -> Long {
-        if digit < 1_000_000_000 {
-            Long { digits: vec![digit] }
-        } else {
+    pub fn from(digit: u32) -> Long {
+        if digit >= 1_000_000_000 {
             panic!("argument is too large to be a digit of this arbitrary-precision type");
         }
+        Long { digits: vec![digit] }
     }
     /// Calculate the factorial of a non-negative number.
     ///
     /// * `num` - Number whose factorial is to be calculated.
-    pub fn factorial(num: i32) -> Long {
-        match num {
-            ..=-1 => panic!("factorials are not defined for negative integers"),
-            0 | 1 => return Long::from(1),
-            2 => return Long::from(2),
-            _ => (),
+    pub fn factorial(num: u32) -> Long {
+        if num == 0 || num == 1 {
+            return Long::from(1);
+        }
+        if num == 2 {
+            return Long::from(2);
         }
 
         // Multiply the extremes, converging towards the centre. For example,
@@ -354,17 +353,17 @@ impl Long {
             base = &base * &base;
         }
     }
-    fn adc(a: i32, b: i32, carry: bool) -> (i32, bool) {
-        let sum = a + b + carry as i32;
+    fn adc(a: u32, b: u32, carry: bool) -> (u32, bool) {
+        let sum = a + b + carry as u32;
         if sum >= 1_000_000_000 {
             (sum - 1_000_000_000, true)
         } else {
             (sum, false)
         }
     }
-    fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
-        let product = a as i64 * b as i64 + carry as i64;
-        ((product % 1_000_000_000) as i32, (product / 1_000_000_000) as i32)
+    fn mlc(a: u32, b: u32, carry: u32) -> (u32, u32) {
+        let product = a as u64 * b as u64 + carry as u64;
+        ((product % 1_000_000_000) as u32, (product / 1_000_000_000) as u32)
     }
 }
 impl std::ops::AddAssign<&Long> for Long {
@@ -394,8 +393,8 @@ impl std::ops::Add<&Long> for &Long {
         result
     }
 }
-impl std::ops::MulAssign<i32> for Long {
-    fn mul_assign(&mut self, other: i32) {
+impl std::ops::MulAssign<u32> for Long {
+    fn mul_assign(&mut self, other: u32) {
         let mut carry = 0;
         for sd in self.digits.iter_mut() {
             (*sd, carry) = Long::mlc(*sd, other, carry);
@@ -405,9 +404,9 @@ impl std::ops::MulAssign<i32> for Long {
         }
     }
 }
-impl std::ops::Mul<i32> for &Long {
+impl std::ops::Mul<u32> for &Long {
     type Output = Long;
-    fn mul(self, other: i32) -> Long {
+    fn mul(self, other: u32) -> Long {
         let mut result = self.clone();
         result *= other;
         result
@@ -875,7 +874,7 @@ pub struct Fraction {
     denominator: Long,
 }
 impl Fraction {
-    pub fn from(numerator: i32, denominator: i32) -> Fraction {
+    pub fn from(numerator: u32, denominator: u32) -> Fraction {
         Fraction {
             numerator: Long::from(numerator),
             denominator: Long::from(denominator),
@@ -891,14 +890,14 @@ impl Fraction {
         (self.numerator.sum(), self.denominator.sum())
     }
 }
-impl std::ops::AddAssign<i32> for Fraction {
-    fn add_assign(&mut self, other: i32) {
+impl std::ops::AddAssign<u32> for Fraction {
+    fn add_assign(&mut self, other: u32) {
         self.numerator += &(&self.denominator * other);
     }
 }
-impl std::ops::Add<i32> for &Fraction {
+impl std::ops::Add<u32> for &Fraction {
     type Output = Fraction;
-    fn add(self, other: i32) -> Fraction {
+    fn add(self, other: u32) -> Fraction {
         let mut result = self.clone();
         result += other;
         result
