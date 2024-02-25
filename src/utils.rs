@@ -366,9 +366,9 @@ impl std::ops::AddAssign<&Long> for Long {
         let slen = std::cmp::max(slen, olen);
         self.digits.resize(slen, 0);
         let mut carry = false;
-        for i in 0..slen {
-            let oi = if i < olen { other.digits[i] } else { 0 };
-            (self.digits[i], carry) = Long::adc(self.digits[i], oi, carry);
+        for (i, sd) in self.digits.iter_mut().enumerate() {
+            let od = if i < olen { other.digits[i] } else { 0 };
+            (*sd, carry) = Long::adc(*sd, od, carry);
         }
         if carry {
             self.digits.push(1);
