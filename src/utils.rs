@@ -245,36 +245,33 @@ pub struct Long {
     digits: Vec<u32>,
 }
 impl Long {
-    /// Construct an arbitrary-precision integer from an iterator over decimal
-    /// digits, least significant first.
+    /// Construct an arbitrary-precision integer from a big-endian string of
+    /// decimal digits.
     ///
-    /// * `bytes` - Iterator which yields numbers from 0 to 9.
+    /// * `s`
     ///
     /// -> Arbitrary-precision integer.
-    fn create(bytes: impl Iterator<Item = u8>) -> Long {
+    pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
-        let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
-            let digit = digit + 10u32.pow(idx) * (byte - b'0') as u32;
-            if idx == 8 {
-                long.digits.push(digit);
-                (0, 0)
-            } else {
-                (idx + 1, digit)
+        let mut idx = s.len();
+        loop {
+            let (lower, upper) = (std::cmp::max(idx, 9) - 9, idx);
+            long.digits.push(s[lower..upper].parse().unwrap());
+            if lower == 0 {
+                break;
             }
-        });
-        if digit > 0 || long.digits.is_empty() {
-            long.digits.push(digit);
+            idx = lower;
         }
         long
-    }
-    pub fn new(s: &str) -> Long {
-        Long::create(s.bytes().rev())
     }
     pub fn from(digit: u32) -> Long {
         if digit >= 1_000_000_000 {
             panic!("argument is too large to be a digit of this arbitrary-precision type");
         }
         Long { digits: vec![digit] }
+    }
+    pub fn reverse(&self) -> Long {
+        Long::new(&self.to_string().chars().rev().collect::<String>())
     }
     /// Calculate the factorial of a non-negative number.
     ///
@@ -296,16 +293,13 @@ impl Long {
         } else {
             Long::from(1)
         };
-        let (mut multiplicand, mut delta) = (num, num - 2);
+        let (mut multiplicand, mut delta) = (num, num);
         for _ in 0..partials {
             result *= multiplicand;
-            multiplicand += delta;
             delta -= 2;
+            multiplicand += delta;
         }
         result
-    }
-    pub fn reverse(&self) -> Long {
-        Long::create(self.to_string().bytes())
     }
     /// Obtain the number of decimal digits of this number (i.e. its length).
     ///
