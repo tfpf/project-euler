@@ -362,7 +362,8 @@ impl Long {
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        self.digits.resize(std::cmp::max(self.digits.len(), other.digits.len()), 0);
+        self.digits
+            .resize(std::cmp::max(self.digits.len(), other.digits.len()), 0);
         let mut carry = false;
         for (sd, od) in self
             .digits
