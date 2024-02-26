@@ -443,7 +443,11 @@ impl std::fmt::Display for Long {
 }
 impl std::fmt::Debug for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self)
+        let result = write!(f, "digits = |");
+        self.digits
+            .iter()
+            .rev()
+            .fold(result, |result, &digit| result.and_then(|_| write!(f, "{}|", digit)))
     }
 }
 
