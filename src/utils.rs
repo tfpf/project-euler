@@ -1382,6 +1382,17 @@ mod tests {
     }
 
     #[test]
+    fn long_multiplication_test() {
+        for line in lines("res/long_multiplication_test.txt") {
+            let mut mmp = line.split_ascii_whitespace();
+            let multiplicand = utils::Long::new(mmp.next().unwrap());
+            let multiplier = mmp.next().unwrap().parse::<u32>().unwrap();
+            let product = utils::Long::new(mmp.next().unwrap());
+            assert_eq!(&multiplicand * multiplier, product);
+        }
+    }
+
+    #[test]
     fn sieve_of_atkin_smaller_test() {
         let num_of_primes = utils::SieveOfAtkin::new(2usize.pow(14)).iter().count();
         assert_eq!(num_of_primes, 1900);
