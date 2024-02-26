@@ -391,8 +391,9 @@ impl std::ops::MulAssign<u32> for Long {
         for sd in self.digits.iter_mut() {
             (*sd, carry) = Long::mlc(*sd, other, carry);
         }
-        if carry > 0 {
-            self.digits.push(carry);
+        while carry > 0 {
+            self.digits.push(carry % 1_000_000_000);
+            carry /= 1_000_000_000;
         }
     }
 }
