@@ -362,13 +362,14 @@ impl Long {
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        let (slen, olen) = (self.digits.len(), other.digits.len());
-        let slen = std::cmp::max(slen, olen);
-        self.digits.resize(slen, 0);
+        self.digits.resize(std::cmp::max(self.digits.len(), other.digits.len()), 0);
         let mut carry = false;
-        for (i, sd) in self.digits.iter_mut().enumerate() {
-            let od = if i < olen { other.digits[i] } else { 0 };
-            (*sd, carry) = Long::adc(*sd, od, carry);
+        for (sd, od) in self
+            .digits
+            .iter_mut()
+            .zip(other.digits.iter().chain(std::iter::repeat(&0)))
+        {
+            (*sd, carry) = Long::adc(*sd, *od, carry);
         }
         if carry {
             self.digits.push(1);
