@@ -1,13 +1,5 @@
-#![deny(clippy::all)]
-#![allow(clippy::len_without_is_empty)]
-#![allow(clippy::manual_try_fold)]
-#![allow(clippy::match_overlapping_arm)]
-#![allow(clippy::new_without_default)]
-
+use project_euler::solutions;
 use std::io::Write;
-
-pub mod solutions;
-pub mod utils;
 
 /// Execute the solution (if available) of the specified problem. Also measure
 /// its running time.
@@ -86,8 +78,11 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         68 => solutions::magic_5_gon_ring::solve,
         69 => solutions::totient_maximum::solve,
         70 => solutions::totient_permutation::solve,
+        71 => solutions::ordered_fractions::solve,
         74 => solutions::digit_factorial_chains::solve,
         75 => solutions::singular_integer_right_triangles::solve,
+        76 => solutions::counting_summations::solve,
+        77 => solutions::prime_summations::solve,
         81 => solutions::path_sum_two_ways::solve,
         85 => solutions::counting_rectangles::solve,
         87 => solutions::prime_power_triples::solve,

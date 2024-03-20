@@ -1,7 +1,8 @@
 # Project Euler
 Trying my hand at [Project Euler](https://projecteuler.net) as I stumble along learning Rust. I shall only add the
 solutions to the first hundred problems here with the intention being to showcase whatever useful data structures I
-build along the way. This is permitted according to the Project Euler guidelines.
+build along the way. (This is permitted according to the Project Euler guidelines.) Further, I shall restrict myself to
+the standard library.
 
 [![style](https://github.com/tfpf/project-euler/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/style.yml)
 [![lint](https://github.com/tfpf/project-euler/actions/workflows/lint.yml/badge.svg)](https://github.com/tfpf/project-euler/actions/workflows/lint.yml)
@@ -116,8 +117,11 @@ such as (but not limited to) Bard and ChatGPT.
 |[68](https://projecteuler.net/problem=68)|[`magic_5_gon_ring.rs`](src/solutions/magic_5_gon_ring.rs)|
 |[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
 |[70](https://projecteuler.net/problem=70)|[`totient_permutation.rs`](src/solutions/totient_permutation.rs)|
+|[71](https://projecteuler.net/problem=71)|[`ordered_fractions.rs`](src/solutions/ordered_fractions.rs)|
 |[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|
 |[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
+|[76](https://projecteuler.net/problem=76)|[`counting_summations.rs`](src/solutions/counting_summations.rs)|
+|[77](https://projecteuler.net/problem=77)|[`prime_summations.rs`](src/solutions/prime_summations.rs)|
 |[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
 |[85](https://projecteuler.net/problem=85)|[`counting_rectangles.rs`](src/solutions/counting_rectangles.rs)|
 |[87](https://projecteuler.net/problem=87)|[`prime_power_triples.rs`](src/solutions/prime_power_triples.rs)|
