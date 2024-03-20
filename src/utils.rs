@@ -240,61 +240,51 @@ pub fn isqrt(mut num: i64) -> i64 {
 
 /// Arbitrary-precision integer type which stores digits of a positive number
 /// in base 1_000_000_000.
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct Long {
-    digits: Vec<i32>,
+    digits: Vec<u32>,
 }
 impl Long {
-    /// Construct an arbitrary-precision integer from an iterator over decimal
-    /// digits, least significant first.
+    /// Construct an arbitrary-precision integer from a big-endian string of
+    /// decimal digits.
     ///
-    /// * `bytes` - Iterator which yields numbers from 0 to 9.
+    /// * `s`
     ///
     /// -> Arbitrary-precision integer.
-    fn create(bytes: impl Iterator<Item = u8>) -> Long {
+    pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
-        let (_, digit) = bytes.fold((0, 0), |(idx, digit), byte| {
-            let digit = digit + 10i32.pow(idx) * (byte - b'0') as i32;
-            if idx == 8 {
-                long.digits.push(digit);
-                (0, 0)
-            } else {
-                (idx + 1, digit)
+        let mut idx = s.len();
+        loop {
+            let (lower, upper) = (std::cmp::max(idx, 9) - 9, idx);
+            long.digits.push(s[lower..upper].parse().unwrap());
+            if lower == 0 {
+                break;
             }
-        });
-        if digit > 0 || long.digits.is_empty() {
-            long.digits.push(digit);
+            idx = lower;
         }
         long
     }
-    pub fn new(s: &str) -> Long {
-        Long::create(s.bytes().rev())
-    }
-    pub fn from(digit: i32) -> Long {
+    pub fn from(digit: u32) -> Long {
+        if digit >= 1_000_000_000 {
+            panic!("argument is too large to be a digit of this arbitrary-precision type");
+        }
         Long { digits: vec![digit] }
+    }
+    pub fn reverse(&self) -> Long {
+        Long::new(&self.to_string().chars().rev().collect::<String>())
     }
     /// Calculate the factorial of a non-negative number.
     ///
     /// * `num` - Number whose factorial is to be calculated.
-    pub fn factorial(num: i32) -> Long {
-        match num {
-            ..=-1 => panic!("factorials are not defined for negative integers"),
-            0 | 1 => return Long::from(1),
-            2 => return Long::from(2),
-            3 => return Long::from(6),
-            4 => return Long::from(24),
-            5 => return Long::from(120),
-            6 => return Long::from(720),
-            7 => return Long::from(5040),
-            8 => return Long::from(40320),
-            9 => return Long::from(362880),
-            10 => return Long::from(3628800),
-            11 => return Long::from(39916800),
-            12 => return Long::from(479001600),
-            _ => (),
+    pub fn factorial(num: u32) -> Long {
+        if num == 0 || num == 1 {
+            return Long::from(1);
+        }
+        if num == 2 {
+            return Long::from(2);
         }
 
-        // Multiply the extremes, converting towards the centre. For example,
+        // Multiply the extremes, converging towards the centre. For example,
         // 9! is computed as (9 × 1) × (8 × 2) × (7 × 3) × (6 × 4) × 5, whereas
         // 10! is computed as (10 × 1) × (9 × 2) × (8 × 3) × (7 × 4) × (6 × 5).
         let partials = num / 2;
@@ -303,16 +293,13 @@ impl Long {
         } else {
             Long::from(1)
         };
-        let (mut multiplicand, mut delta) = (num, num - 2);
+        let (mut multiplicand, mut delta) = (num, num);
         for _ in 0..partials {
             result *= multiplicand;
-            multiplicand += delta;
             delta -= 2;
+            multiplicand += delta;
         }
         result
-    }
-    pub fn reverse(&self) -> Long {
-        Long::create(self.to_string().bytes())
     }
     /// Obtain the number of decimal digits of this number (i.e. its length).
     ///
@@ -360,32 +347,33 @@ impl Long {
             base = &base * &base;
         }
     }
-    fn adc(a: i32, b: i32, carry: i32) -> (i32, i32) {
-        let sum = a + b + carry;
+    fn adc(a: u32, b: u32, carry: bool) -> (u32, bool) {
+        let sum = a + b + carry as u32;
         if sum >= 1_000_000_000 {
-            (sum - 1_000_000_000, 1)
+            (sum - 1_000_000_000, true)
         } else {
-            (sum, 0)
+            (sum, false)
         }
     }
-    fn mlc(a: i32, b: i32, carry: i32) -> (i32, i32) {
-        let product = a as i64 * b as i64 + carry as i64;
-        ((product % 1_000_000_000) as i32, (product / 1_000_000_000) as i32)
+    fn mlc(a: u32, b: u32, carry: u32) -> (u32, u32) {
+        let product = a as u64 * b as u64 + carry as u64;
+        ((product % 1_000_000_000) as u32, (product / 1_000_000_000) as u32)
     }
 }
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
-        let mut carry = 0;
-        for (sd, od) in self.digits.iter_mut().zip(other.digits.iter()) {
+        self.digits
+            .resize(std::cmp::max(self.digits.len(), other.digits.len()), 0);
+        let mut carry = false;
+        for (sd, od) in self
+            .digits
+            .iter_mut()
+            .zip(other.digits.iter().chain(std::iter::repeat(&0)))
+        {
             (*sd, carry) = Long::adc(*sd, *od, carry);
         }
-        for od in other.digits.iter().skip(self.digits.len()) {
-            let sum_carry = Long::adc(0, *od, carry);
-            self.digits.push(sum_carry.0);
-            carry = sum_carry.1;
-        }
-        if carry > 0 {
-            self.digits.push(carry);
+        if carry {
+            self.digits.push(1);
         }
     }
 }
@@ -397,20 +385,21 @@ impl std::ops::Add<&Long> for &Long {
         result
     }
 }
-impl std::ops::MulAssign<i32> for Long {
-    fn mul_assign(&mut self, other: i32) {
+impl std::ops::MulAssign<u32> for Long {
+    fn mul_assign(&mut self, other: u32) {
         let mut carry = 0;
         for sd in self.digits.iter_mut() {
             (*sd, carry) = Long::mlc(*sd, other, carry);
         }
-        if carry > 0 {
-            self.digits.push(carry);
+        while carry > 0 {
+            self.digits.push(carry % 1_000_000_000);
+            carry /= 1_000_000_000;
         }
     }
 }
-impl std::ops::Mul<i32> for &Long {
+impl std::ops::Mul<u32> for &Long {
     type Output = Long;
-    fn mul(self, other: i32) -> Long {
+    fn mul(self, other: u32) -> Long {
         let mut result = self.clone();
         result *= other;
         result
@@ -451,6 +440,15 @@ impl std::fmt::Display for Long {
                     }
                 })
             })
+    }
+}
+impl std::fmt::Debug for Long {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let result = write!(f, "digits = |");
+        self.digits
+            .iter()
+            .rev()
+            .fold(result, |result, &digit| result.and_then(|_| write!(f, "{}|", digit)))
     }
 }
 
@@ -888,7 +886,7 @@ pub struct Fraction {
     denominator: Long,
 }
 impl Fraction {
-    pub fn from(numerator: i32, denominator: i32) -> Fraction {
+    pub fn from(numerator: u32, denominator: u32) -> Fraction {
         Fraction {
             numerator: Long::from(numerator),
             denominator: Long::from(denominator),
@@ -904,14 +902,14 @@ impl Fraction {
         (self.numerator.sum(), self.denominator.sum())
     }
 }
-impl std::ops::AddAssign<i32> for Fraction {
-    fn add_assign(&mut self, other: i32) {
+impl std::ops::AddAssign<u32> for Fraction {
+    fn add_assign(&mut self, other: u32) {
         self.numerator += &(&self.denominator * other);
     }
 }
-impl std::ops::Add<i32> for &Fraction {
+impl std::ops::Add<u32> for &Fraction {
     type Output = Fraction;
-    fn add(self, other: i32) -> Fraction {
+    fn add(self, other: u32) -> Fraction {
         let mut result = self.clone();
         result += other;
         result
@@ -1307,6 +1305,12 @@ mod tests {
     use crate::utils;
     use std::io::BufRead;
 
+    fn lines(fname: &str) -> impl Iterator<Item = String> {
+        let fhandle = std::fs::File::open(fname).unwrap();
+        let reader = std::io::BufReader::new(fhandle);
+        reader.lines().map(|line| line.unwrap())
+    }
+
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_smaller_test() {
@@ -1323,10 +1327,7 @@ mod tests {
 
     #[test]
     fn is_prime_large_test() {
-        let fhandle = std::fs::File::open("res/is_prime_large_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/is_prime_large_test.txt") {
             let mut num_primality = line.split_ascii_whitespace();
             let num = num_primality.next().unwrap().parse().unwrap();
             let primality = num_primality.next().unwrap().parse().unwrap();
@@ -1336,21 +1337,18 @@ mod tests {
 
     #[test]
     fn gcd_test() {
-        let fhandle = std::fs::File::open("res/gcd_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/gcd_test.txt") {
             let [a, b, g]: [i64; 3] = line
                 .split_ascii_whitespace()
                 .map(|s| s.parse().unwrap())
                 .collect::<Vec<i64>>()
                 .try_into()
                 .unwrap();
-            assert_eq!(a, utils::gcd(a, a));
-            assert_eq!(b, utils::gcd(b, b));
-            assert_eq!(g, utils::gcd(g, g));
-            assert_eq!(g, utils::gcd(a, b));
-            assert_eq!(g, utils::gcd(b, a));
+            assert_eq!(utils::gcd(a, a), a);
+            assert_eq!(utils::gcd(b, b), b);
+            assert_eq!(utils::gcd(g, g), g);
+            assert_eq!(utils::gcd(a, b), g);
+            assert_eq!(utils::gcd(b, a), g);
         }
     }
 
@@ -1361,13 +1359,53 @@ mod tests {
     }
 
     #[test]
-    fn long_test() {
-        let mut num = &utils::Long::new("43").pow(37) * &utils::Long::from(745683);
-        num += &utils::Long::factorial(51);
-        assert_eq!(
-            num.to_string(),
-            "3597031455246992664728898500113748859466269359952342048214143659169"
-        );
+    fn long_arithmetic_test() {
+        for line in lines("res/long_arithmetic_test.txt") {
+            let mut expression = line.split_ascii_whitespace();
+
+            // The first operation is always exponentiation. Hard-code it.
+            let base = utils::Long::new(expression.next().unwrap());
+            expression.next();
+            let exp = expression.next().unwrap().parse().unwrap();
+            let mut result = base.pow(exp);
+
+            // The following operations can be done in order, because all
+            // multiplications come before any additions.
+            loop {
+                let oper = expression.next().unwrap();
+                let num = utils::Long::new(expression.next().unwrap());
+                match oper {
+                    "*" => result = &result * &num,
+                    "+" => result += &num,
+                    "=" => {
+                        assert_eq!(result, num);
+                        break;
+                    }
+                    _ => unreachable!(),
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn long_factorial_test() {
+        for line in lines("res/long_factorial_test.txt") {
+            let mut num_factorial = line.split_ascii_whitespace();
+            let num = num_factorial.next().unwrap().parse().unwrap();
+            let factorial = utils::Long::new(num_factorial.next().unwrap());
+            assert_eq!(utils::Long::factorial(num), factorial);
+        }
+    }
+
+    #[test]
+    fn long_multiplication_test() {
+        for line in lines("res/long_multiplication_test.txt") {
+            let mut mmp = line.split_ascii_whitespace();
+            let multiplicand = utils::Long::new(mmp.next().unwrap());
+            let multiplier = mmp.next().unwrap().parse::<u32>().unwrap();
+            let product = utils::Long::new(mmp.next().unwrap());
+            assert_eq!(&multiplicand * multiplier, product);
+        }
     }
 
     #[test]
@@ -1392,10 +1430,7 @@ mod tests {
 
     #[test]
     fn continued_fraction_test() {
-        let fhandle = std::fs::File::open("res/continued_fraction_test.txt").unwrap();
-        let reader = std::io::BufReader::new(fhandle);
-        for line in reader.lines() {
-            let line = line.unwrap();
+        for line in lines("res/continued_fraction_test.txt") {
             let mut num_terms = line.split_ascii_whitespace();
             let num = num_terms.next().unwrap().parse().unwrap();
             let terms = num_terms.next().unwrap().split(',').map(|s| s.parse().unwrap());
