@@ -2,7 +2,7 @@ use crate::utils;
 use std::io::BufRead;
 
 pub fn solve() -> i64 {
-    let fhandle = std::fs::File::open("res/poker_hands.txt").unwrap();
+    let fhandle = std::fs::File::open("res/solutions/poker_hands.txt").unwrap();
     let reader = std::io::BufReader::new(fhandle);
     let result = reader
         .lines()

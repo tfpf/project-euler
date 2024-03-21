@@ -1,7 +1,7 @@
 use std::io::BufRead;
 
 pub fn solve() -> i64 {
-    let fhandle = std::fs::File::open("res/path_sum_two_ways.txt").unwrap();
+    let fhandle = std::fs::File::open("res/solutions/path_sum_two_ways.txt").unwrap();
     let reader = std::io::BufReader::new(fhandle);
     let mut matrix: Vec<Vec<i32>> = reader
         .lines()
