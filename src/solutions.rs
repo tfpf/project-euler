@@ -2,6 +2,7 @@ pub mod amicable_numbers;
 pub mod champernownes_constant;
 pub mod circular_primes;
 pub mod coded_triangle_numbers;
+pub mod coin_partitions;
 pub mod coin_sums;
 pub mod combinatoric_selections;
 pub mod consecutive_prime_sum;

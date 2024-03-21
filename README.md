@@ -121,6 +121,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
 |[76](https://projecteuler.net/problem=76)|[`counting_summations.rs`](src/solutions/counting_summations.rs)|
 |[77](https://projecteuler.net/problem=77)|[`prime_summations.rs`](src/solutions/prime_summations.rs)|
+|[78](https://projecteuler.net/problem=78)|[`coin_partitions.rs`](src/solutions/coin_partitions.rs)|
 |[81](https://projecteuler.net/problem=81)|[`path_sum_two_ways.rs`](src/solutions/path_sum_two_ways.rs)|
 |[85](https://projecteuler.net/problem=85)|[`counting_rectangles.rs`](src/solutions/counting_rectangles.rs)|
 |[87](https://projecteuler.net/problem=87)|[`prime_power_triples.rs`](src/solutions/prime_power_triples.rs)|
