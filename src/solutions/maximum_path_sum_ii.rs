@@ -1,7 +1,7 @@
 use std::io::BufRead;
 
 pub fn solve() -> i64 {
-    let fhandle = std::fs::File::open("res/maximum_path_sum_ii.txt").unwrap();
+    let fhandle = std::fs::File::open("res/solutions/maximum_path_sum_ii.txt").unwrap();
     let reader = std::io::BufReader::new(fhandle);
     let mut triangle: Vec<Vec<i32>> = reader
         .lines()
