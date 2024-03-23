@@ -4,6 +4,7 @@ on:
     paths:
       - '.github/workflows/tests.yml'
       - 'Dockerfile'
+      - 'src/lib.rs'
       - 'src/utils.rs'
       - 'res/*_test.txt'
   workflow_dispatch:
