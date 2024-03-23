@@ -10,7 +10,7 @@ pub fn coin_partitions() -> usize {
     let mut p = vec![0; 100000];
     p[0] = 1;
     p[1] = 1;
-    for idx in 2..=p.len() {
+    for idx in 2..p.len() {
         // We have to iterate over generalised pentagon numbers to evaluate the
         // partition function at any value. Generate them using pentagon
         // numbers.
@@ -26,8 +26,11 @@ pub fn coin_partitions() -> usize {
             } else {
                 p[idx] -= recurrence_term;
             }
-            p[idx] %= 1000000;
         }
+        // Technically, I should reduce the number modulo 1000000 in the
+        // above loop, but it will not overflow beyond 32 bits, so I do it
+        // here.
+        p[idx] %= 1000000;
         if p[idx] == 0 {
             return idx;
         }
