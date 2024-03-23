@@ -14,14 +14,17 @@ pub fn coin_partitions() -> usize {
         // We have to iterate over generalised pentagon numbers to evaluate the
         // partition function at any value. Generate them using pentagon
         // numbers.
-        for (i, subtrahend) in utils::Polygonal::new(5)
-            .zip(1..)
-            .flat_map(|(polygonal, offset)| [polygonal, polygonal + offset].into_iter())
-            .take_while(|&subtrahend| idx >= subtrahend as usize)
-            .enumerate()
-        {
-            let recurrence_term = p[idx - subtrahend as usize];
-            if i % 4 < 2 {
+        for (offset, pentagonal) in utils::Polygonal::new(5).enumerate() {
+            if idx < pentagonal as usize {
+                break;
+            }
+            let recurrence_term = p[idx - pentagonal as usize]
+                + if idx < pentagonal as usize + offset + 1 {
+                    0
+                } else {
+                    p[idx - pentagonal as usize - offset - 1]
+                };
+            if offset % 2 == 0 {
                 p[idx] += recurrence_term;
             } else {
                 p[idx] -= recurrence_term;
