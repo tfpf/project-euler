@@ -78,3 +78,16 @@ pub mod totient_maximum;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
 pub mod xor_decryption;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn all_solutions_assertions() {
+        // Every solution should assert the equality of the expected and
+        // observed answers.
+        for dirent in std::fs::read_dir("src/solutions").unwrap() {
+            let code = std::fs::read_to_string(dirent.unwrap().path()).unwrap();
+            assert!(code.contains("assert_eq!"));
+        }
+    }
+}
