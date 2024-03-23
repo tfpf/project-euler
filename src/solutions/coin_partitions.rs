@@ -1,18 +1,16 @@
 use crate::utils;
 
-/// Compute the number of ways to obtain each number up to the given number by
-/// adding positive integers. Essentially, implement the partition function (of
-/// number theory) for each number up to the given number. The values shall be
-/// modulo 1000000.
+/// Find the smallest number for which the number of ways to sum to it using
+/// positive integers is divisible by 1000000. Essentially, implement the
+/// partition function (of number theory) for every number (storing values
+/// modulo 1000000) until we find the answer.
 ///
-/// * `num` - Last number.
-///
-/// -> Array of the numbers of ways to to sum to the array index.
-pub fn partitions(num: usize) -> Vec<i32> {
-    let mut p = vec![0; num + 1];
+/// -> Smallest number whose partition is divisible by 1000000.
+pub fn coin_partitions() -> usize {
+    let mut p = vec![0; 100000];
     p[0] = 1;
     p[1] = 1;
-    for idx in 2..=num {
+    for idx in 2..=p.len() {
         // We have to iterate over generalised pentagon numbers to evaluate the
         // partition function at any value. Generate them using pentagon
         // numbers.
@@ -22,25 +20,23 @@ pub fn partitions(num: usize) -> Vec<i32> {
             .take_while(|&subtrahend| idx >= subtrahend as usize)
             .enumerate()
         {
-            let rec = p[idx - subtrahend as usize];
+            let recurrence_term = p[idx - subtrahend as usize];
             if i % 4 < 2 {
-                p[idx] += rec;
+                p[idx] += recurrence_term;
             } else {
-                p[idx] -= rec;
+                p[idx] -= recurrence_term;
             }
             p[idx] %= 1000000;
         }
+        if p[idx] == 0 {
+            return idx;
+        }
     }
-    p
+    unreachable!();
 }
 
 pub fn solve() -> i64 {
-    let result = partitions(100000)
-        .iter()
-        .enumerate()
-        .find(|(_, &count)| count == 0)
-        .unwrap()
-        .0;
+    let result = coin_partitions();
 
     assert_eq!(result, 55374);
     result as i64
