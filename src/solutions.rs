@@ -7,6 +7,7 @@ pub mod coin_sums;
 pub mod combinatoric_selections;
 pub mod consecutive_prime_sum;
 pub mod convergents_of_e;
+pub mod counting_fractions;
 pub mod counting_rectangles;
 pub mod counting_summations;
 pub mod counting_sundays;
