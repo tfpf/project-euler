@@ -19,6 +19,8 @@ pub fn solve() -> i64 {
     // sum.
     let result = totients[2..].iter().sum();
 
+    // TODO Optimise further: implement the other algorithm described in the
+    // overview.
     assert_eq!(result, 303963552391);
     result
 }
