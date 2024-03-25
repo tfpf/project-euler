@@ -234,6 +234,11 @@ pub fn isqrt(mut num: i64) -> i64 {
     result
 }
 
+///
+pub fn totient(num: i64) -> i64 {
+    PrimeDivisors::new(num).fold(1, |product, (prime, exp)| product * prime.pow(exp - 1) * (prime - 1))
+}
+
 /******************************************************************************
  * Objects.
  *****************************************************************************/
