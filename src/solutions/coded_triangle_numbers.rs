@@ -1,7 +1,7 @@
 use crate::utils;
 
 pub fn solve() -> i64 {
-    let words = std::fs::read_to_string("res/coded_triangle_numbers.txt").unwrap();
+    let words = std::fs::read_to_string("res/solutions/coded_triangle_numbers.txt").unwrap();
     let result = words
         .split(',')
         .filter_map(|s| {

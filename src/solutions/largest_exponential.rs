@@ -1,7 +1,7 @@
 use std::io::BufRead;
 
 pub fn solve() -> i64 {
-    let fhandle = std::fs::File::open("res/largest_exponential.txt").unwrap();
+    let fhandle = std::fs::File::open("res/solutions/largest_exponential.txt").unwrap();
     let reader = std::io::BufReader::new(fhandle);
     let result = reader
         .lines()

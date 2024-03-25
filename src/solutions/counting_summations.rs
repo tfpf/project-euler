@@ -1,24 +1,33 @@
+use crate::utils;
+
 pub fn solve() -> i64 {
-    // Approach is similar to that used for P31. The difference is that the
-    // denominations are the numbers from 1 to 99 (so we don't need a separate
-    // array to store them) and that the target sum is 100. The matrix is now
-    // such that the element at row index `row` and column index `col` is the
-    // number of ways to obtain a sum equal to `col` using some/all of the
-    // numbers up to `row`. Obviously, we can skip `row == 0`.
-    let (rows, cols) = (100, 101);
-
-    // As noted above, we start from `row == 1`.
-    let mut curr = vec![1; cols];
-    let mut prev = vec![1; cols];
-
-    // Bottom-up dynamic programming.
-    for idx in 2..rows {
-        (prev, curr) = (curr, prev);
-        for sum in 1..cols {
-            curr[sum] = prev[sum] + if sum >= idx { curr[sum - idx] } else { 0 };
+    // Approach is similar to that used for P78. The difference is that the
+    // exact values of the partition function are computed.
+    let mut p = vec![0; 101];
+    p[0] = 1;
+    p[1] = 1;
+    for idx in 2..p.len() {
+        for (offset, pentagonal) in (1..).zip(utils::Polygonal::new(5)) {
+            if idx < pentagonal as usize {
+                break;
+            }
+            let recurrence_term = p[idx - pentagonal as usize]
+                + if idx < pentagonal as usize + offset {
+                    0
+                } else {
+                    p[idx - pentagonal as usize - offset]
+                };
+            if offset % 2 == 1 {
+                p[idx] += recurrence_term;
+            } else {
+                p[idx] -= recurrence_term;
+            }
         }
     }
-    let result = curr[cols - 1];
+
+    // Exclude the singleton partition, because we are asked for the number of
+    // ways to sum to 100 using at least two numbers.
+    let result = p[100] - 1;
 
     assert_eq!(result, 190569291);
     result as i64

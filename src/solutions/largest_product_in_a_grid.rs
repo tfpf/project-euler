@@ -75,7 +75,7 @@ fn find_largest(
 }
 
 pub fn solve() -> i64 {
-    let fhandle = std::fs::File::open("res/largest_product_in_a_grid.txt").unwrap();
+    let fhandle = std::fs::File::open("res/solutions/largest_product_in_a_grid.txt").unwrap();
     let reader = std::io::BufReader::new(fhandle);
     let grid: Vec<Vec<i32>> = reader
         .lines()

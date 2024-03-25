@@ -1,5 +1,5 @@
 pub fn solve() -> i64 {
-    let cipher_bytes = std::fs::read_to_string("res/xor_decryption.txt")
+    let cipher_bytes = std::fs::read_to_string("res/solutions/xor_decryption.txt")
         .unwrap()
         .split(',')
         .map(|s| s.parse().unwrap())

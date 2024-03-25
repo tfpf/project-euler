@@ -2,6 +2,7 @@ pub mod amicable_numbers;
 pub mod champernownes_constant;
 pub mod circular_primes;
 pub mod coded_triangle_numbers;
+pub mod coin_partitions;
 pub mod coin_sums;
 pub mod combinatoric_selections;
 pub mod consecutive_prime_sum;
@@ -78,3 +79,16 @@ pub mod totient_permutation;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
 pub mod xor_decryption;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn all_solutions_assertions() {
+        // Every solution should assert the equality of the expected and
+        // observed answers.
+        for dirent in std::fs::read_dir("src/solutions").unwrap() {
+            let code = std::fs::read_to_string(dirent.unwrap().path()).unwrap();
+            assert!(code.contains("assert_eq!"));
+        }
+    }
+}
