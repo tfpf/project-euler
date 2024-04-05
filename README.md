@@ -118,6 +118,7 @@ such as (but not limited to) Bard and ChatGPT.
 |[69](https://projecteuler.net/problem=69)|[`totient_maximum.rs`](src/solutions/totient_maximum.rs)|
 |[71](https://projecteuler.net/problem=71)|[`ordered_fractions.rs`](src/solutions/ordered_fractions.rs)|
 |[72](https://projecteuler.net/problem=72)|[`counting_fractions.rs`](src/solutions/counting_fractions.rs)|
+|[73](https://projecteuler.net/problem=73)|[`counting_fractions_in_a_range.rs`](src/solutions/counting_fractions_in_a_range.rs)|
 |[74](https://projecteuler.net/problem=74)|[`digit_factorial_chains.rs`](src/solutions/digit_factorial_chains.rs)|
 |[75](https://projecteuler.net/problem=75)|[`singular_integer_right_triangles.rs`](src/solutions/singular_integer_right_triangles.rs)|
 |[76](https://projecteuler.net/problem=76)|[`counting_summations.rs`](src/solutions/counting_summations.rs)|

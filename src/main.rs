@@ -79,6 +79,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         69 => solutions::totient_maximum::solve,
         71 => solutions::ordered_fractions::solve,
         72 => solutions::counting_fractions::solve,
+        73 => solutions::counting_fractions_in_a_range::solve,
         74 => solutions::digit_factorial_chains::solve,
         75 => solutions::singular_integer_right_triangles::solve,
         76 => solutions::counting_summations::solve,
