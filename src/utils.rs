@@ -1327,7 +1327,7 @@ mod tests {
 
     #[test]
     fn is_prime_large_test() {
-        for line in lines("res/is_prime_large_test.txt") {
+        for line in lines("res/tests/is_prime_large_test.txt") {
             let mut num_primality = line.split_ascii_whitespace();
             let num = num_primality.next().unwrap().parse().unwrap();
             let primality = num_primality.next().unwrap().parse().unwrap();
@@ -1337,7 +1337,7 @@ mod tests {
 
     #[test]
     fn gcd_test() {
-        for line in lines("res/gcd_test.txt") {
+        for line in lines("res/tests/gcd_test.txt") {
             let [a, b, g]: [i64; 3] = line
                 .split_ascii_whitespace()
                 .map(|s| s.parse().unwrap())
@@ -1360,7 +1360,7 @@ mod tests {
 
     #[test]
     fn long_arithmetic_test() {
-        for line in lines("res/long_arithmetic_test.txt") {
+        for line in lines("res/tests/long_arithmetic_test.txt") {
             let mut expression = line.split_ascii_whitespace();
 
             // The first operation is always exponentiation. Hard-code it.
@@ -1389,7 +1389,7 @@ mod tests {
 
     #[test]
     fn long_factorial_test() {
-        for line in lines("res/long_factorial_test.txt") {
+        for line in lines("res/tests/long_factorial_test.txt") {
             let mut num_factorial = line.split_ascii_whitespace();
             let num = num_factorial.next().unwrap().parse().unwrap();
             let factorial = utils::Long::new(num_factorial.next().unwrap());
@@ -1399,7 +1399,7 @@ mod tests {
 
     #[test]
     fn long_multiplication_test() {
-        for line in lines("res/long_multiplication_test.txt") {
+        for line in lines("res/tests/long_multiplication_test.txt") {
             let mut mmp = line.split_ascii_whitespace();
             let multiplicand = utils::Long::new(mmp.next().unwrap());
             let multiplier = mmp.next().unwrap().parse::<u32>().unwrap();
@@ -1430,7 +1430,7 @@ mod tests {
 
     #[test]
     fn continued_fraction_test() {
-        for line in lines("res/continued_fraction_test.txt") {
+        for line in lines("res/tests/continued_fraction_test.txt") {
             let mut num_terms = line.split_ascii_whitespace();
             let num = num_terms.next().unwrap().parse().unwrap();
             let terms = num_terms.next().unwrap().split(',').map(|s| s.parse().unwrap());
