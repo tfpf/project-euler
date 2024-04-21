@@ -67,7 +67,7 @@ fn solve_and_time_one(problem_number: i32) -> bool {
         56 => solutions::powerful_digit_sum::solve,
         57 => solutions::square_root_convergents::solve,
         58 => solutions::spiral_primes::solve,
-        59 => solutions::xor_decryption::solve,
+        59 => solutions::solve,
         61 => solutions::cyclical_figurate_numbers::solve,
         62 => solutions::cubic_permutations::solve,
         63 => solutions::powerful_digit_counts::solve,
