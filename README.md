@@ -21,9 +21,8 @@ Run it without arguments to sequentially solve all problems for which I have wri
 cargo r
 ```
 
-Most solutions are rather concise; the heavy lifting is done in [`src/utils.rs`](src/utils.rs). This highlights the
-intent of the code by hiding confounding implementation details. Items of particular note in that file are the
-following.
+Most solutions are rather concise; the heavy lifting is done in the `utils` module. This highlights the intent of the
+code by hiding confounding implementation details. Items of particular note therein are the following.
 * `is_prime`: fast prime checker which combines trial division and the Miller-Rabin algorithm.
 * `pow`: modular exponentiation calculator, emulating the `pow` function of Python.
 * `Long`: arbitrary-precision integer type with support for addition and multiplication.
