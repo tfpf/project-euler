@@ -20,5 +20,3 @@ impl Iterator for Digits {
         }
     }
 }
-
-

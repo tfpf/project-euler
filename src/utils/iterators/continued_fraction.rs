@@ -43,4 +43,3 @@ impl Iterator for ContinuedFraction {
         Some(a)
     }
 }
-

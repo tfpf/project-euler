@@ -25,4 +25,3 @@ impl Iterator for Cubes {
         Some(self.num)
     }
 }
-

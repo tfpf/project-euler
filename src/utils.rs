@@ -1,9 +1,5 @@
 #![allow(clippy::match_overlapping_arm)]
 
-/******************************************************************************
- * Functions.
- *****************************************************************************/
-
 /// Check whether the given number is prime.
 ///
 /// * `num` - Number to check for primality.
@@ -231,26 +227,24 @@ pub fn isqrt(mut num: i64) -> i64 {
 }
 
 mod objects;
+pub use objects::fraction::Fraction;
 pub use objects::long::Long;
 pub use objects::pandigital_checker::PandigitalChecker;
-pub use objects::sieve_of_atkin::SieveOfAtkin;
 pub use objects::poker_hand::PokerHand;
-pub use objects::fraction::Fraction;
-
+pub use objects::sieve_of_atkin::SieveOfAtkin;
 
 mod iterators;
+pub use iterators::bits::Bits;
+pub use iterators::collatz::Collatz;
+pub use iterators::continued_fraction::ContinuedFraction;
+pub use iterators::cubes::Cubes;
+pub use iterators::digits::Digits;
+pub use iterators::divisors::Divisors;
 pub use iterators::fibonacci::Fibonacci;
 pub use iterators::polygonal::Polygonal;
-pub use iterators::cubes::Cubes;
-pub use iterators::collatz::Collatz;
-pub use iterators::divisors::Divisors;
-pub use iterators::prime_divisors::PrimeDivisors;
-pub use iterators::digits::Digits;
-pub use iterators::bits::Bits;
-pub use iterators::pythagorean_triplets::PythagoreanTriplets;
 pub use iterators::potential_primes::PotentialPrimes;
-pub use iterators::continued_fraction::ContinuedFraction;
-
+pub use iterators::prime_divisors::PrimeDivisors;
+pub use iterators::pythagorean_triplets::PythagoreanTriplets;
 
 #[cfg(test)]
 mod tests {

@@ -37,5 +37,3 @@ impl Iterator for PrimeDivisors {
         }
     }
 }
-
-

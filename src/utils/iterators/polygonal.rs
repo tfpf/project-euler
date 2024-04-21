@@ -1,4 +1,3 @@
-
 /// Triangular, pentagonal, hexagonal, etc. number iterator. Specify the
 /// number of sides of the polygon as the argument to the constructor.
 pub struct Polygonal {
@@ -46,4 +45,3 @@ impl Iterator for Polygonal {
         Some(self.num)
     }
 }
-

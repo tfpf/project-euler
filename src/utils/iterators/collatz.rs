@@ -24,5 +24,3 @@ impl Iterator for Collatz {
         Some(num)
     }
 }
-
-

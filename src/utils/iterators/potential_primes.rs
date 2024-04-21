@@ -30,5 +30,3 @@ impl Iterator for PotentialPrimes {
         }
     }
 }
-
-

@@ -51,5 +51,3 @@ impl Iterator for PythagoreanTriplets {
         }
     }
 }
-
-
