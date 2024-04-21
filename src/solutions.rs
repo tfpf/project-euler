@@ -78,8 +78,7 @@ pub mod thousand_digit_fibonacci_number;
 pub mod totient_maximum;
 pub mod triangular_pentagonal_and_hexagonal;
 pub mod truncatable_primes;
-mod xor_decryption;
-pub use xor_decryption::solve;
+pub mod xor_decryption;
 
 #[cfg(test)]
 mod tests {
