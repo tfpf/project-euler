@@ -1,3 +1,6 @@
+#![allow(clippy::manual_try_fold)]
+#![allow(clippy::len_without_is_empty)]
+
 use crate::utils;
 
 /// Arbitrary-precision integer type which stores digits of a positive number

@@ -1,3 +1,4 @@
+#![allow(clippy::new_without_default)]
 
 /// Cubes iterator. Generates cubes of integers without multiplication or
 /// exponentiation.
