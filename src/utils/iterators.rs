@@ -1,0 +1,11 @@
+pub mod fibonacci;
+pub mod polygonal;
+pub mod cubes;
+pub mod collatz;
+pub mod divisors;
+pub mod prime_divisors;
+pub mod digits;
+pub mod bits;
+pub mod pythagorean_triplets;
+pub mod potential_primes;
+pub mod continued_fraction;
