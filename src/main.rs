@@ -7,7 +7,7 @@ use std::io::Write;
 /// * `problem_number`
 ///
 /// -> Flag indicating whether the solution is available.
-fn solve_and_time_one(problem_number: i32) -> bool {
+fn solve_and_time_one(problem_number: usize) -> bool {
     let solve = match problem_number {
         1 => solutions::multiples_of_3_or_5::solve,
         2 => solutions::even_fibonacci_numbers::solve,
@@ -128,14 +128,13 @@ macro_rules! add_skel {
 /// problem.
 ///
 /// * `problem_number`
-fn add_skels(problem_number: i32) {
-    let url = format!("https://projecteuler.net/problem={}", problem_number);
-    let output = std::process::Command::new("curl").args([&url]).output().unwrap();
-    let html = std::str::from_utf8(&output.stdout).unwrap();
-    let begin = html.find("<title>").unwrap() + 7;
-    let begin = begin + html[begin..].find(' ').unwrap() + 1;
-    let end = begin + html[begin..].find(" - Project Euler").unwrap();
-    let title = html[begin..end]
+fn add_skels(problem_number: usize) {
+    let url = "https://projecteuler.net/minimal=problems";
+    let output = std::process::Command::new("curl").arg(url).output().unwrap();
+    let output = std::str::from_utf8(&output.stdout).unwrap();
+    let line = output.split('\n').nth(problem_number).unwrap();
+    let title = line.split("##").nth(1).unwrap();
+    let title = title
         .chars()
         .filter_map(|c| match c {
             '0'..='9' | 'A'..='Z' | 'a'..='z' => Some(c.to_ascii_lowercase()),
@@ -178,7 +177,7 @@ fn main() {
         solve_and_time_all();
         return;
     }
-    if args.len() == 3 && args[1] == "--add" {
+    if args.len() > 2 && args[1] == "--add" {
         if let Ok(problem_number) = args[2].parse() {
             add_skels(problem_number);
             return;
