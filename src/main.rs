@@ -112,14 +112,16 @@ fn solve_and_time_all() {
 /// * `fname` - File name.
 /// * `append` - Whether to append to an existing file or create a new file.
 /// * `contents` - What to write in the file.
-fn add_skel(fname: &str, append: bool, contents: &str) {
+macro_rules! add_skel {
+    ($fname:expr, $append:expr, $($contents:expr),+) => {
     let mut fhandle = std::fs::OpenOptions::new()
-        .append(append)
-        .create_new(!append)
+        .append($append)
+        .create_new(!$append)
         .write(true)
-        .open(fname)
+        .open($fname)
         .unwrap();
-    writeln!(fhandle, "{}", contents).unwrap();
+        writeln!(fhandle, $($contents),+).unwrap();
+    };
 }
 
 /// Perform minimal setup (providing a skeleton) to start solving a new
@@ -142,21 +144,10 @@ fn add_skels(problem_number: i32) {
         })
         .collect::<String>();
 
-    add_skel(&format!("src/solutions/{}.rs", title), false, "pub fn solve()->i64{0}");
-    add_skel("src/solutions.rs", true, &format!("pub mod {};", title));
-    add_skel(
-        "README.md",
-        true,
-        &format!(
-            "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|",
-            problem_number, url, title, title
-        ),
-    );
-    add_skel(
-        "src/main.rs",
-        true,
-        &format!("        {} => solutions::{}::solve,", problem_number, title),
-    );
+    add_skel!(&format!("src/solutions/{}.rs", title), false, "pub fn solve()->i64{{0}}");
+    add_skel!("src/solutions.rs", true, "pub mod {};", title);
+    add_skel!("README.md", true, "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|", problem_number, url, title, title);
+    add_skel!("src/main.rs", true, "        {} => solutions::{}::solve,", problem_number, title);
     std::process::Command::new("git")
         .args(["checkout", "-b", &format!("p{}", problem_number)])
         .output()
