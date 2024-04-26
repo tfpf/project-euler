@@ -173,6 +173,8 @@ fn main() {
         solve_and_time_all();
         return;
     }
+    // If a negative number is provided, add skeleton code for that problem.
+    // This is a convenience for me, and not the expected usage.
     if args[1].starts_with('-') {
         if let Ok(problem_number) = args[1][1..].parse() {
             add_skels(problem_number);
