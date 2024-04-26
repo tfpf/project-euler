@@ -6,7 +6,8 @@ on:
       - 'Dockerfile'
       - 'src/lib.rs'
       - 'src/utils.rs'
-      - 'res/*_test.txt'
+      - 'res/tests/*.txt'
+      - 'src/utils/**.rs'
   workflow_dispatch:
 
 jobs:
