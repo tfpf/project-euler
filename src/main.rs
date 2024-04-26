@@ -114,12 +114,8 @@ fn solve_and_time_all() {
 /// * `contents` - What to write in the file.
 macro_rules! add_skel {
     ($fname:expr, $append:literal, $($contents:expr),+) => {
-    let mut fhandle = std::fs::OpenOptions::new()
-        .append($append)
-        .create_new(!$append)
-        .write(true)
-        .open($fname)
-        .unwrap();
+        let mut open_options = std::fs::OpenOptions::new();
+        let mut fhandle = open_options.append($append).create_new(!$append).write(true).open($fname).unwrap();
         writeln!(fhandle, $($contents),+).unwrap();
     };
 }
@@ -133,7 +129,7 @@ fn add_skels(problem_number: usize) {
     let output = std::process::Command::new("curl").arg(url).output().unwrap();
     let output = std::str::from_utf8(&output.stdout).unwrap();
     let line = output.split('\n').nth(problem_number).unwrap();
-    let title = line.split("##").nth(1).unwrap();
+    let title = line.split("##").next().unwrap();
     let title = title
         .chars()
         .filter_map(|c| match c {
