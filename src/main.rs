@@ -173,8 +173,8 @@ fn main() {
         solve_and_time_all();
         return;
     }
-    if args.len() > 2 && args[1] == "--add" {
-        if let Ok(problem_number) = args[2].parse() {
+    if args[1].starts_with('-') {
+        if let Ok(problem_number) = args[1][1..].parse() {
             add_skels(problem_number);
             return;
         }
