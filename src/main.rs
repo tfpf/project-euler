@@ -113,7 +113,7 @@ fn solve_and_time_all() {
 /// * `append` - Whether to append to an existing file or create a new file.
 /// * `contents` - What to write in the file.
 macro_rules! add_skel {
-    ($fname:expr, $append:expr, $($contents:expr),+) => {
+    ($fname:expr, $append:literal, $($contents:expr),+) => {
     let mut fhandle = std::fs::OpenOptions::new()
         .append($append)
         .create_new(!$append)
