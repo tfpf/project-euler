@@ -144,10 +144,28 @@ fn add_skels(problem_number: i32) {
         })
         .collect::<String>();
 
-    add_skel!(&format!("src/solutions/{}.rs", title), false, "pub fn solve()->i64{{0}}");
+    add_skel!(
+        &format!("src/solutions/{}.rs", title),
+        false,
+        "pub fn solve()->i64{{0}}"
+    );
     add_skel!("src/solutions.rs", true, "pub mod {};", title);
-    add_skel!("README.md", true, "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|", problem_number, url, title, title);
-    add_skel!("src/main.rs", true, "        {} => solutions::{}::solve,", problem_number, title);
+    add_skel!(
+        "README.md",
+        true,
+        "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|",
+        problem_number,
+        url,
+        title,
+        title
+    );
+    add_skel!(
+        "src/main.rs",
+        true,
+        "        {} => solutions::{}::solve,",
+        problem_number,
+        title
+    );
     std::process::Command::new("git")
         .args(["checkout", "-b", &format!("p{}", problem_number)])
         .output()
