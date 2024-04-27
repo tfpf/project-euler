@@ -128,7 +128,7 @@ fn add_skels(problem_number: usize) {
     let url = "https://projecteuler.net/minimal=problems";
     let output = std::process::Command::new("curl").arg(url).output().unwrap();
     let output = std::str::from_utf8(&output.stdout).unwrap();
-    let line = output.split('\n').nth(problem_number).unwrap();
+    let line = output.lines().nth(problem_number).unwrap();
     let title = line.split("##").nth(1).unwrap();
     let title = title
         .chars()
