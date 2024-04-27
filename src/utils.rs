@@ -287,14 +287,14 @@ mod tests {
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_smaller_test() {
-        let num_of_primes = primes(0, 2i64.pow(32), 2);
+        let num_of_primes = primes(0, 2i64.pow(32), 4);
         assert_eq!(num_of_primes, 203280221);
     }
 
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_small_test() {
-        let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| utils::is_prime(num)).count();
+        let num_of_primes = primes(2i64.pow(32), 2i64.pow(33), 4);
         assert_eq!(num_of_primes, 190335585);
     }
 
