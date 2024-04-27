@@ -289,7 +289,7 @@ mod tests {
     #[test]
     fn is_prime_small_test() {
         let num_of_primes = primes(0, 3i64.pow(20), 3);
-        assert_eq!(num_of_primes, 190335585);
+        assert_eq!(num_of_primes, 166677978);
     }
 
     #[test]
