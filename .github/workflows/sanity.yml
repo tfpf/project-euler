@@ -22,7 +22,7 @@ jobs:
       - uses: addnab/docker-run-action@v3
         with:
           image: sanity32
-          run: cargo -vv run -vv --release
+          run: cargo -vv run -vv
   sanity64:
     name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -31,4 +31,4 @@ jobs:
         os: [macos-12, ubuntu-22.04, windows-2022]
     steps:
       - uses: actions/checkout@v4
-      - run: cargo -vv run -vv --release
+      - run: cargo -vv run -vv
