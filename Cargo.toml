@@ -12,4 +12,5 @@ harness = false
 
 [profile.release]
 incremental = true
+overflow-checks = true
 strip = "debuginfo"
