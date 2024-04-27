@@ -272,18 +272,16 @@ mod tests {
     /// -> Number of primes numbers in the range.
     fn primes(lower: i64, upper: i64, pieces: i64) -> usize {
         let search_space = (upper - lower) / pieces;
-        let workers = (lower..upper)
+        (lower..upper)
             .step_by(search_space as usize)
             .map(|lower| {
                 let upper = lower + search_space;
                 std::thread::spawn(move || (lower..upper).filter(|&num| utils::is_prime(num)).count())
             })
-            .collect::<Vec<_>>();
-        let mut num_of_primes = 0;
-        for worker in workers {
-            num_of_primes += worker.join().unwrap();
-        }
-        num_of_primes
+            .collect::<Vec<_>>()
+            .into_iter()
+            .map(|worker| worker.join().unwrap())
+            .sum()
     }
 
     #[cfg(target_pointer_width = "64")]
