@@ -13,7 +13,8 @@ impl Fraction {
             denominator: utils::Long::from(denominator),
         }
     }
-    pub fn invert(&mut self) {
+    pub fn invert(&mut self)
+    {
         std::mem::swap(&mut self.numerator, &mut self.denominator);
     }
     pub fn len(&self) -> (usize, usize) {
