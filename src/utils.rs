@@ -251,24 +251,45 @@ mod tests {
     use crate::utils;
     use std::io::BufRead;
 
+    /// Convenience to create an iterator over the lines of a file.
+    ///
+    /// * `fname` - File name.
+    ///
+    /// -> Lines iterator.
     fn lines(fname: &str) -> impl Iterator<Item = String> {
         let fhandle = std::fs::File::open(fname).unwrap();
         let reader = std::io::BufReader::new(fhandle);
         reader.lines().map(|line| line.unwrap())
     }
 
-    #[cfg(target_pointer_width = "64")]
-    #[test]
-    fn is_prime_smaller_test() {
-        let num_of_primes = (0..2i64.pow(32)).filter(|&num| utils::is_prime(num)).count();
-        assert_eq!(num_of_primes, 203280221);
+    /// Convenience to count the number of prime numbers in a given range using
+    /// multiple threads.
+    ///
+    /// * `lower` - First number of the range (inclusive).
+    /// * `upper` - Last number of the range (exclusive).
+    /// * `pieces` - Number of threads to use.
+    ///
+    /// -> Number of primes numbers in the range.
+    fn primes(lower: i64, upper: i64, pieces: i64) -> usize {
+        let search_space = upper - lower;
+        let search_space = search_space / pieces + if search_space % pieces == 0 { 0 } else { 1 };
+        (lower..upper)
+            .step_by(search_space as usize)
+            .map(|lower| {
+                let upper = std::cmp::min(lower + search_space, upper);
+                std::thread::spawn(move || (lower..upper).filter(|&num| utils::is_prime(num)).count())
+            })
+            .collect::<Vec<_>>()
+            .into_iter()
+            .map(|worker| worker.join().unwrap())
+            .sum()
     }
 
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_small_test() {
-        let num_of_primes = (2i64.pow(32)..2i64.pow(33)).filter(|&num| utils::is_prime(num)).count();
-        assert_eq!(num_of_primes, 190335585);
+        let num_of_primes = primes(0, 3i64.pow(20), 3);
+        assert_eq!(num_of_primes, 166677978);
     }
 
     #[test]
