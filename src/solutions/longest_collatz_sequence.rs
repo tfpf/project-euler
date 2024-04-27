@@ -9,8 +9,9 @@ fn get_collatz_length(collatz_lengths: &mut Vec<i32>, num: usize) -> i32 {
     if collatz_lengths[num] != 0 {
         return collatz_lengths[num];
     }
-    // In the course of Collatz iterations, a 32-bit number will overflow, so
-    // temporarily use a 64-bit number.
+    // In the course of Collatz iterations, a 32-bit number will overflow,
+    // which could lead to problems on 32-bit systems. Temporarily use a 64-bit
+    // number.
     let mut num_next = num as u64;
     for count in 1.. {
         // Keep transforming this number until it can be used as an index into
