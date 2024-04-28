@@ -54,26 +54,19 @@ impl SieveOfAtkin {
             let (tx1, tx2, tx3) = (tx.clone(), tx.clone(), tx.clone());
             let sieve_len = self.sieve_len;
             s.spawn(move || {
-                SieveOfAtkin::algorithm_3_1(1, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(13, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(17, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(29, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(37, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(41, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(49, sieve_len, &tx1);
-                SieveOfAtkin::algorithm_3_1(53, sieve_len, &tx1);
+                for delta in [1, 13, 17, 29, 37, 41, 49, 53] {
+                    SieveOfAtkin::algorithm_3_1(delta, sieve_len, &tx1);
+                }
             });
             s.spawn(move || {
-                SieveOfAtkin::algorithm_3_2(7, sieve_len, &tx2);
-                SieveOfAtkin::algorithm_3_2(19, sieve_len, &tx2);
-                SieveOfAtkin::algorithm_3_2(31, sieve_len, &tx2);
-                SieveOfAtkin::algorithm_3_2(43, sieve_len, &tx2);
+                for delta in [7, 19, 31, 43] {
+                    SieveOfAtkin::algorithm_3_2(delta, sieve_len, &tx2);
+                }
             });
             s.spawn(move || {
-                SieveOfAtkin::algorithm_3_3(11, sieve_len, &tx3);
-                SieveOfAtkin::algorithm_3_3(23, sieve_len, &tx3);
-                SieveOfAtkin::algorithm_3_3(47, sieve_len, &tx3);
-                SieveOfAtkin::algorithm_3_3(59, sieve_len, &tx3);
+                for delta in [11, 23, 47, 59] {
+                    SieveOfAtkin::algorithm_3_3(delta, sieve_len, &tx3);
+                }
             });
             drop(tx);
             for (k, delta) in rx {
