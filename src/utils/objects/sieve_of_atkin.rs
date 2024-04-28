@@ -11,7 +11,6 @@ pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
     limit_rounded_isqrt: usize,
-    sieve_len: i64,
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
@@ -37,13 +36,11 @@ impl SieveOfAtkin {
         let limit_rounded = (limit - limit % 60)
             .checked_add(60)
             .expect("overflow detected; argument too large");
-        let sieve_len = limit / 60 + 1;
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
             limit_rounded,
             limit_rounded_isqrt: utils::isqrt(limit_rounded as i64) as usize,
-            sieve_len: sieve_len as i64,
-            sieve: vec![0; sieve_len],
+            sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
         sieve_of_atkin
@@ -52,7 +49,7 @@ impl SieveOfAtkin {
         let (tx, rx) = std::sync::mpsc::channel();
         std::thread::scope(|s| {
             let (tx1, tx2, tx3) = (tx.clone(), tx.clone(), tx.clone());
-            let sieve_len = self.sieve_len;
+            let sieve_len = self.sieve.len() as i64;
             s.spawn(move || {
                 for delta in [1, 13, 17, 29, 37, 41, 49, 53] {
                     SieveOfAtkin::algorithm_3_1(delta, sieve_len, &tx1);
