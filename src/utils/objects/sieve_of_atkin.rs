@@ -87,7 +87,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_1(delta: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_3_1(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
                 let quadratic = 4 * f * f + g * g;
@@ -97,7 +97,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_2(delta: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_3_2(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 let quadratic = 3 * f * f + g * g;
@@ -107,7 +107,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_3(delta: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_3_3(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
                 let quadratic = 3i32 * f * f - g * g;
@@ -118,7 +118,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_4_1(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_4_1(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve_len {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
@@ -138,7 +138,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_4_2(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_4_2(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve_len {
             (k0, x) = (k0 + x + 5, x + 10);
@@ -158,7 +158,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_4_3(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut Vec<u16>) {
+    fn algorithm_4_3(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
             while k0 >= sieve_len {
