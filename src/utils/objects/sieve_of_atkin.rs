@@ -49,6 +49,46 @@ impl SieveOfAtkin {
         sieve_of_atkin
     }
     fn init(&mut self) {
+        let (tx, rx) = std::sync::mpsc::channel();
+        std::thread::scope(|s| {
+            let (tx1, tx2, tx3) = (tx.clone(), tx.clone(), tx.clone());
+            s.spawn(move || {
+                // SieveOfAtkin::algorithm_3_1(1, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(13, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(17, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(29, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(37, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(41, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(49, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_1(53, self.sieve_len, &mut self.sieve);
+                for i in 0..200000 {
+                    tx1.send(i).unwrap();
+                }
+            });
+            s.spawn(move || {
+                // SieveOfAtkin::algorithm_3_2(7, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_2(19, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_2(31, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_2(43, self.sieve_len, &mut self.sieve);
+                for i in 0..200 {
+                    tx2.send(i).unwrap();
+                }
+            });
+            s.spawn(move || {
+                // SieveOfAtkin::algorithm_3_3(11, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_3(23, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_3(47, self.sieve_len, &mut self.sieve);
+                // SieveOfAtkin::algorithm_3_3(59, self.sieve_len, &mut self.sieve);
+                for i in 0..200 {
+                    tx3.send(i).unwrap();
+                }
+            });
+            drop(tx);
+            for i in rx {
+                println!("{}", i);
+            }
+        });
+
         SieveOfAtkin::algorithm_3_1(1, self.sieve_len, &mut self.sieve);
         SieveOfAtkin::algorithm_3_1(13, self.sieve_len, &mut self.sieve);
         SieveOfAtkin::algorithm_3_1(17, self.sieve_len, &mut self.sieve);
