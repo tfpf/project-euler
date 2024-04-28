@@ -52,59 +52,34 @@ impl SieveOfAtkin {
         let (tx, rx) = std::sync::mpsc::channel();
         std::thread::scope(|s| {
             let (tx1, tx2, tx3) = (tx.clone(), tx.clone(), tx.clone());
+            let sieve_len = self.sieve_len;
             s.spawn(move || {
-                // SieveOfAtkin::algorithm_3_1(1, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(13, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(17, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(29, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(37, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(41, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(49, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_1(53, self.sieve_len, &mut self.sieve);
-                for i in 0..200000 {
-                    tx1.send(i).unwrap();
-                }
+                SieveOfAtkin::algorithm_3_1(1, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(13, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(17, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(29, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(37, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(41, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(49, sieve_len, &tx1);
+                SieveOfAtkin::algorithm_3_1(53, sieve_len, &tx1);
             });
             s.spawn(move || {
-                // SieveOfAtkin::algorithm_3_2(7, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_2(19, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_2(31, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_2(43, self.sieve_len, &mut self.sieve);
-                for i in 0..200 {
-                    tx2.send(i).unwrap();
-                }
+                SieveOfAtkin::algorithm_3_2(7, sieve_len, &tx2);
+                SieveOfAtkin::algorithm_3_2(19, sieve_len, &tx2);
+                SieveOfAtkin::algorithm_3_2(31, sieve_len, &tx2);
+                SieveOfAtkin::algorithm_3_2(43, sieve_len, &tx2);
             });
             s.spawn(move || {
-                // SieveOfAtkin::algorithm_3_3(11, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_3(23, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_3(47, self.sieve_len, &mut self.sieve);
-                // SieveOfAtkin::algorithm_3_3(59, self.sieve_len, &mut self.sieve);
-                for i in 0..200 {
-                    tx3.send(i).unwrap();
-                }
+                SieveOfAtkin::algorithm_3_3(11, sieve_len, &tx3);
+                SieveOfAtkin::algorithm_3_3(23, sieve_len, &tx3);
+                SieveOfAtkin::algorithm_3_3(47, sieve_len, &tx3);
+                SieveOfAtkin::algorithm_3_3(59, sieve_len, &tx3);
             });
             drop(tx);
-            for i in rx {
-                println!("{}", i);
+            for (k, delta) in rx {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
             }
         });
-
-        SieveOfAtkin::algorithm_3_1(1, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(13, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(17, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(29, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(37, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(41, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(49, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_1(53, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_2(7, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_2(19, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_2(31, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_2(43, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_3(11, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_3(23, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_3(47, self.sieve_len, &mut self.sieve);
-        SieveOfAtkin::algorithm_3_3(59, self.sieve_len, &mut self.sieve);
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
@@ -127,38 +102,38 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_1(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_3_1(delta: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
                 let quadratic = 4 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_1(delta, f, g, quadratic / 60, sieve_len, sieve);
+                    SieveOfAtkin::algorithm_4_1(delta, f, g, quadratic / 60, sieve_len, tx);
                 }
             }
         }
     }
-    fn algorithm_3_2(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_3_2(delta: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 let quadratic = 3 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_2(delta, f, g, quadratic / 60, sieve_len, sieve);
+                    SieveOfAtkin::algorithm_4_2(delta, f, g, quadratic / 60, sieve_len, tx);
                 }
             }
         }
     }
-    fn algorithm_3_3(delta: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_3_3(delta: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
                 let quadratic = 3i32 * f * f - g * g;
                 // Remainder can be negative, so perform modulo operation.
                 if delta == quadratic.rem_euclid(60) {
-                    SieveOfAtkin::algorithm_4_3(delta, f, g, quadratic.div_euclid(60), sieve_len, sieve);
+                    SieveOfAtkin::algorithm_4_3(delta, f, g, quadratic.div_euclid(60), sieve_len, tx);
                 }
             }
         }
     }
-    fn algorithm_4_1(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_4_1(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve_len {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
@@ -173,12 +148,12 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k < sieve_len {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                tx.send((k, delta)).unwrap();
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_2(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_4_2(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve_len {
             (k0, x) = (k0 + x + 5, x + 10);
@@ -193,12 +168,12 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k < sieve_len {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                tx.send((k, delta)).unwrap();
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_3(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, sieve: &mut [u16]) {
+    fn algorithm_4_3(delta: i32, f: i32, g: i32, h: i32, sieve_len: i64, tx: &std::sync::mpsc::Sender<(i64, i32)>) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
             while k0 >= sieve_len {
@@ -209,7 +184,7 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k >= 0 && y < x {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                tx.send((k, delta)).unwrap();
                 (k, y) = (k - y - 15, y + 30);
             }
             (k0, x) = (k0 + x + 5, x + 10);
