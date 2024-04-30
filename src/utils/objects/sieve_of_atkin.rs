@@ -1,5 +1,3 @@
-use crate::utils;
-
 /// A. O. L. Atkin and D. J. Bernstein, "Prime Sieves Using Binary Quadratic
 /// Forms", in Mathematics of Computation, vol. 73, no. 246, pp. 1023–1030.
 /// Generate prime numbers using the sieve of Atkin. This sieves prime numbers
@@ -10,7 +8,6 @@ use crate::utils;
 pub struct SieveOfAtkin {
     limit: usize,
     limit_rounded: usize,
-    limit_rounded_isqrt: usize,
     sieve: Vec<u16>,
 }
 impl SieveOfAtkin {
@@ -39,7 +36,6 @@ impl SieveOfAtkin {
         let mut sieve_of_atkin = SieveOfAtkin {
             limit,
             limit_rounded,
-            limit_rounded_isqrt: utils::isqrt(limit_rounded as i64) as usize,
             sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
@@ -73,18 +69,12 @@ impl SieveOfAtkin {
             });
         });
 
-        // Combine the results. Since no two threads operated on bits at the
-        // same position, the bitfields can simply be ORed. Zipping them
-        // instead of their iterators ensures that they get dropped
-        // automatically.
-        for (((s0, s1), s2), s3) in sieve0.iter_mut().zip(sieve1).zip(sieve2).zip(sieve3) {
-            *s0 |= s1 | s2 | s3;
-        }
-
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
-        'sieve: for sieve_idx in 0..self.sieve.len() {
+        for sieve_idx in 0..self.sieve.len() {
+            self.sieve[sieve_idx] |= sieve1[sieve_idx] | sieve2[sieve_idx] | sieve3[sieve_idx];
+            (sieve1[sieve_idx], sieve2[sieve_idx], sieve3[sieve_idx]) = (0, 0, 0);
             for shift in 0..16 {
                 if self.sieve[sieve_idx] >> shift & 1 == 1 {
                     let num_sqr = num.pow(2);
@@ -92,13 +82,18 @@ impl SieveOfAtkin {
                         .step_by(num_sqr)
                         .take_while(|&multiple| multiple < self.limit_rounded)
                     {
-                        self.sieve[multiple / 60] &= !(1u32 << SieveOfAtkin::SHIFTS[multiple % 60]) as u16;
+                        let (multiple_div_60, multiple_mod_60) = (multiple / 60, multiple % 60);
+                        self.sieve[multiple_div_60] |=
+                            sieve1[multiple_div_60] | sieve2[multiple_div_60] | sieve3[multiple_div_60];
+                        (
+                            sieve1[multiple_div_60],
+                            sieve2[multiple_div_60],
+                            sieve3[multiple_div_60],
+                        ) = (0, 0, 0);
+                        self.sieve[multiple_div_60] &= !(1u32 << SieveOfAtkin::SHIFTS[multiple_mod_60]) as u16;
                     }
                 }
                 num += offset.next().unwrap();
-                if num > self.limit_rounded_isqrt {
-                    break 'sieve;
-                }
             }
         }
     }
