@@ -71,7 +71,7 @@ impl SieveOfAtkin {
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
         'sieve: for sieve_idx in 0..self.sieve.len() {
-            self.sieve[sieve_idx] ^= sieve2[sieve_idx] ^ sieve3[sieve_idx];
+            self.sieve[sieve_idx] |= sieve2[sieve_idx] | sieve3[sieve_idx];
             for shift in 0..16 {
                 if self.sieve[sieve_idx] >> shift & 1 == 1 {
                     let num_sqr = num.pow(2);
