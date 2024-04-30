@@ -48,11 +48,17 @@ impl SieveOfAtkin {
     fn init(&mut self) {
         let mut sieve3 = self.sieve.clone();
         let mut sieve2 = self.sieve.clone();
-        let sieve1 = self.sieve.as_mut_slice();
+        let mut sieve1 = self.sieve.clone();
+        let sieve0 = self.sieve.as_mut_slice();
         std::thread::scope(|s| {
             s.spawn(|| {
-                for delta in [1, 13, 17, 29, 37, 41, 49, 53] {
-                    SieveOfAtkin::algorithm_3_1(delta, sieve1);
+                for delta in [1, 13, 17, 29] {
+                    SieveOfAtkin::algorithm_3_1(delta, sieve0);
+                }
+            });
+            s.spawn(|| {
+                for delta in [37, 41, 49, 53] {
+                    SieveOfAtkin::algorithm_3_1(delta, &mut sieve1);
                 }
             });
             s.spawn(|| {
@@ -68,12 +74,12 @@ impl SieveOfAtkin {
         });
 
         // Combine the results. Since no two threads operated on bits at the
-        // same position, the bitfields can simply be ORed.
-        for sieve_idx in 0..sieve1.len() {
-            sieve1[sieve_idx] |= sieve2[sieve_idx] | sieve3[sieve_idx];
+        // same position, the bitfields can simply be ORed. Zipping them
+        // instead of their iterators ensures that they get dropped
+        // automatically.
+        for (((s0, s1), s2), s3) in sieve0.iter_mut().zip(sieve1).zip(sieve2).zip(sieve3) {
+            *s0 |= s1 | s2 | s3;
         }
-        drop(sieve2);
-        drop(sieve3);
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
