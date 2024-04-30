@@ -30,4 +30,4 @@ jobs:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
-      - run: cargo test --release -- --test-threads=1
+      - run: cargo test --release
