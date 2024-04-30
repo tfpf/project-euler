@@ -53,22 +53,22 @@ impl SieveOfAtkin {
         std::thread::scope(|s| {
             s.spawn(|| {
                 for delta in [1, 13, 17, 29] {
-                    SieveOfAtkin::algorithm_3_1(delta, sieve0);
+                    SieveOfAtkin::algorithm_3_1(sieve0, delta);
                 }
             });
             s.spawn(|| {
                 for delta in [37, 41, 49, 53] {
-                    SieveOfAtkin::algorithm_3_1(delta, &mut sieve1);
+                    SieveOfAtkin::algorithm_3_1(&mut sieve1, delta);
                 }
             });
             s.spawn(|| {
                 for delta in [7, 19, 31, 43] {
-                    SieveOfAtkin::algorithm_3_2(delta, &mut sieve2);
+                    SieveOfAtkin::algorithm_3_2(&mut sieve2, delta);
                 }
             });
             s.spawn(|| {
                 for delta in [11, 23, 47, 59] {
-                    SieveOfAtkin::algorithm_3_3(delta, &mut sieve3);
+                    SieveOfAtkin::algorithm_3_3(&mut sieve3, delta);
                 }
             });
         });
@@ -102,38 +102,38 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_1(delta: i32, sieve: &mut [u16]) {
+    fn algorithm_3_1(sieve: &mut [u16], delta: i32) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
                 let quadratic = 4 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_1(delta, f, g, quadratic / 60, sieve);
+                    SieveOfAtkin::algorithm_4_1(sieve, delta, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_2(delta: i32, sieve: &mut [u16]) {
+    fn algorithm_3_2(sieve: &mut [u16], delta: i32) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 let quadratic = 3 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_2(delta, f, g, quadratic / 60, sieve);
+                    SieveOfAtkin::algorithm_4_2(sieve, delta, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_3(delta: i32, sieve: &mut [u16]) {
+    fn algorithm_3_3(sieve: &mut [u16], delta: i32) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
                 let quadratic = 3i32 * f * f - g * g;
                 // Remainder can be negative, so perform modulo operation.
                 if delta == quadratic.rem_euclid(60) {
-                    SieveOfAtkin::algorithm_4_3(delta, f, g, quadratic.div_euclid(60), sieve);
+                    SieveOfAtkin::algorithm_4_3(sieve, delta, f, g, quadratic.div_euclid(60));
                 }
             }
         }
     }
-    fn algorithm_4_1(delta: i32, f: i32, g: i32, h: i32, sieve: &mut [u16]) {
+    fn algorithm_4_1(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve.len() as i64 {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
@@ -153,7 +153,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_4_2(delta: i32, f: i32, g: i32, h: i32, sieve: &mut [u16]) {
+    fn algorithm_4_2(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve.len() as i64 {
             (k0, x) = (k0 + x + 5, x + 10);
@@ -173,7 +173,7 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_4_3(delta: i32, f: i32, g: i32, h: i32, sieve: &mut [u16]) {
+    fn algorithm_4_3(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
             while k0 >= sieve.len() as i64 {
