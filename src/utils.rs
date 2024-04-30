@@ -288,8 +288,8 @@ mod tests {
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn is_prime_small_test() {
-        let num_of_primes = primes(0, 3i64.pow(20), 3);
-        assert_eq!(num_of_primes, 166677978);
+        let num_of_primes = primes(0, 2i64.pow(33), 4);
+        assert_eq!(num_of_primes, 393615806);
     }
 
     #[test]
