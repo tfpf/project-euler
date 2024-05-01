@@ -114,6 +114,7 @@ impl SieveOfAtkin {
     fn algorithm_4_1(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < self.sieve.len() as i64 {
+        while k0 < self.sieve.len() as i64 {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
         }
         loop {
@@ -133,6 +134,7 @@ impl SieveOfAtkin {
     }
     fn algorithm_4_2(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
+        while k0 < self.sieve.len() as i64 {
         while k0 < self.sieve.len() as i64 {
             (k0, x) = (k0 + x + 5, x + 10);
         }
@@ -154,6 +156,7 @@ impl SieveOfAtkin {
     fn algorithm_4_3(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
+            while k0 >= self.sieve.len() as i64 {
             while k0 >= self.sieve.len() as i64 {
                 if x <= y0 {
                     return;
