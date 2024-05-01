@@ -89,7 +89,7 @@ impl SieveOfAtkin {
                     | (s1 & 1 << 6) << 6  // Primality of a number congruent to 47.
                     | (s0 & 1 << 6) << 7  // Primality of a number congruent to 49.
                     | (s0 & 1 << 7) << 7  // Primality of a number congruent to 53.
-                    | (s1 & 1 << 7) << 8 // Primality of a number congruent to 59.
+                    | (s1 & 1 << 7) << 8  // Primality of a number congruent to 59.
             })
             .collect();
 
