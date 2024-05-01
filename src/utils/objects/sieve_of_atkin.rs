@@ -40,58 +40,28 @@ impl SieveOfAtkin {
             limit,
             limit_rounded,
             limit_rounded_isqrt: utils::isqrt(limit_rounded as i64) as usize,
-            // Leave unallocated for now.
-            sieve: Vec::with_capacity(0),
+            sieve: vec![0; limit / 60 + 1],
         };
         sieve_of_atkin.init();
         sieve_of_atkin
     }
     fn init(&mut self) {
-        let mut halfsieve0 = vec![0; self.limit / 60 + 1];
-        let mut halfsieve1 = halfsieve0.clone();
-        std::thread::scope(|s| {
-            s.spawn(|| {
-                for (delta, shift) in [1, 13, 17, 29, 37, 41, 49, 53].into_iter().zip(0..) {
-                    SieveOfAtkin::algorithm_3_1(&mut halfsieve0, delta, shift);
-                }
-            });
-            s.spawn(|| {
-                for (delta, shift) in [7, 19, 31, 43].into_iter().zip(0..) {
-                    SieveOfAtkin::algorithm_3_2(&mut halfsieve1, delta, shift);
-                }
-                for (delta, shift) in [11, 23, 47, 59].into_iter().zip(4..) {
-                    SieveOfAtkin::algorithm_3_3(&mut halfsieve1, delta, shift);
-                }
-            });
-        });
-
-        // Combine the two 8-bit vectors into a 16-bit vector by moving the
-        // bits around such that every bitfield in the new vector indices the
-        // primality of the 16 coprime residues between two consecutive
-        // multiples of 60.
-        self.sieve = halfsieve0
-            .into_iter()
-            .zip(halfsieve1)
-            .map(|(s0, s1)| {
-                let (s0, s1) = (s0 as u16, s1 as u16);
-                s0 & 1 // Primality of a number congruent to 1.
-                    | (s1 & 1) << 1 // Primality of a number congruent to 7.
-                    | (s1 & 1 << 4) >> 2 // Primality of a number congruent to 7.
-                    | (s0 & 1 << 1) << 2 // Primality of a number congruent to 11.
-                    | (s0 & 1 << 2) << 2 // Primality of a number congruent to 13.
-                    | (s1 & 1 << 1) << 4 // Primality of a number congruent to 17.
-                    | (s1 & 1 << 5) << 1 // Primality of a number congruent to 19.
-                    | (s0 & 1 << 3) << 4 // Primality of a number congruent to 23.
-                    | (s1 & 1 << 2) << 6 // Primality of a number congruent to 31.
-                    | (s0 & 1 << 4) << 5 // Primality of a number congruent to 37.
-                    | (s0 & 1 << 5) << 5 // Primality of a number congruent to 41.
-                    | (s1 & 1 << 3) << 8 // Primality of a number congruent to 43.
-                    | (s1 & 1 << 6) << 6 // Primality of a number congruent to 47.
-                    | (s0 & 1 << 6) << 7 // Primality of a number congruent to 49.
-                    | (s0 & 1 << 7) << 7 // Primality of a number congruent to 53.
-                    | (s1 & 1 << 7) << 8 // Primality of a number congruent to 59.
-            })
-            .collect();
+        self.algorithm_3_1(1);
+        self.algorithm_3_1(13);
+        self.algorithm_3_1(17);
+        self.algorithm_3_1(29);
+        self.algorithm_3_1(37);
+        self.algorithm_3_1(41);
+        self.algorithm_3_1(49);
+        self.algorithm_3_1(53);
+        self.algorithm_3_2(7);
+        self.algorithm_3_2(19);
+        self.algorithm_3_2(31);
+        self.algorithm_3_2(43);
+        self.algorithm_3_3(11);
+        self.algorithm_3_3(23);
+        self.algorithm_3_3(47);
+        self.algorithm_3_3(59);
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
@@ -114,40 +84,40 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_1(sieve: &mut [u8], delta: i32, shift: u8) {
+    fn algorithm_3_1(&mut self, delta: i32) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
                 let quadratic = 4 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_1(sieve, shift, f, g, quadratic / 60);
+                    self.algorithm_4_1(delta, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_2(sieve: &mut [u8], delta: i32, shift: u8) {
+    fn algorithm_3_2(&mut self, delta: i32) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 let quadratic = 3 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_2(sieve, shift, f, g, quadratic / 60);
+                    self.algorithm_4_2(delta, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_3(sieve: &mut [u8], delta: i32, shift: u8) {
+    fn algorithm_3_3(&mut self, delta: i32) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
                 let quadratic = 3i32 * f * f - g * g;
                 // Remainder can be negative, so perform modulo operation.
                 if delta == quadratic.rem_euclid(60) {
-                    SieveOfAtkin::algorithm_4_3(sieve, shift, f, g, quadratic.div_euclid(60));
+                    self.algorithm_4_3(delta, f, g, quadratic.div_euclid(60));
                 }
             }
         }
     }
-    fn algorithm_4_1(sieve: &mut [u8], shift: u8, f: i32, g: i32, h: i32) {
+    fn algorithm_4_1(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
-        while k0 < sieve.len() as i64 {
+        while k0 < self.sieve.len() as i64 {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
         }
         loop {
@@ -159,15 +129,15 @@ impl SieveOfAtkin {
                 (k0, y0) = (k0 + y0 + 15, y0 + 30);
             }
             let (mut k, mut y) = (k0, y0);
-            while k < sieve.len() as i64 {
-                sieve[k as usize] ^= 1 << shift;
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_2(sieve: &mut [u8], shift: u8, f: i32, g: i32, h: i32) {
+    fn algorithm_4_2(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
-        while k0 < sieve.len() as i64 {
+        while k0 < self.sieve.len() as i64 {
             (k0, x) = (k0 + x + 5, x + 10);
         }
         loop {
@@ -179,16 +149,16 @@ impl SieveOfAtkin {
                 (k0, y0) = (k0 + y0 + 15, y0 + 30);
             }
             let (mut k, mut y) = (k0, y0);
-            while k < sieve.len() as i64 {
-                sieve[k as usize] ^= 1 << shift;
+            while k < self.sieve.len() as i64 {
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_3(sieve: &mut [u8], shift: u8, f: i32, g: i32, h: i32) {
+    fn algorithm_4_3(&mut self, delta: i32, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
-            while k0 >= sieve.len() as i64 {
+            while k0 >= self.sieve.len() as i64 {
                 if x <= y0 {
                     return;
                 }
@@ -196,7 +166,7 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k >= 0 && y < x {
-                sieve[k as usize] ^= 1 << shift;
+                self.sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
                 (k, y) = (k - y - 15, y + 30);
             }
             (k0, x) = (k0 + x + 5, x + 10);
