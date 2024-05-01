@@ -26,8 +26,8 @@ jobs:
           image: tests32
           run: cargo test --release
   tests64:
-    name: tests on 64-bit macos-13
-    runs-on: macos-13
+    name: tests on 64-bit macos-14
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - run: cargo test --release
