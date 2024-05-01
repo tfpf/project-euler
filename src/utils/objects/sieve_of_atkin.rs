@@ -74,22 +74,22 @@ impl SieveOfAtkin {
             .zip(halfsieve1)
             .map(|(s0, s1)| {
                 let (s0, s1) = (s0 as u16, s1 as u16);
-                s0 & 1  // Primality of a number congruent to 1.
-                    | (s1 & 1) << 1  // Primality of a number congruent to 7.
-                    | (s1 & 1 << 4) >> 2  // Primality of a number congruent to 7.
-                    | (s0 & 1 << 1) << 2  // Primality of a number congruent to 11.
-                    | (s0 & 1 << 2) << 2  // Primality of a number congruent to 13.
-                    | (s1 & 1 << 1) << 4  // Primality of a number congruent to 17.
-                    | (s1 & 1 << 5) << 1  // Primality of a number congruent to 19.
-                    | (s0 & 1 << 3) << 4  // Primality of a number congruent to 23.
-                    | (s1 & 1 << 2) << 6  // Primality of a number congruent to 31.
-                    | (s0 & 1 << 4) << 5  // Primality of a number congruent to 37.
-                    | (s0 & 1 << 5) << 5  // Primality of a number congruent to 41.
-                    | (s1 & 1 << 3) << 8  // Primality of a number congruent to 43.
-                    | (s1 & 1 << 6) << 6  // Primality of a number congruent to 47.
-                    | (s0 & 1 << 6) << 7  // Primality of a number congruent to 49.
-                    | (s0 & 1 << 7) << 7  // Primality of a number congruent to 53.
-                    | (s1 & 1 << 7) << 8  // Primality of a number congruent to 59.
+                s0 & 1 // Primality of a number congruent to 1.
+                    | (s1 & 1) << 1 // Primality of a number congruent to 7.
+                    | (s1 & 1 << 4) >> 2 // Primality of a number congruent to 7.
+                    | (s0 & 1 << 1) << 2 // Primality of a number congruent to 11.
+                    | (s0 & 1 << 2) << 2 // Primality of a number congruent to 13.
+                    | (s1 & 1 << 1) << 4 // Primality of a number congruent to 17.
+                    | (s1 & 1 << 5) << 1 // Primality of a number congruent to 19.
+                    | (s0 & 1 << 3) << 4 // Primality of a number congruent to 23.
+                    | (s1 & 1 << 2) << 6 // Primality of a number congruent to 31.
+                    | (s0 & 1 << 4) << 5 // Primality of a number congruent to 37.
+                    | (s0 & 1 << 5) << 5 // Primality of a number congruent to 41.
+                    | (s1 & 1 << 3) << 8 // Primality of a number congruent to 43.
+                    | (s1 & 1 << 6) << 6 // Primality of a number congruent to 47.
+                    | (s0 & 1 << 6) << 7 // Primality of a number congruent to 49.
+                    | (s0 & 1 << 7) << 7 // Primality of a number congruent to 53.
+                    | (s1 & 1 << 7) << 8 // Primality of a number congruent to 59.
             })
             .collect();
 
