@@ -40,46 +40,49 @@ impl SieveOfAtkin {
             limit,
             limit_rounded,
             limit_rounded_isqrt: utils::isqrt(limit_rounded as i64) as usize,
-            sieve: vec![0; limit / 60 + 1],
+            sieve: Vec::with_capacity(0),
         };
         sieve_of_atkin.init();
         sieve_of_atkin
     }
     fn init(&mut self) {
-        let mut sieve3 = self.sieve.clone();
-        let mut sieve2 = self.sieve.clone();
-        let mut sieve1 = self.sieve.clone();
-        let sieve0 = self.sieve.as_mut_slice();
+        let mut halfsieve0 = vec![0; self.limit / 60 + 1];
+        let mut halfsieve1 = halfsieve0.clone();
         std::thread::scope(|s| {
             s.spawn(|| {
-                for delta in [1, 13, 17, 29] {
-                    SieveOfAtkin::algorithm_3_1(sieve0, delta);
+                for (delta, shift) in [1, 13, 17, 29, 37, 41, 49, 53].into_iter().zip(0..) {
+                    SieveOfAtkin::algorithm_3_1(&mut halfsieve0, delta, shift);
                 }
             });
             s.spawn(|| {
-                for delta in [37, 41, 49, 53] {
-                    SieveOfAtkin::algorithm_3_1(&mut sieve1, delta);
+                for (delta, shift) in [7, 19, 31, 43].into_iter().zip(0..) {
+                    SieveOfAtkin::algorithm_3_2(&mut halfsieve1, delta, shift);
                 }
-            });
-            s.spawn(|| {
-                for delta in [7, 19, 31, 43] {
-                    SieveOfAtkin::algorithm_3_2(&mut sieve2, delta);
-                }
-            });
-            s.spawn(|| {
-                for delta in [11, 23, 47, 59] {
-                    SieveOfAtkin::algorithm_3_3(&mut sieve3, delta);
+                for (delta, shift) in [11, 23, 47, 59].into_iter().zip(4..) {
+                    SieveOfAtkin::algorithm_3_3(&mut halfsieve1, delta, shift);
                 }
             });
         });
 
-        // Combine the results. Since no two threads operated on bits at the
-        // same position, the bitfields can simply be ORed. Zipping them
-        // instead of their iterators ensures that they get dropped
-        // automatically.
-        for (((s0, s1), s2), s3) in sieve0.iter_mut().zip(sieve1).zip(sieve2).zip(sieve3) {
-            *s0 |= s1 | s2 | s3;
-        }
+        self.sieve = halfsieve0.into_iter().zip(halfsieve1).map(|(s0, s1)|{
+            let (s0, s1) = (s0 as u16, s1 as u16);
+            s0 & 1 // 1
+            | (s1 & 1) << 1 // 7
+            | (s1 & 1 << 4) >> 2 // 11
+            | (s0 & 1 << 1) << 2 // 13
+            | (s0 & 1 << 2) << 2 // 17
+            | (s1 & 1 << 1) << 4 // 19
+            | (s1 & 1 << 5) << 1 // 23
+            | (s0 & 1 << 3) << 4 // 29
+            | (s1 & 1 << 2) << 6 // 31
+            | (s0 & 1 << 4) << 5 // 37
+            | (s0 & 1 << 5) << 5 // 41
+            | (s1 & 1 << 3) << 8 // 43
+            | (s1 & 1 << 6) << 6 // 47
+            | (s0 & 1 << 6) << 7 // 49
+            | (s0 & 1 << 7) << 7 // 53
+            | (s1 & 1 << 7) << 8 // 59
+        }).collect();
 
         // Mark composite all numbers divisible by the squares of primes.
         let mut num: usize = 1;
@@ -102,38 +105,38 @@ impl SieveOfAtkin {
             }
         }
     }
-    fn algorithm_3_1(sieve: &mut [u16], delta: i32) {
+    fn algorithm_3_1(sieve: &mut [u8], delta: i32, shift: u8) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
                 let quadratic = 4 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_1(sieve, delta, f, g, quadratic / 60);
+                    SieveOfAtkin::algorithm_4_1(sieve, shift, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_2(sieve: &mut [u16], delta: i32) {
+    fn algorithm_3_2(sieve: &mut [u8], delta: i32, shift: u8) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
                 let quadratic = 3 * f * f + g * g;
                 if delta == quadratic % 60 {
-                    SieveOfAtkin::algorithm_4_2(sieve, delta, f, g, quadratic / 60);
+                    SieveOfAtkin::algorithm_4_2(sieve, shift, f, g, quadratic / 60);
                 }
             }
         }
     }
-    fn algorithm_3_3(sieve: &mut [u16], delta: i32) {
+    fn algorithm_3_3(sieve: &mut [u8], delta: i32, shift: u8) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
                 let quadratic = 3i32 * f * f - g * g;
                 // Remainder can be negative, so perform modulo operation.
                 if delta == quadratic.rem_euclid(60) {
-                    SieveOfAtkin::algorithm_4_3(sieve, delta, f, g, quadratic.div_euclid(60));
+                    SieveOfAtkin::algorithm_4_3(sieve, shift, f, g, quadratic.div_euclid(60));
                 }
             }
         }
     }
-    fn algorithm_4_1(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
+    fn algorithm_4_1(sieve: &mut [u8], shift:u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve.len() as i64 {
             (k0, x) = (k0 + 2 * x + 15, x + 15);
@@ -148,12 +151,12 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k < sieve.len() as i64 {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                sieve[k as usize] ^= 1 << shift;
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_2(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
+    fn algorithm_4_2(sieve: &mut [u8], shift:u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < sieve.len() as i64 {
             (k0, x) = (k0 + x + 5, x + 10);
@@ -168,12 +171,12 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k < sieve.len() as i64 {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                sieve[k as usize] ^= 1 << shift;
                 (k, y) = (k + y + 15, y + 30);
             }
         }
     }
-    fn algorithm_4_3(sieve: &mut [u16], delta: i32, f: i32, g: i32, h: i32) {
+    fn algorithm_4_3(sieve: &mut [u8], shift:u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
             while k0 >= sieve.len() as i64 {
@@ -184,7 +187,7 @@ impl SieveOfAtkin {
             }
             let (mut k, mut y) = (k0, y0);
             while k >= 0 && y < x {
-                sieve[k as usize] ^= 1u16 << SieveOfAtkin::SHIFTS[delta as usize];
+                sieve[k as usize] ^= 1 << shift;
                 (k, y) = (k - y - 15, y + 30);
             }
             (k0, x) = (k0 + x + 5, x + 10);
