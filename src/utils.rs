@@ -262,18 +262,15 @@ mod tests {
         reader.lines().map(|line| line.unwrap())
     }
 
-    /// Convenience to count the number of prime numbers in a given range using
-    /// multiple threads.
-    ///
-    /// * `lower` - First number of the range (inclusive).
-    /// * `upper` - Last number of the range (exclusive).
-    /// * `pieces` - Number of threads to use.
-    ///
-    /// -> Number of primes numbers in the range.
-    fn primes(lower: i64, upper: i64, pieces: i64) -> usize {
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn is_prime_small_test() {
+        // Break the range into equal sub-ranges, and count the number of
+        // primes in each sub-range in a separate thread.
+        let (lower, upper, pieces) = (0, 3i64.pow(20), 3);
         let search_space = upper - lower;
         let search_space = search_space / pieces + if search_space % pieces == 0 { 0 } else { 1 };
-        (lower..upper)
+        let num_of_primes = (lower..upper)
             .step_by(search_space as usize)
             .map(|lower| {
                 let upper = std::cmp::min(lower + search_space, upper);
@@ -282,13 +279,7 @@ mod tests {
             .collect::<Vec<_>>()
             .into_iter()
             .map(|worker| worker.join().unwrap())
-            .sum()
-    }
-
-    #[cfg(target_pointer_width = "64")]
-    #[test]
-    fn is_prime_small_test() {
-        let num_of_primes = primes(0, 3i64.pow(20), 3);
+            .sum::<usize>();
         assert_eq!(num_of_primes, 166677978);
     }
 
