@@ -267,7 +267,7 @@ mod tests {
     fn is_prime_small_test() {
         // Break the range into equal sub-ranges, and count the number of
         // primes in each sub-range in a separate thread.
-        let (lower, upper, pieces) = (0, 3i64.pow(20), 20);
+        let (lower, upper, pieces) = (0, 3i64.pow(20), 3);
         let search_space = upper - lower;
         let search_space = search_space / pieces + if search_space % pieces == 0 { 0 } else { 1 };
         let num_of_primes = (lower..upper)
