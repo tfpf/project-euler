@@ -274,7 +274,6 @@ mod tests {
             .step_by(search_space as usize)
             .map(|lower| {
                 let upper = std::cmp::min(lower + search_space, upper);
-                println!("{} {}", upper, lower);
                 std::thread::spawn(move || (lower..upper).filter(|&num| utils::is_prime(num)).count())
             })
             .collect::<Vec<_>>()
