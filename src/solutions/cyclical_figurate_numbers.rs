@@ -4,9 +4,9 @@ use crate::utils;
 /// means the figure type: triangle, quadrilateral, pentagon, hexagon, heptagon
 /// and octagon.)
 ///
-/// * `numbitfield` - `(num, bitfield)` indicating the family `num` belongs to.
-/// * `mask` - Bitfield indicating the families we have not yet produced.
-/// * `cyclical` - Cyclical figurate numbers we have produced so far.
+/// * `numbitfield` `(num, bitfield)` indicating the family `num` belongs to.
+/// * `mask` Bitfield indicating the families we have not yet produced.
+/// * `cyclical` Cyclical figurate numbers we have produced so far.
 ///
 /// -> Whether the 6 numbers were produced.
 fn generate_cyclical(numbitfield: &Vec<(i64, u8)>, mask: u8, cyclical: &mut Vec<i64>) -> bool {

@@ -40,7 +40,7 @@ impl Long {
     }
     /// Calculate the factorial of a non-negative number.
     ///
-    /// * `num` - Number whose factorial is to be calculated.
+    /// * `num` Number whose factorial is to be calculated.
     pub fn factorial(num: u32) -> Long {
         if num == 0 || num == 1 {
             return Long::from(1);
@@ -87,7 +87,7 @@ impl Long {
     }
     /// Raise this number to the given power.
     ///
-    /// * `exp` - Power.
+    /// * `exp` Power.
     ///
     /// -> Value of this number raised to the given power.
     pub fn pow(&self, mut exp: u32) -> Long {

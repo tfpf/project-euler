@@ -20,7 +20,7 @@ impl PandigitalChecker {
     }
     /// Update the internal array with the digits of a given number.
     ///
-    /// * `num` - Number to update with.
+    /// * `num` Number to update with.
     ///
     /// -> Whether all digits of the number were in range and not seen earlier.
     pub fn update(&mut self, num: i64) -> bool {

@@ -2,8 +2,8 @@ use std::io::BufRead;
 
 /// Create a vector of indices to iterate over.
 ///
-/// * `idx` - Starting index.
-/// * `delta` - Step to increment the index by.
+/// * `idx` Starting index.
+/// * `delta` Step to increment the index by.
 ///
 /// -> Vector of indices. Empty if `delta` is not one of [-1, 0, 1].
 fn create_vector(idx: usize, delta: isize) -> Vec<usize> {
@@ -21,13 +21,13 @@ fn create_vector(idx: usize, delta: isize) -> Vec<usize> {
 /// Find the largest product of four numbers in the grid while traversing it in
 /// the manner described.
 ///
-/// * `grid` - 2D array.
-/// * `x` - Starting row index.
-/// * `y` - Starting column index.
-/// * `outer_dx` - How much to step the row index by in the outer loop.
-/// * `outer_dy` - How much to step the column index by in the outer loop.
-/// * `inner_dx` - How much to step the row index by in the inner loop.
-/// * `inner_dy` - How much to step the column index by in the inner loop.
+/// * `grid` 2D array.
+/// * `x` Starting row index.
+/// * `y` Starting column index.
+/// * `outer_dx` How much to step the row index by in the outer loop.
+/// * `outer_dy` How much to step the column index by in the outer loop.
+/// * `inner_dx` How much to step the row index by in the inner loop.
+/// * `inner_dy` How much to step the column index by in the inner loop.
 ///
 /// -> Largest product.
 fn find_largest(

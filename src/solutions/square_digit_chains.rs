@@ -28,9 +28,9 @@ fn minimal_stuck() -> [u8; 568] {
 
 /// Produce 7-digit numbers in ascending order. Maintain the digit square sum.
 ///
-/// * `chain_stuck` - Where the chain of each number till 567 gets stuck.
-/// * `digits` - Digits of the number, ordered from most to least significant.
-/// * `sqsum` - Sum of the squares of the digits.
+/// * `chain_stuck` Where the chain of each number till 567 gets stuck.
+/// * `digits` Digits of the number, ordered from most to least significant.
+/// * `sqsum` Sum of the squares of the digits.
 ///
 /// -> How many with these digits have digit square sum chains ending at 89.
 fn generate_ascending(chain_stuck: &[u8; 568], digits: &mut Vec<usize>, sqsum: usize) -> i32 {

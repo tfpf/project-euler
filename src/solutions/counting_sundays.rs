@@ -10,7 +10,7 @@ fn is_leap(year: i64) -> bool {
 /// Determine the number of days in the given month of the given year.
 ///
 /// * `year`
-/// * `month` - Number from 1 to 12.
+/// * `month` Number from 1 to 12.
 ///
 /// -> Number of days, or 0 if the month is invalid.
 fn days_in(year: i64, month: i64) -> i64 {

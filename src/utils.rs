@@ -2,7 +2,7 @@
 
 /// Check whether the given number is prime.
 ///
-/// * `num` - Number to check for primality.
+/// * `num` Number to check for primality.
 ///
 /// -> Whether `num` is prime.
 pub fn is_prime(num: i64) -> bool {
@@ -31,7 +31,7 @@ pub fn is_prime(num: i64) -> bool {
 
 /// Check whether the given number is prime using trial division.
 ///
-/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
+/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 100.
 ///
 /// -> Whether `num` is prime.
 fn is_prime_td(num: i64) -> bool {
@@ -44,8 +44,8 @@ fn is_prime_td(num: i64) -> bool {
 
 /// Check whether the given number is prime using the Miller-Rabin test.
 ///
-/// * `num` - Must not be divisible by 2, 3 or 5. Must exceed 100.
-/// * `bases` - Bases to perform the test with.
+/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 100.
+/// * `bases` Bases to perform the test with.
 ///
 /// -> Whether `num` is prime.
 fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
@@ -77,8 +77,8 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
 
 /// Check whether a number is a palindrome or not.
 ///
-/// * `num` - Number to check for palindromicity.
-/// * `radix` - Base to use to represent the number: 2, 10 or 16.
+/// * `num` Number to check for palindromicity.
+/// * `radix` Base to use to represent the number: 2, 10 or 16.
 ///
 /// -> Whether `num` is a palindrome in the specified base.
 pub fn is_palindrome(num: i64, radix: i32) -> bool {
@@ -93,8 +93,8 @@ pub fn is_palindrome(num: i64, radix: i32) -> bool {
 
 /// Calculate the greatest common divisor of two numbers.
 ///
-/// * `a` - Must be non-negative.
-/// * `b` - Must be non-negative.
+/// * `a` Must be non-negative.
+/// * `b` Must be non-negative.
 ///
 /// -> GCD of the inputs.
 pub fn gcd(a: i64, b: i64) -> i64 {
@@ -118,7 +118,7 @@ pub fn gcd(a: i64, b: i64) -> i64 {
 
 /// Generate the next permutation.
 ///
-/// * `slice` - Object containing the unique items to permute.
+/// * `slice` Object containing the unique items to permute.
 ///
 /// -> Whether the next permutation was generated.
 pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
@@ -145,7 +145,7 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 
 /// Generate the previous permutation.
 ///
-/// * `slice` - Object containing the unique items to permute.
+/// * `slice` Object containing the unique items to permute.
 ///
 /// -> Whether the previous permutation was generated.
 pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
@@ -171,9 +171,9 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 
 /// Perform modular exponentiation.
 ///
-/// * `base` - Number to be exponentiated.
-/// * `exp` - Exponent.
-/// * `modulus` - Modulus.
+/// * `base` Number to be exponentiated.
+/// * `exp` Exponent.
+/// * `modulus` Modulus.
 ///
 /// -> Modular exponentiation of the given number.
 pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
@@ -192,7 +192,7 @@ pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
 
 /// Determine the frequencies of all digits in a number.
 ///
-/// * `num` - Number to analyse.
+/// * `num` Number to analyse.
 ///
 /// -> Map from digits to their frequencies.
 pub fn digits_frequencies(num: i64) -> [u8; 10] {
@@ -206,7 +206,7 @@ pub fn digits_frequencies(num: i64) -> [u8; 10] {
 /// Calculate the square root of an integer, rounded down. To be used until
 /// integer square roots are stabilised.
 ///
-/// * `num` - Number to root.
+/// * `num` Number to root.
 ///
 /// -> Square root. If negative, the same number is returned.
 pub fn isqrt(mut num: i64) -> i64 {
@@ -253,7 +253,7 @@ mod tests {
 
     /// Convenience to create an iterator over the lines of a file.
     ///
-    /// * `fname` - File name.
+    /// * `fname` File name.
     ///
     /// -> Lines iterator.
     fn lines(fname: &str) -> impl Iterator<Item = String> {

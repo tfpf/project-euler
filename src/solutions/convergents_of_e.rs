@@ -3,7 +3,7 @@ use crate::utils;
 /// Find the continued fraction convergent of Euler's number at the specified
 /// index.
 ///
-/// * `idx_max` - Index of the convergent.
+/// * `idx_max` Index of the convergent.
 ///
 /// -> Value of the convergent; 0 if the index is non-positive.
 fn generate_continued_fraction(idx_max: u32) -> utils::Fraction {
@@ -16,8 +16,8 @@ fn generate_continued_fraction(idx_max: u32) -> utils::Fraction {
 
 /// Helper to calculate the continued fraction convergent of Euler's number.
 ///
-/// * `idx` - Current index.
-/// * `idx_max` - Index of the convergent.
+/// * `idx` Current index.
+/// * `idx_max` Index of the convergent.
 ///
 /// -> Value of the convergent.
 fn generate_continued_fraction_(idx: u32, idx_max: u32) -> utils::Fraction {

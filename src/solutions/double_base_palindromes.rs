@@ -2,7 +2,7 @@ use crate::utils;
 
 /// Build double-base palindromes (having at least two bits).
 ///
-/// * `num` - Number to use to generate palindromes.
+/// * `num` Number to use to generate palindromes.
 ///
 /// -> Sum of all double-base palindromes with binary `num` as their left half.
 fn double_base_palindrome_sum(num: i64) -> i64 {

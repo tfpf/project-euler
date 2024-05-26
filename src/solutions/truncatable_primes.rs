@@ -2,7 +2,7 @@ use crate::utils;
 
 /// Check whether the number is a left-truncatable prime number.
 ///
-/// * `digits` - Digits of the number (in big-endian order) to check.
+/// * `digits` Digits of the number (in big-endian order) to check.
 ///
 /// -> Whether the number is a left-truncatable prime.
 fn left_truncatable(digits: &[i32]) -> bool {
@@ -22,9 +22,9 @@ fn left_truncatable(digits: &[i32]) -> bool {
 
 /// Build truncatable prime numbers.
 ///
-/// * `digits` - Digits of a partially-built number in big-endian order.
-/// * `value` - The partially-built number represented by `digits`.
-/// * `idx` - Index of the next digit to build.
+/// * `digits` Digits of a partially-built number in big-endian order.
+/// * `value` The partially-built number represented by `digits`.
+/// * `idx` Index of the next digit to build.
 ///
 /// -> Sum of all truncatable primes numbers having `value` as a prefix.
 fn truncatable_sum(digits: &mut Vec<i32>, value: i32, idx: usize) -> i32 {

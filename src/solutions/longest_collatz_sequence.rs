@@ -1,8 +1,8 @@
 /// Find the length of the Collatz sequence starting from the given number
 /// and ending at 1.
 ///
-/// * `collatz_lengths` - Array to cache the lengths. Indexable with `num`.
-/// * `num` - Number to find the length of the Collatz sequence for.
+/// * `collatz_lengths` Array to cache the lengths. Indexable with `num`.
+/// * `num` Number to find the length of the Collatz sequence for.
 ///
 /// -> Length of Collatz sequence.
 fn get_collatz_length(collatz_lengths: &mut Vec<i32>, num: usize) -> i32 {

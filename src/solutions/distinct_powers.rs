@@ -5,7 +5,7 @@ use crate::utils;
 /// should return 5, and given 36, it should return 2.
 ///
 /// * `num`
-/// * `primes` - Prime numbers to use to calculate the exponent.
+/// * `primes` Prime numbers to use to calculate the exponent.
 ///
 /// -> Exponent.
 fn exponent(mut num: i64, primes: &[i64]) -> i64 {

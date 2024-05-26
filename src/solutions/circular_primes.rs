@@ -2,8 +2,8 @@ use crate::utils;
 
 /// Check whether the given number is a circular prime number.
 ///
-/// * `num` - Prime number.
-/// * `sieve` - Sieve of eratosthenes.
+/// * `num` Prime number.
+/// * `sieve` Sieve of eratosthenes.
 ///
 /// -> Whether the number is a circular prime.
 fn is_circular_prime(mut num: i64, sieve: &utils::SieveOfAtkin) -> bool {

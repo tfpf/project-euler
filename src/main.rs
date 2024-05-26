@@ -109,9 +109,9 @@ fn solve_and_time_all() {
 
 /// Write a file with the given contents.
 ///
-/// * `fname` - File name.
-/// * `append` - Whether to append to an existing file or create a new file.
-/// * `contents` - What to write in the file.
+/// * `fname` File name.
+/// * `append` Whether to append to an existing file or create a new file.
+/// * `contents` What to write in the file.
 macro_rules! add_skel {
     ($fname:expr, $append:literal, $($contents:expr),+) => {
         let mut open_options = std::fs::OpenOptions::new();

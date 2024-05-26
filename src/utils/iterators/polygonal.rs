@@ -16,8 +16,8 @@ impl Polygonal {
     /// Find the index at which the given number would appear in a sequence of
     /// polygonal numbers (if it is a polygonal number).
     ///
-    /// * `sides` - Number of sides of the polygon the sequence is based on.
-    /// * `num` - Number whose index is to be found.
+    /// * `sides` Number of sides of the polygon the sequence is based on.
+    /// * `num` Number whose index is to be found.
     ///
     /// -> Index.
     pub fn invert(sides: i64, num: i64) -> Result<i64, i64> {

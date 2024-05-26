@@ -1,6 +1,6 @@
 /// Determine the digit at the given index in Champernowne's Constant.
 ///
-/// * `idx` - 1-based index.
+/// * `idx` 1-based index.
 ///
 /// -> Digit at said index.
 fn digit_at(idx: u32) -> u32 {
