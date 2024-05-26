@@ -6,7 +6,7 @@ use std::io::Write;
 ///
 /// * `problem_number`
 ///
-/// -> Flag indicating whether the solution is available.
+/// Returns `true` if the solution was executed. Returns `false` otherwise.
 fn solve_and_time_one(problem_number: usize) -> bool {
     let solve = match problem_number {
         1 => multiples_of_3_or_5::solve,
