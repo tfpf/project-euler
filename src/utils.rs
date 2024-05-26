@@ -2,9 +2,7 @@
 
 /// Check whether the given number is prime.
 ///
-/// * `num` Number to check for primality.
-///
-/// -> Whether `num` is prime.
+/// * `num`
 pub fn is_prime(num: i64) -> bool {
     // Fast checks.
     if num == 2 || num == 3 || num == 5 {
@@ -31,9 +29,7 @@ pub fn is_prime(num: i64) -> bool {
 
 /// Check whether the given number is prime using trial division.
 ///
-/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 100.
-///
-/// -> Whether `num` is prime.
+/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 5.
 fn is_prime_td(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
     // any) faster.
@@ -44,10 +40,8 @@ fn is_prime_td(num: i64) -> bool {
 
 /// Check whether the given number is prime using the Miller-Rabin test.
 ///
-/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 100.
+/// * `num` Must not be divisible by 2, 3 or 5. Must exceed 5.
 /// * `bases` Bases to perform the test with.
-///
-/// -> Whether `num` is prime.
 fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     let num_minus_1 = num - 1;
     let twopower = num_minus_1.trailing_zeros();
@@ -75,12 +69,10 @@ fn is_prime_mr(num: i64, bases: &Vec<i64>) -> bool {
     true
 }
 
-/// Check whether a number is a palindrome or not.
+/// Check whether the given number is a palindrome.
 ///
-/// * `num` Number to check for palindromicity.
+/// * `num`
 /// * `radix` Base to use to represent the number: 2, 10 or 16.
-///
-/// -> Whether `num` is a palindrome in the specified base.
 pub fn is_palindrome(num: i64, radix: i32) -> bool {
     let num = match radix {
         2 => format!("{:b}", num),
@@ -95,8 +87,6 @@ pub fn is_palindrome(num: i64, radix: i32) -> bool {
 ///
 /// * `a` Must be non-negative.
 /// * `b` Must be non-negative.
-///
-/// -> GCD of the inputs.
 pub fn gcd(a: i64, b: i64) -> i64 {
     if a == 0 {
         return b;
@@ -118,9 +108,10 @@ pub fn gcd(a: i64, b: i64) -> i64 {
 
 /// Generate the next permutation.
 ///
-/// * `slice` Object containing the unique items to permute.
+/// * `slice` Container with unique items.
 ///
-/// -> Whether the next permutation was generated.
+/// Returns `true` if the next permutation was generated. Returns `false`
+/// without modifying the container otherwise.
 pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an inversion from the right.
     let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] < slice[idx]) else {
@@ -145,9 +136,10 @@ pub fn next_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 
 /// Generate the previous permutation.
 ///
-/// * `slice` Object containing the unique items to permute.
+/// * `slice` Container with unique items.
 ///
-/// -> Whether the previous permutation was generated.
+/// Returns `true` if the previous permutation was generated. Returns `false`
+/// without modifying the container otherwise.
 pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
     // Locate an anti-inversion from the right.
     let Some(sorted_until) = (1..slice.len()).rev().find(|&idx| slice[idx - 1] > slice[idx]) else {
@@ -174,8 +166,6 @@ pub fn prev_permutation<T: Copy + std::cmp::Ord>(slice: &mut [T]) -> bool {
 /// * `base` Number to be exponentiated.
 /// * `exp` Exponent.
 /// * `modulus` Modulus.
-///
-/// -> Modular exponentiation of the given number.
 pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
     let (mut base, mut exp, modulus, mut multiplier) = (base as i128, exp, modulus as i128, 1);
     loop {
@@ -190,11 +180,12 @@ pub fn pow(base: i64, exp: u64, modulus: i64) -> i64 {
     }
 }
 
-/// Determine the frequencies of all digits in a number.
+/// Determine the number of times each digit appears in the given number.
 ///
-/// * `num` Number to analyse.
+/// * `num`
 ///
-/// -> Map from digits to their frequencies.
+/// Returns an array in which each element is the number of occurrences of its
+/// index.
 pub fn digits_frequencies(num: i64) -> [u8; 10] {
     let mut frequency = [0; 10];
     for digit in Digits::new(num) {
@@ -204,11 +195,13 @@ pub fn digits_frequencies(num: i64) -> [u8; 10] {
 }
 
 /// Calculate the square root of an integer, rounded down. To be used until
-/// integer square roots are stabilised.
+/// integer square roots are stabilised in Rust. See
+/// https://github.com/rust-lang/rust/issues/116226.
 ///
-/// * `num` Number to root.
+/// * `num`
 ///
-/// -> Square root. If negative, the same number is returned.
+/// Returns the square root of the number if it is non-negative. Returns the
+/// same number otherwise.
 pub fn isqrt(mut num: i64) -> i64 {
     if num < 2 {
         return num;
@@ -254,8 +247,6 @@ mod tests {
     /// Convenience to create an iterator over the lines of a file.
     ///
     /// * `fname` File name.
-    ///
-    /// -> Lines iterator.
     fn lines(fname: &str) -> impl Iterator<Item = String> {
         let fhandle = std::fs::File::open(fname).unwrap();
         let reader = std::io::BufReader::new(fhandle);
