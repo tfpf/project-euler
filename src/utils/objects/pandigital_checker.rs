@@ -22,7 +22,7 @@ impl PandigitalChecker {
     ///
     /// * `num` Number to update with.
     ///
-    /// Returns `true` of all digits of the number were in range and not seen
+    /// Returns `true` if all digits of the number were in range and not seen
     /// earlier. Returns `false` otherwise.
     pub fn update(&mut self, num: i64) -> bool {
         for digit in utils::Digits::new(num) {
