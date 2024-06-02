@@ -5,7 +5,7 @@ use crate::utils;
 ///
 /// * `idx_max` Index of the convergent.
 ///
-/// -> Value of the convergent; 0 if the index is non-positive.
+/// Returns 0 if `idx_max` is 0. Returns the convergent otherwise.
 fn generate_continued_fraction(idx_max: u32) -> utils::Fraction {
     match idx_max {
         ..=0 => utils::Fraction::from(0, 1),
@@ -18,8 +18,6 @@ fn generate_continued_fraction(idx_max: u32) -> utils::Fraction {
 ///
 /// * `idx` Current index.
 /// * `idx_max` Index of the convergent.
-///
-/// -> Value of the convergent.
 fn generate_continued_fraction_(idx: u32, idx_max: u32) -> utils::Fraction {
     let addend = if idx % 3 == 0 { idx / 3 * 2 } else { 1 };
     let mut fraction = if idx == idx_max {

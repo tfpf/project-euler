@@ -1,10 +1,8 @@
 use crate::utils;
 
-/// Implement the `d` function.
+/// Calculate the sum of the proper divisors of the given number.
 ///
 /// * `num`
-///
-/// -> Sum of proper divisors of `num`.
 fn sum_of_proper_divisors(num: usize) -> usize {
     let divisors = utils::Divisors::new(num as i64);
     (divisors.sum::<i64>() - num as i64) as usize

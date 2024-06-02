@@ -14,8 +14,6 @@ impl Long {
     /// decimal digits.
     ///
     /// * `s`
-    ///
-    /// -> Arbitrary-precision integer.
     pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
         let mut idx = s.len();
@@ -67,8 +65,6 @@ impl Long {
         result
     }
     /// Obtain the number of decimal digits of this number (i.e. its length).
-    ///
-    /// -> Length.
     pub fn len(&self) -> usize {
         match self.digits.len() {
             0 => 0,
@@ -77,8 +73,6 @@ impl Long {
         }
     }
     /// Calculate the sum of all decimal digits of this number.
-    ///
-    /// -> Sum.
     pub fn sum(&self) -> i64 {
         self.digits
             .iter()
@@ -88,8 +82,6 @@ impl Long {
     /// Raise this number to the given power.
     ///
     /// * `exp` Power.
-    ///
-    /// -> Value of this number raised to the given power.
     pub fn pow(&self, mut exp: u32) -> Long {
         // Multiplication is expensive, so these checks will improve
         // performance.

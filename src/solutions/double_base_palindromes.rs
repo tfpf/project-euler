@@ -4,7 +4,7 @@ use crate::utils;
 ///
 /// * `num` Number to use to generate palindromes.
 ///
-/// -> Sum of all double-base palindromes with binary `num` as their left half.
+/// Returns the sum of all double-base palindromes with `num` as the left half.
 fn double_base_palindrome_sum(num: i64) -> i64 {
     // There are three ways to make a palindrome using this number. Having
     // reversed its bits, one can: stick the reversed bits to its right, append

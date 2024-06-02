@@ -1,8 +1,6 @@
 /// Convert a number into a string which indicates how it would be read.
 ///
 /// * `num`
-///
-/// -> String representing how `num` would be read.
 fn convert(num: usize) -> String {
     // Handle numbers without any discernible pattern in their names.
     let result = match num {

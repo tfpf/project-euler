@@ -2,7 +2,7 @@ use crate::utils;
 
 /// Find four consecutive integers which have at least four prime factors each.
 ///
-/// -> First of the four integers.
+/// Returns the first of the four integers.
 fn four_distinct() -> i64 {
     let primes = utils::SieveOfAtkin::new(1000).iter().collect::<Vec<i64>>();
     let mut num = 644;

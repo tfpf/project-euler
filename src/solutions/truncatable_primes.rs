@@ -3,8 +3,6 @@ use crate::utils;
 /// Check whether the number is a left-truncatable prime number.
 ///
 /// * `digits` Digits of the number (in big-endian order) to check.
-///
-/// -> Whether the number is a left-truncatable prime.
 fn left_truncatable(digits: &[i32]) -> bool {
     // Instead of chopping off digits from the left, prepend digits to the
     // left. This avoids division.
@@ -26,7 +24,7 @@ fn left_truncatable(digits: &[i32]) -> bool {
 /// * `value` The partially-built number represented by `digits`.
 /// * `idx` Index of the next digit to build.
 ///
-/// -> Sum of all truncatable primes numbers having `value` as a prefix.
+/// Returns the sum of all truncatable primes numbers having prefix `value`.
 fn truncatable_sum(digits: &mut Vec<i32>, value: i32, idx: usize) -> i32 {
     let available_digits = [1, 2, 3, 5, 7, 9];
 
@@ -39,8 +37,8 @@ fn truncatable_sum(digits: &mut Vec<i32>, value: i32, idx: usize) -> i32 {
     let last = digits.len() - 1;
     let sum = available_digits
         .map(|digit| {
-            // The most significant digit must be 2, 3, 5 or 7. No other digit can
-            // be 2 or 5.
+            // The most significant digit must be 2, 3, 5 or 7. No other digit
+            // can be 2 or 5.
             if idx == 0 && (digit == 1 || digit == 9) || idx != 0 && (digit == 2 || digit == 5) {
                 return 0;
             }
@@ -51,9 +49,9 @@ fn truncatable_sum(digits: &mut Vec<i32>, value: i32, idx: usize) -> i32 {
                 return 0;
             }
 
-            // The least significant digit must be 3 or 7. Hence, if we find either
-            // of those, check whether we have found a truncatable prime and then
-            // continue the search for more truncatable primes.
+            // The least significant digit must be 3 or 7. Hence, if we find
+            // either of those, check whether we have found a truncatable prime
+            // and then continue the search for more truncatable primes.
             if (digit == 3 || digit == 7) && left_truncatable(digits) {
                 // Single-digit numbers do not count.
                 if idx == 0 {

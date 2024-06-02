@@ -22,7 +22,8 @@ impl PandigitalChecker {
     ///
     /// * `num` Number to update with.
     ///
-    /// -> Whether all digits of the number were in range and not seen earlier.
+    /// Returns `true` of all digits of the number were in range and not seen
+    /// earlier. Returns `false` otherwise.
     pub fn update(&mut self, num: i64) -> bool {
         for digit in utils::Digits::new(num) {
             let digit = digit as usize;
@@ -35,8 +36,6 @@ impl PandigitalChecker {
     }
     /// Check whether all digits in the range have been seen. This indicates
     /// pandigitality only if used in tandem with the above method.
-    ///
-    /// -> Pandigitality.
     pub fn check(&self) -> bool {
         self.seen
             .iter()

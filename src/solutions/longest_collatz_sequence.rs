@@ -3,8 +3,6 @@
 ///
 /// * `collatz_lengths` Array to cache the lengths. Indexable with `num`.
 /// * `num` Number to find the length of the Collatz sequence for.
-///
-/// -> Length of Collatz sequence.
 fn get_collatz_length(collatz_lengths: &mut Vec<i32>, num: usize) -> i32 {
     if collatz_lengths[num] != 0 {
         return collatz_lengths[num];

@@ -14,12 +14,14 @@ impl Polygonal {
         }
     }
     /// Find the index at which the given number would appear in a sequence of
-    /// polygonal numbers (if it is a polygonal number).
+    /// polygonal numbers.
     ///
     /// * `sides` Number of sides of the polygon the sequence is based on.
     /// * `num` Number whose index is to be found.
     ///
-    /// -> Index.
+    /// Returns the index of the number if it is a polygonal number of the
+    /// specified type. Returns the index of the nearest polygonal number of
+    /// that type otherwise.
     pub fn invert(sides: i64, num: i64) -> Result<i64, i64> {
         // A polygonal number is a quadratic function of the index it appears
         // at. Solve for the positive root of the corresponding quadratic

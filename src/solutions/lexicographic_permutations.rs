@@ -1,13 +1,8 @@
 /// Find the digit which causes us to stay within 1_000_000 permutations.
 ///
 /// * `digits` Pool of available digits.
-/// * `count` Number of permutations we have already seen. Will get updated
-///   to the number of permutations we have seen after the required digit is
-///   found.
-/// * `step` Number of permutations we will see if we pick a digit from
-///   `digits`.
-///
-/// -> The correct digit of the 1_000_000th permutation.
+/// * `count` Number of permutations we have already seen.
+/// * `step` Number of permutations we will see if we pick from `digits`.
 fn overshoot(digits: &[i32], count: &mut i32, step: i32) -> i32 {
     for (&prev, &_) in digits.iter().zip(digits.iter().skip(1)) {
         // If I set the digit `_`, how many permutations will I have seen

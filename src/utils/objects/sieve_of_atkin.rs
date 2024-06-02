@@ -29,8 +29,6 @@ impl SieveOfAtkin {
     /// Construct the sieve of Atkin up to and including the given number.
     ///
     /// * `limit` Non-strict upper bound.
-    ///
-    /// -> Sieve of Atkin.
     pub fn new(limit: usize) -> SieveOfAtkin {
         // Strict upper bound divisible by 60.
         let limit_rounded = (limit - limit % 60)
