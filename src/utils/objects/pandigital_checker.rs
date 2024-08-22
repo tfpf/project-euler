@@ -9,7 +9,6 @@ pub struct PandigitalChecker {
 }
 
 impl PandigitalChecker {
-
     /// Construct a pandigital checker for digits in the given range.
     ///
     /// * `min_digit`

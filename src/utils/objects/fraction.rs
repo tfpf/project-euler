@@ -8,7 +8,6 @@ pub struct Fraction {
 }
 
 impl Fraction {
-
     /// Construct a rational number.
     ///
     /// * `numerator`

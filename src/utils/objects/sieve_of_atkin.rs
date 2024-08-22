@@ -28,7 +28,6 @@ impl SieveOfAtkin {
 }
 
 impl SieveOfAtkin {
-
     /// Construct the sieve of Atkin up to and including the given number.
     ///
     /// * `limit` Non-strict upper bound.

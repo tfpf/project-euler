@@ -22,7 +22,6 @@ impl PokerHand {
 }
 
 impl PokerHand {
-
     /// Construct a hand of poker. As an example, to represent 8 of clubs, 10
     /// of spades, king of clubs, 9 of hearts and 4 of spades, the input shall
     /// be `["8C", "TS", "KC", "9H", "4S"]`.

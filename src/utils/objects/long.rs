@@ -10,7 +10,6 @@ pub struct Long {
     digits: Vec<u32>,
 }
 impl Long {
-
     /// Construct an arbitrary-precision integer.
     ///
     /// * `s` Big-endian string of decimal digits.
