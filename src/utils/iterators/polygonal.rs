@@ -5,6 +5,7 @@ pub struct Polygonal {
     offset: i64,
     num: i64,
 }
+
 impl Polygonal {
     pub fn new(sides: i64) -> Polygonal {
         Polygonal {
@@ -13,6 +14,7 @@ impl Polygonal {
             num: 0,
         }
     }
+
     /// Find the index at which the given number would appear in a sequence of
     /// polygonal numbers.
     ///
@@ -39,6 +41,7 @@ impl Polygonal {
         }
     }
 }
+
 impl Iterator for Polygonal {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

@@ -5,6 +5,7 @@ pub struct PotentialPrimes {
     num: i64,
     offset: std::iter::Cycle<std::array::IntoIter<i64, 8>>,
 }
+
 impl PotentialPrimes {
     pub fn new(limit: i64) -> PotentialPrimes {
         PotentialPrimes {
@@ -14,6 +15,7 @@ impl PotentialPrimes {
         }
     }
 }
+
 impl Iterator for PotentialPrimes {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

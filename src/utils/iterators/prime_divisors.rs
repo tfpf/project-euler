@@ -8,6 +8,7 @@ pub struct PrimeDivisors {
     potential_primes: utils::PotentialPrimes,
     num: i64,
 }
+
 impl PrimeDivisors {
     pub fn new(num: i64) -> PrimeDivisors {
         PrimeDivisors {
@@ -16,6 +17,7 @@ impl PrimeDivisors {
         }
     }
 }
+
 impl Iterator for PrimeDivisors {
     type Item = (i64, u32);
     fn next(&mut self) -> Option<(i64, u32)> {

@@ -8,6 +8,7 @@ pub struct Divisors {
     current: i64,
     other: i64,
 }
+
 impl Divisors {
     pub fn new(dividend: i64) -> Divisors {
         Divisors {
@@ -18,6 +19,7 @@ impl Divisors {
         }
     }
 }
+
 impl Iterator for Divisors {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

@@ -3,11 +3,13 @@
 pub struct Digits {
     num: i64,
 }
+
 impl Digits {
     pub fn new(num: i64) -> Digits {
         Digits { num }
     }
 }
+
 impl Iterator for Digits {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

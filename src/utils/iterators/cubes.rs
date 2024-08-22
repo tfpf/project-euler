@@ -7,6 +7,7 @@ pub struct Cubes {
     offset: i64,
     num: i64,
 }
+
 impl Cubes {
     pub fn new() -> Cubes {
         Cubes {
@@ -16,6 +17,7 @@ impl Cubes {
         }
     }
 }
+
 impl Iterator for Cubes {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

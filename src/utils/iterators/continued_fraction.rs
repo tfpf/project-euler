@@ -9,6 +9,7 @@ pub struct ContinuedFraction {
     numerator_addend: i64,
     denominator: i64,
 }
+
 impl ContinuedFraction {
     pub fn new(num: i64) -> ContinuedFraction {
         ContinuedFraction {
@@ -19,6 +20,7 @@ impl ContinuedFraction {
         }
     }
 }
+
 impl Iterator for ContinuedFraction {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {
