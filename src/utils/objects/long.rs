@@ -10,12 +10,9 @@ pub struct Long {
     digits: Vec<u32>,
 }
 impl Long {
-    /// Construct an arbitrary-precision integer from a big-endian string of
-    /// decimal digits.
+    /// Construct an arbitrary-precision integer.
     ///
-    /// * `s`
-    ///
-    /// -> Arbitrary-precision integer.
+    /// * `s` Big-endian string of decimal digits.
     pub fn new(s: &str) -> Long {
         let mut long = Long { digits: vec![] };
         let mut idx = s.len();
@@ -29,18 +26,26 @@ impl Long {
         }
         long
     }
+
+    /// Construct an arbitrary-precision integer.
+    ///
+    /// * `digit` Least significant digit in base 1_000_000_000.
     pub fn from(digit: u32) -> Long {
         if digit >= 1_000_000_000 {
             panic!("argument is too large to be a digit of this arbitrary-precision type");
         }
         Long { digits: vec![digit] }
     }
+
+    /// Construct an arbitrary-precision integer whose decimal representation
+    /// is the reverse of the current one.
     pub fn reverse(&self) -> Long {
         Long::new(&self.to_string().chars().rev().collect::<String>())
     }
+
     /// Calculate the factorial of a non-negative number.
     ///
-    /// * `num` - Number whose factorial is to be calculated.
+    /// * `num` Number whose factorial is to be calculated.
     pub fn factorial(num: u32) -> Long {
         if num == 0 || num == 1 {
             return Long::from(1);
@@ -66,9 +71,8 @@ impl Long {
         }
         result
     }
+
     /// Obtain the number of decimal digits of this number (i.e. its length).
-    ///
-    /// -> Length.
     pub fn len(&self) -> usize {
         match self.digits.len() {
             0 => 0,
@@ -76,20 +80,18 @@ impl Long {
             len => (len - 1) * 9 + self.digits.last().unwrap().to_string().len(),
         }
     }
+
     /// Calculate the sum of all decimal digits of this number.
-    ///
-    /// -> Sum.
     pub fn sum(&self) -> i64 {
         self.digits
             .iter()
             .map(|&digit| utils::Digits::new(digit as i64).sum::<i64>())
             .sum()
     }
+
     /// Raise this number to the given power.
     ///
-    /// * `exp` - Power.
-    ///
-    /// -> Value of this number raised to the given power.
+    /// * `exp` Power.
     pub fn pow(&self, mut exp: u32) -> Long {
         // Multiplication is expensive, so these checks will improve
         // performance.
@@ -112,6 +114,14 @@ impl Long {
             base = &base * &base;
         }
     }
+
+    /// Add two digits in base 1_000_000_000.
+    ///
+    /// * `a`
+    /// * `b`
+    /// * `carry` Carried unit to be added.
+    ///
+    /// Returns the sum of the digits in base 1_000_000_000 and the new carry.
     fn adc(a: u32, b: u32, carry: bool) -> (u32, bool) {
         let sum = a + b + carry as u32;
         if sum >= 1_000_000_000 {
@@ -120,11 +130,21 @@ impl Long {
             (sum, false)
         }
     }
+
+    /// Multiply two digits in base 1_000_000_000.
+    ///
+    /// * `a`
+    /// * `b`
+    /// * `carry` Carried digit to be added.
+    ///
+    /// Returns the product of the digits in base 1_000_000_000 and the new
+    /// carry.
     fn mlc(a: u32, b: u32, carry: u32) -> (u32, u32) {
         let product = a as u64 * b as u64 + carry as u64;
         ((product % 1_000_000_000) as u32, (product / 1_000_000_000) as u32)
     }
 }
+
 impl std::ops::AddAssign<&Long> for Long {
     fn add_assign(&mut self, other: &Long) {
         self.digits
@@ -142,6 +162,7 @@ impl std::ops::AddAssign<&Long> for Long {
         }
     }
 }
+
 impl std::ops::Add<&Long> for &Long {
     type Output = Long;
     fn add(self, other: &Long) -> Long {
@@ -150,6 +171,7 @@ impl std::ops::Add<&Long> for &Long {
         result
     }
 }
+
 impl std::ops::MulAssign<u32> for Long {
     fn mul_assign(&mut self, other: u32) {
         let mut carry = 0;
@@ -162,6 +184,7 @@ impl std::ops::MulAssign<u32> for Long {
         }
     }
 }
+
 impl std::ops::Mul<u32> for &Long {
     type Output = Long;
     fn mul(self, other: u32) -> Long {
@@ -170,6 +193,7 @@ impl std::ops::Mul<u32> for &Long {
         result
     }
 }
+
 impl std::ops::Mul<&Long> for &Long {
     type Output = Long;
     fn mul(self, other: &Long) -> Long {
@@ -190,6 +214,7 @@ impl std::ops::Mul<&Long> for &Long {
         result
     }
 }
+
 impl std::fmt::Display for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         self.digits
@@ -207,6 +232,7 @@ impl std::fmt::Display for Long {
             })
     }
 }
+
 impl std::fmt::Debug for Long {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let result = write!(f, "digits = |");

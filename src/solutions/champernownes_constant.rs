@@ -1,8 +1,6 @@
 /// Determine the digit at the given index in Champernowne's Constant.
 ///
-/// * `idx` - 1-based index.
-///
-/// -> Digit at said index.
+/// * `idx` 1-based index.
 fn digit_at(idx: u32) -> u32 {
     // Obtain a 0-based index.
     let mut idx = idx - 1;

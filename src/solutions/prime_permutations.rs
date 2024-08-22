@@ -2,8 +2,6 @@ use crate::utils;
 
 /// Find three prime numbers which are in arithmetic progression and consist of
 /// the same digits.
-///
-/// -> Tuple of prime numbers.
 fn prime_permutations() -> (i64, i64, i64) {
     let sieve = utils::SieveOfAtkin::new(9999);
     let primes = sieve.iter().skip_while(|&prime| prime < 1000).collect::<Vec<i64>>();

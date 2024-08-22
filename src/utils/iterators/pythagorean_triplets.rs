@@ -8,6 +8,7 @@ pub struct PythagoreanTriplets {
     m_ub: i64,
     m: i64,
 }
+
 impl PythagoreanTriplets {
     pub fn new(perimeter: i64) -> PythagoreanTriplets {
         let semiperimeter = perimeter / 2;
@@ -20,6 +21,7 @@ impl PythagoreanTriplets {
         }
     }
 }
+
 impl Iterator for PythagoreanTriplets {
     type Item = (i64, i64, i64);
     fn next(&mut self) -> Option<(i64, i64, i64)> {

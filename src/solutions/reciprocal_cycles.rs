@@ -3,9 +3,7 @@ use crate::utils;
 /// Find the length of the repeating part of the decimal representation of the
 /// reciprocal of a prime number.
 ///
-/// * `prime` - Prime number.
-///
-/// -> Recurrence cycle length.
+/// * `prime` Prime number.
 fn recurrence_length(prime: i64) -> i64 {
     // The digits (i.e. the sequence of quotients) will start repeating when
     // the remainder becomes 1 for the second time.

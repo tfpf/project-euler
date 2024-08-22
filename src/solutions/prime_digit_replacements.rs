@@ -6,7 +6,7 @@ use crate::utils;
 /// The number of fixed positions must be 3, 6 or 9. Otherwise, at least one
 /// of the 8 numbers in the family will be divisible by 3.
 ///
-/// -> Smallest member of the family.
+/// Returns the smallest member of the family.
 fn prime_digit_replacements() -> i64 {
     const LIMIT: usize = 1000000;
     let sieve = utils::SieveOfAtkin::new(LIMIT);

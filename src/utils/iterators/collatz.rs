@@ -3,11 +3,13 @@ pub struct Collatz {
     num: i64,
     done: bool,
 }
+
 impl Collatz {
     pub fn new(num: i64) -> Collatz {
         Collatz { num, done: false }
     }
 }
+
 impl Iterator for Collatz {
     type Item = i64;
     fn next(&mut self) -> Option<i64> {

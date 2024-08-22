@@ -6,7 +6,7 @@ use std::io::Write;
 ///
 /// * `problem_number`
 ///
-/// -> Flag indicating whether the solution is available.
+/// Returns `true` if the solution was executed. Returns `false` otherwise.
 fn solve_and_time_one(problem_number: usize) -> bool {
     let solve = match problem_number {
         1 => multiples_of_3_or_5::solve,
@@ -109,9 +109,9 @@ fn solve_and_time_all() {
 
 /// Write a file with the given contents.
 ///
-/// * `fname` - File name.
-/// * `append` - Whether to append to an existing file or create a new file.
-/// * `contents` - What to write in the file.
+/// * `fname` File name.
+/// * `append` Whether to append to an existing file or create a new file.
+/// * `contents` What to write in the file.
 macro_rules! add_skel {
     ($fname:expr, $append:literal, $($contents:expr),+) => {
         let mut open_options = std::fs::OpenOptions::new();

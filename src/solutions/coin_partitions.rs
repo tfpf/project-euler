@@ -4,8 +4,6 @@ use crate::utils;
 /// positive integers is divisible by 1000000. Essentially, implement the
 /// partition function (of number theory) for every number (storing values
 /// modulo 1000000) until we find the answer.
-///
-/// -> Smallest number whose partition is divisible by 1000000.
 pub fn coin_partitions() -> usize {
     let mut p = vec![0; 100000];
     p[0] = 1;

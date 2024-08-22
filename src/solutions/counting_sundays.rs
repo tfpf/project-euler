@@ -1,8 +1,6 @@
-/// Check for leap years.
+/// Check whether the given year is a leap year.
 ///
 /// * `year`
-///
-/// -> Whether the input is a leap year.
 fn is_leap(year: i64) -> bool {
     year % 4 == 0 && year % 100 != 0 || year % 400 == 0
 }
@@ -10,9 +8,9 @@ fn is_leap(year: i64) -> bool {
 /// Determine the number of days in the given month of the given year.
 ///
 /// * `year`
-/// * `month` - Number from 1 to 12.
+/// * `month` Number from 1 to 12.
 ///
-/// -> Number of days, or 0 if the month is invalid.
+/// Returns 0 if the month is invalid. Returns the number of days otherwise.
 fn days_in(year: i64, month: i64) -> i64 {
     match month {
         1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,

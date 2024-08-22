@@ -16,12 +16,12 @@ impl DigitsSet {
 
 /// Build sub-string divisible numbers.
 ///
-/// * `ds` - Set of digits which can be used to build the numbers.
-/// * `idx` - Index of the digit of the number to build.
-/// * `value` - Partially-built sub-string divisible number.
-/// * `primes` - Prime numbers, but offset for use with the index.
+/// * `ds` Set of digits which can be used to build the numbers.
+/// * `idx` Index of the digit of the number to build.
+/// * `value` Partially-built sub-string divisible number.
+/// * `primes` Prime numbers, but offset for use with the index.
 ///
-/// -> Sum of all numbers which can be built starting from the given resources.
+/// Returns the sum of all numbers which can be built with the above resources.
 fn sub_string_divisible_sum(ds: &mut DigitsSet, idx: usize, value: i64, primes: &[i64; 10]) -> i64 {
     if idx >= 10 {
         return value;

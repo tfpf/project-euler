@@ -7,6 +7,7 @@ pub struct PokerHand {
     // Used to rank this hand on an arbitrary scale. Higher is better.
     score: i32,
 }
+
 impl PokerHand {
     const HIGH_CARD: i32 = 0;
     const ONE_PAIR: i32 = 1 << 16;
@@ -19,7 +20,11 @@ impl PokerHand {
     const STRAIGHT_FLUSH: i32 = 8 << 16;
     const ROYAL_FLUSH: i32 = 9 << 16;
 }
+
 impl PokerHand {
+    /// Construct a hand of poker. As an example, to represent 8 of clubs, 10
+    /// of spades, king of clubs, 9 of hearts and 4 of spades, the input shall
+    /// be `["8C", "TS", "KC", "9H", "4S"]`.
     pub fn new(hand: &[&str]) -> PokerHand {
         let hand = hand
             .iter()
@@ -41,6 +46,8 @@ impl PokerHand {
         poker_hand.calculate_score();
         poker_hand
     }
+
+    /// Assign an arbitrary score to the hand of poker.
     fn calculate_score(&mut self) {
         // Sorting the cards by descending order of value makes analysing them
         // easier.
@@ -138,6 +145,7 @@ impl PokerHand {
         self.score = PokerHand::HIGH_CARD;
     }
 }
+
 impl Ord for PokerHand {
     fn cmp(&self, other: &PokerHand) -> std::cmp::Ordering {
         let compare = self.score.cmp(&other.score);
@@ -153,6 +161,7 @@ impl Ord for PokerHand {
         std::cmp::Ordering::Equal
     }
 }
+
 impl PartialOrd for PokerHand {
     fn partial_cmp(&self, other: &PokerHand) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))

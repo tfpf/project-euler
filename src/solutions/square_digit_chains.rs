@@ -7,7 +7,8 @@ use crate::utils;
 /// if we know the answer for those numbers, we can know the answer for any
 /// number by taking the sum of the squares of its digits.
 ///
-/// -> Array showing where the chain gets stuck in a loop.
+/// Returns an array containing numbers at which chains starting at their
+/// indices get stuck.
 fn minimal_stuck() -> [u8; 568] {
     let mut chain_stuck = [0u8; 568];
     chain_stuck[1] = 1;
@@ -28,11 +29,12 @@ fn minimal_stuck() -> [u8; 568] {
 
 /// Produce 7-digit numbers in ascending order. Maintain the digit square sum.
 ///
-/// * `chain_stuck` - Where the chain of each number till 567 gets stuck.
-/// * `digits` - Digits of the number, ordered from most to least significant.
-/// * `sqsum` - Sum of the squares of the digits.
+/// * `chain_stuck` Where the chain of each number till 567 gets stuck.
+/// * `digits` Digits of the number, ordered from most to least significant.
+/// * `sqsum` Sum of the squares of the digits.
 ///
-/// -> How many with these digits have digit square sum chains ending at 89.
+/// Returns the count of numbers with these digits having digit square sum
+/// chains ending at 89.
 fn generate_ascending(chain_stuck: &[u8; 568], digits: &mut Vec<usize>, sqsum: usize) -> i32 {
     const FACTORIAL: [i32; 10] = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880];
 

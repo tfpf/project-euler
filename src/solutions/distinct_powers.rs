@@ -1,13 +1,11 @@
 use crate::utils;
 
 /// Find the greatest exponent a number can be raised to so that the resultant
-/// value is equal to given number. For instance, given 32, this function
+/// value is equal to the given number. For instance, given 32, this function
 /// should return 5, and given 36, it should return 2.
 ///
 /// * `num`
-/// * `primes` - Prime numbers to use to calculate the exponent.
-///
-/// -> Exponent.
+/// * `primes` Prime numbers to use to calculate the exponent.
 fn exponent(mut num: i64, primes: &[i64]) -> i64 {
     // Calculate the greatest exponent of every prime in the given number.
     let mut exponents = vec![0i64; primes.len()];

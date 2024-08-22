@@ -13,6 +13,7 @@ pub struct SieveOfAtkin {
     limit_rounded_isqrt: usize,
     sieve: Vec<u16>,
 }
+
 impl SieveOfAtkin {
     // Consecutive differences between coprime residues modulo 60: 1, 7, 11,
     // 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53 and 59.
@@ -25,12 +26,11 @@ impl SieveOfAtkin {
         16, 16, 15,
     ];
 }
+
 impl SieveOfAtkin {
     /// Construct the sieve of Atkin up to and including the given number.
     ///
-    /// * `limit` - Non-strict upper bound.
-    ///
-    /// -> Sieve of Atkin.
+    /// * `limit` Non-strict upper bound.
     pub fn new(limit: usize) -> SieveOfAtkin {
         // Strict upper bound divisible by 60.
         let limit_rounded = (limit - limit % 60)
@@ -45,6 +45,8 @@ impl SieveOfAtkin {
         sieve_of_atkin.init();
         sieve_of_atkin
     }
+
+    /// Initialise the sieve of Atkin.
     fn init(&mut self) {
         for (delta, shift) in [1, 13, 17, 29, 37, 41, 49, 53]
             .into_iter()
@@ -80,6 +82,12 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Of the prime numbers congruent to 1 modulo 4, find those congruent to
+    /// `delta` modulo 60.
+    ///
+    /// * `delta` Residue.
+    /// * `shift` Position of `delta` in a list of coprime residues modulo 60.
     fn algorithm_3_1(&mut self, delta: i32, shift: u8) {
         for f in 1..=15 {
             for g in (1..=30).step_by(2) {
@@ -90,6 +98,12 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Of the prime numbers congruent to 1 modulo 6, find those congruent to
+    /// `delta` modulo 60.
+    ///
+    /// * `delta` Residue.
+    /// * `shift` Position of `delta` in a list of coprime residues modulo 60.
     fn algorithm_3_2(&mut self, delta: i32, shift: u8) {
         for f in (1..=10).step_by(2) {
             for g in [2, 4, 8, 10, 14, 16, 20, 22, 26, 28] {
@@ -100,6 +114,12 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Of the prime numbers congruent to 11 modulo 12, find those congruent to
+    /// `delta` modulo 60.
+    ///
+    /// * `delta` Residue.
+    /// * `shift` Position of `delta` in a list of coprime residues modulo 60.
     fn algorithm_3_3(&mut self, delta: i32, shift: u8) {
         for (f, gstart) in (1..=10).zip([2, 1].into_iter().cycle()) {
             for g in (gstart..=30).step_by(2) {
@@ -111,6 +131,18 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Starting from a point which generates a prime number congruent to 1
+    /// modulo 4 and `delta` modulo 60, find all such prime numbers by tracing
+    /// the generating curve:
+    ///
+    /// 4<i>f</i><sup>2</sup> + <i>g</i><sup>2</sup> = 60<i>h</i> + δ
+    /// (equivalently: `4f^2 + g^2 = 60h + δ`).
+    ///
+    /// * `shift` Position of δ in a list of coprime residues modulo 60.
+    /// * `f` Starting abscissa.
+    /// * `g` Starting ordinate.
+    /// * `h` Multiplier of 60 in the generating curve.
     fn algorithm_4_1(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < self.sieve.len() as i64 {
@@ -131,6 +163,18 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Starting from a point which generates a prime number congruent to 1
+    /// modulo 6 and `delta` modulo 60, find all such prime numbers by tracing
+    /// the generating curve:
+    ///
+    /// 3<i>f</i><sup>2</sup> + <i>g</i><sup>2</sup> = 60<i>h</i> + δ
+    /// (equivalently: `3f^2 + g^2 = 60h + δ`).
+    ///
+    /// * `shift` Position of δ in a list of coprime residues modulo 60.
+    /// * `f` Starting abscissa.
+    /// * `g` Starting ordinate.
+    /// * `h` Multiplier of 60 in the generating curve.
     fn algorithm_4_2(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         while k0 < self.sieve.len() as i64 {
@@ -151,6 +195,18 @@ impl SieveOfAtkin {
             }
         }
     }
+
+    /// Starting from a point which generates a prime number congruent to 11
+    /// modulo 12 and `delta` modulo 60, find all such prime numbers by tracing
+    /// the generating curve:
+    ///
+    /// 3<i>f</i><sup>2</sup> − <i>g</i><sup>2</sup> = 60<i>h</i> + δ
+    /// (equivalently: `3f^2 - g^2 = 60h + δ`).
+    ///
+    /// * `shift` Position of δ in a list of coprime residues modulo 60.
+    /// * `f` Starting abscissa.
+    /// * `g` Starting ordinate.
+    /// * `h` Multiplier of 60 in the generating curve.
     fn algorithm_4_3(&mut self, shift: u8, f: i32, g: i32, h: i32) {
         let (mut x, mut y0, mut k0) = (f as i64, g as i64, h as i64);
         loop {
@@ -168,6 +224,10 @@ impl SieveOfAtkin {
             (k0, x) = (k0 + x + 5, x + 10);
         }
     }
+
+    /// Check whether the given number is prime.
+    ///
+    /// * `num`
     pub fn is_prime(&self, num: usize) -> bool {
         if num < 2 {
             return false;
@@ -181,6 +241,8 @@ impl SieveOfAtkin {
         }
         self.sieve[num_div_60] & (1u32 << SieveOfAtkin::SHIFTS[num_mod_60]) as u16 != 0
     }
+
+    /// Yield the found prime numbers in order.
     pub fn iter(&self) -> impl Iterator<Item = i64> + '_ {
         let mut num: usize = 1;
         let mut offset = SieveOfAtkin::OFFSETS.iter().cycle();
