@@ -235,6 +235,7 @@ pub use iterators::divisors::Divisors;
 pub use iterators::fibonacci::Fibonacci;
 pub use iterators::polygonal::Polygonal;
 pub use iterators::potential_primes::PotentialPrimes;
+pub use iterators::primes::Primes;
 pub use iterators::pythagorean_triplets::PythagoreanTriplets;
 
 #[cfg(test)]
@@ -365,6 +366,19 @@ mod tests {
     #[test]
     fn sieve_of_atkin_small_test() {
         let num_of_primes = utils::SieveOfAtkin::new(10usize.pow(9)).iter().count();
+        assert_eq!(num_of_primes, 50847534);
+    }
+
+    #[test]
+    fn primes_smaller_test() {
+        let num_of_primes = utils::Primes::new(2i64.pow(14)).count();
+        assert_eq!(num_of_primes, 1900);
+    }
+
+    #[cfg(any(target_pointer_width = "32", target_pointer_width = "64"))]
+    #[test]
+    fn primes_small_test() {
+        let num_of_primes = utils::Primes::new(10i64.pow(9)).count();
         assert_eq!(num_of_primes, 50847534);
     }
 
