@@ -13,9 +13,7 @@ pub fn sieve_of_atkin(c: &mut criterion::Criterion) {
 }
 
 pub fn primes(c: &mut criterion::Criterion) {
-    c.bench_function("primes", |b| {
-        b.iter(|| utils::Primes::new(10i64.pow(6)).count())
-    });
+    c.bench_function("primes", |b| b.iter(|| utils::Primes::new(10i64.pow(6)).count()));
 }
 
 criterion::criterion_group!(benches, is_prime, sieve_of_atkin, primes);

@@ -28,9 +28,7 @@ impl Primes {
 
     fn next_other_prime(&mut self) -> Option<i64> {
         loop {
-            let Some(potential_prime) = self.potential_primes.next() else {
-                return None;
-            };
+            let potential_prime = self.potential_primes.next()?;
             match self.lookup.remove(&potential_prime) {
                 None => {
                     self.lookup.insert(potential_prime.pow(2), potential_prime);
