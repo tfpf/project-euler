@@ -32,10 +32,9 @@ pub fn is_prime(num: i64) -> bool {
 /// * `num` Must not be divisible by 2, 3 or 5. Must exceed 5.
 fn is_prime_td(num: i64) -> bool {
     // No need to search for composite factors. We'll find prime factors (if
-    // any) faster.
-    PotentialPrimes::new(isqrt(num))
-        .skip(3)
-        .all(|potential_prime| num % potential_prime != 0)
+    // any) faster. Don't bother generating prime numbers. Potential prime
+    // numbers are faster to generate.
+    PotentialPrimes::new(isqrt(num)).all(|potential_prime| num % potential_prime != 0)
 }
 
 /// Check whether the given number is prime using the Miller-Rabin test.
@@ -236,7 +235,6 @@ pub use iterators::divisors::Divisors;
 pub use iterators::fibonacci::Fibonacci;
 pub use iterators::polygonal::Polygonal;
 pub use iterators::potential_primes::PotentialPrimes;
-pub use iterators::prime_divisors::PrimeDivisors;
 pub use iterators::pythagorean_triplets::PythagoreanTriplets;
 
 #[cfg(test)]

@@ -7,5 +7,4 @@ pub mod divisors;
 pub mod fibonacci;
 pub mod polygonal;
 pub mod potential_primes;
-pub mod prime_divisors;
 pub mod pythagorean_triplets;
