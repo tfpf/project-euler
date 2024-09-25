@@ -1,5 +1,10 @@
 name: lint
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - '.github/workflows/lint.yml'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -7,4 +12,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - run: cargo clippy
+      - run: cargo clippy -- --deny clippy::all

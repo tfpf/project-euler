@@ -2,7 +2,12 @@ name: tests
 on:
   push:
     paths:
-      - src/utils.rs
+      - '.github/workflows/tests.yml'
+      - 'Dockerfile'
+      - 'src/lib.rs'
+      - 'src/utils.rs'
+      - 'res/tests/*.txt'
+      - 'src/utils/**.rs'
   workflow_dispatch:
 
 jobs:

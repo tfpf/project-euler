@@ -2,9 +2,9 @@ use crate::utils;
 
 /// Build double-base palindromes (having at least two bits).
 ///
-/// * `num` - Number to use to generate palindromes.
+/// * `num` Number to use to generate palindromes.
 ///
-/// -> Sum of all double-base palindromes with binary `num` as their left half.
+/// Returns the sum of all double-base palindromes with `num` as the left half.
 fn double_base_palindrome_sum(num: i64) -> i64 {
     // There are three ways to make a palindrome using this number. Having
     // reversed its bits, one can: stick the reversed bits to its right, append
@@ -12,14 +12,13 @@ fn double_base_palindrome_sum(num: i64) -> i64 {
     // reversed bits to the right.
     let num_shift_0 = num << 1;
     let num_shift_1 = num_shift_0 | 1;
-    let palindromes =
-        utils::Bits::new(num).fold([num, num_shift_0, num_shift_1], |accumulator, bit| {
-            [
-                accumulator[0] << 1 | bit,
-                accumulator[1] << 1 | bit,
-                accumulator[2] << 1 | bit,
-            ]
-        });
+    let palindromes = utils::Bits::new(num).fold([num, num_shift_0, num_shift_1], |accumulator, bit| {
+        [
+            accumulator[0] << 1 | bit,
+            accumulator[1] << 1 | bit,
+            accumulator[2] << 1 | bit,
+        ]
+    });
     let palindromes = palindromes
         .into_iter()
         .filter(|&palindrome| palindrome < 1000000)

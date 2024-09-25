@@ -1,5 +1,12 @@
 name: sanity
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - '.github/workflows/sanity.yml'
+      - 'Dockerfile'
+      - 'res/solutions/*.txt'
+      - '**.rs'
+  workflow_dispatch:
 
 jobs:
   sanity32:
@@ -15,13 +22,13 @@ jobs:
       - uses: addnab/docker-run-action@v3
         with:
           image: sanity32
-          run: cargo -vv run --release
+          run: cargo -vv run -vv --release
   sanity64:
     name: sanity on 64-bit ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-12, ubuntu-22.04, windows-2022]
+        os: [macos-13, macos-14, ubuntu-22.04, windows-2022]
     steps:
       - uses: actions/checkout@v4
-      - run: cargo -vv run --release
+      - run: cargo -vv run -vv --release

@@ -1,5 +1,5 @@
 pub fn solve() -> i64 {
-    let cipher_bytes = std::fs::read_to_string("res/xor_decryption.txt")
+    let cipher_bytes = std::fs::read_to_string("res/solutions/xor_decryption.txt")
         .unwrap()
         .split(',')
         .map(|s| s.parse().unwrap())
@@ -13,9 +13,7 @@ pub fn solve() -> i64 {
             .collect::<Vec<u8>>();
         let plaintext = std::str::from_utf8(&plain_bytes).unwrap();
         if plaintext.contains(" the ") {
-            break plain_bytes
-                .iter()
-                .fold(0i64, |sum, &byte| sum + byte as i64);
+            break plain_bytes.iter().fold(0i64, |sum, &byte| sum + byte as i64);
         }
 
         // Set up the next key.

@@ -1,88 +1,96 @@
-#![deny(clippy::all)]
-#![allow(clippy::len_without_is_empty)]
-#![allow(clippy::manual_try_fold)]
-#![allow(clippy::match_overlapping_arm)]
-#![allow(clippy::new_without_default)]
-
-pub mod solutions;
-pub mod utils;
+use project_euler::solutions::*;
+use std::io::Write;
 
 /// Execute the solution (if available) of the specified problem. Also measure
 /// its running time.
 ///
 /// * `problem_number`
 ///
-/// -> Flag indicating whether the solution is available.
-fn solve_and_time_one(problem_number: i32) -> bool {
+/// Returns `true` if the solution was executed. Returns `false` otherwise.
+fn solve_and_time_one(problem_number: usize) -> bool {
     let solve = match problem_number {
-        1 => solutions::multiples_of_3_or_5::solve,
-        2 => solutions::even_fibonacci_numbers::solve,
-        3 => solutions::largest_prime_factor::solve,
-        4 => solutions::largest_palindrome_product::solve,
-        5 => solutions::smallest_multiple::solve,
-        6 => solutions::sum_square_difference::solve,
-        7 => solutions::ten_thousand_and_first_prime::solve,
-        8 => solutions::largest_product_in_a_series::solve,
-        9 => solutions::special_pythagorean_triplet::solve,
-        10 => solutions::summation_of_primes::solve,
-        11 => solutions::largest_product_in_a_grid::solve,
-        12 => solutions::highly_divisible_triangular_number::solve,
-        13 => solutions::large_sum::solve,
-        14 => solutions::longest_collatz_sequence::solve,
-        15 => solutions::lattice_paths::solve,
-        16 => solutions::power_digit_sum::solve,
-        17 => solutions::number_letter_counts::solve,
-        18 => solutions::maximum_path_sum_i::solve,
-        19 => solutions::counting_sundays::solve,
-        20 => solutions::factorial_digit_sum::solve,
-        21 => solutions::amicable_numbers::solve,
-        22 => solutions::names_scores::solve,
-        23 => solutions::non_abundant_sums::solve,
-        24 => solutions::lexicographic_permutations::solve,
-        25 => solutions::thousand_digit_fibonacci_number::solve,
-        26 => solutions::reciprocal_cycles::solve,
-        27 => solutions::quadratic_primes::solve,
-        28 => solutions::number_spiral_diagonals::solve,
-        29 => solutions::distinct_powers::solve,
-        30 => solutions::digit_fifth_powers::solve,
-        31 => solutions::coin_sums::solve,
-        32 => solutions::pandigital_products::solve,
-        33 => solutions::digit_cancelling_fractions::solve,
-        34 => solutions::digit_factorials::solve,
-        35 => solutions::circular_primes::solve,
-        36 => solutions::double_base_palindromes::solve,
-        37 => solutions::truncatable_primes::solve,
-        38 => solutions::pandigital_multiples::solve,
-        39 => solutions::integer_right_triangles::solve,
-        40 => solutions::champernownes_constant::solve,
-        41 => solutions::pandigital_prime::solve,
-        42 => solutions::coded_triangle_numbers::solve,
-        43 => solutions::sub_string_divisibility::solve,
-        44 => solutions::pentagon_numbers::solve,
-        45 => solutions::triangular_pentagonal_and_hexagonal::solve,
-        46 => solutions::goldbachs_other_conjecture::solve,
-        47 => solutions::distinct_primes_factors::solve,
-        48 => solutions::self_powers::solve,
-        49 => solutions::prime_permutations::solve,
-        50 => solutions::consecutive_prime_sum::solve,
-        52 => solutions::permuted_multiples::solve,
-        53 => solutions::combinatoric_selections::solve,
-        54 => solutions::poker_hands::solve,
-        55 => solutions::lychrel_numbers::solve,
-        56 => solutions::powerful_digit_sum::solve,
-        57 => solutions::square_root_convergents::solve,
-        58 => solutions::spiral_primes::solve,
-        59 => solutions::xor_decryption::solve,
-        62 => solutions::cubic_permutations::solve,
-        63 => solutions::powerful_digit_counts::solve,
-        64 => solutions::odd_period_square_roots::solve,
-        65 => solutions::convergents_of_e::solve,
-        67 => solutions::maximum_path_sum_ii::solve,
-        69 => solutions::totient_maximum::solve,
-        74 => solutions::digit_factorial_chains::solve,
-        75 => solutions::singular_integer_right_triangles::solve,
-        81 => solutions::path_sum_two_ways::solve,
-        82 => solutions::path_sum_three_ways::solve,
+        1 => multiples_of_3_or_5::solve,
+        2 => even_fibonacci_numbers::solve,
+        3 => largest_prime_factor::solve,
+        4 => largest_palindrome_product::solve,
+        5 => smallest_multiple::solve,
+        6 => sum_square_difference::solve,
+        7 => ten_thousand_and_first_prime::solve,
+        8 => largest_product_in_a_series::solve,
+        9 => special_pythagorean_triplet::solve,
+        10 => summation_of_primes::solve,
+        11 => largest_product_in_a_grid::solve,
+        12 => highly_divisible_triangular_number::solve,
+        13 => large_sum::solve,
+        14 => longest_collatz_sequence::solve,
+        15 => lattice_paths::solve,
+        16 => power_digit_sum::solve,
+        17 => number_letter_counts::solve,
+        18 => maximum_path_sum_i::solve,
+        19 => counting_sundays::solve,
+        20 => factorial_digit_sum::solve,
+        21 => amicable_numbers::solve,
+        22 => names_scores::solve,
+        23 => non_abundant_sums::solve,
+        24 => lexicographic_permutations::solve,
+        25 => thousand_digit_fibonacci_number::solve,
+        26 => reciprocal_cycles::solve,
+        27 => quadratic_primes::solve,
+        28 => number_spiral_diagonals::solve,
+        29 => distinct_powers::solve,
+        30 => digit_fifth_powers::solve,
+        31 => coin_sums::solve,
+        32 => pandigital_products::solve,
+        33 => digit_cancelling_fractions::solve,
+        34 => digit_factorials::solve,
+        35 => circular_primes::solve,
+        36 => double_base_palindromes::solve,
+        37 => truncatable_primes::solve,
+        38 => pandigital_multiples::solve,
+        39 => integer_right_triangles::solve,
+        40 => champernownes_constant::solve,
+        41 => pandigital_prime::solve,
+        42 => coded_triangle_numbers::solve,
+        43 => sub_string_divisibility::solve,
+        44 => pentagon_numbers::solve,
+        45 => triangular_pentagonal_and_hexagonal::solve,
+        46 => goldbachs_other_conjecture::solve,
+        47 => distinct_primes_factors::solve,
+        48 => self_powers::solve,
+        49 => prime_permutations::solve,
+        50 => consecutive_prime_sum::solve,
+        51 => prime_digit_replacements::solve,
+        52 => permuted_multiples::solve,
+        53 => combinatoric_selections::solve,
+        54 => poker_hands::solve,
+        55 => lychrel_numbers::solve,
+        56 => powerful_digit_sum::solve,
+        57 => square_root_convergents::solve,
+        58 => spiral_primes::solve,
+        59 => xor_decryption::solve,
+        61 => cyclical_figurate_numbers::solve,
+        62 => cubic_permutations::solve,
+        63 => powerful_digit_counts::solve,
+        64 => odd_period_square_roots::solve,
+        65 => convergents_of_e::solve,
+        66 => diophantine_equation::solve,
+        67 => maximum_path_sum_ii::solve,
+        68 => magic_5_gon_ring::solve,
+        69 => totient_maximum::solve,
+        71 => ordered_fractions::solve,
+        72 => counting_fractions::solve,
+        74 => digit_factorial_chains::solve,
+        75 => singular_integer_right_triangles::solve,
+        76 => counting_summations::solve,
+        77 => prime_summations::solve,
+        78 => coin_partitions::solve,
+        81 => path_sum_two_ways::solve,
+        82 => path_sum_three_ways::solve,
+        85 => counting_rectangles::solve,
+        87 => prime_power_triples::solve,
+        92 => square_digit_chains::solve,
+        97 => large_non_mersenne_prime::solve,
+        99 => largest_exponential::solve,
         _ => return false,
     };
     let now = std::time::Instant::now();
@@ -100,19 +108,77 @@ fn solve_and_time_all() {
     }
 }
 
+/// Write a file with the given contents.
+///
+/// * `fname` File name.
+/// * `append` Whether to append to an existing file or create a new file.
+/// * `contents` What to write in the file.
+macro_rules! add_skel {
+    ($fname:expr, $append:literal, $($contents:expr),+) => {
+        let mut open_options = std::fs::OpenOptions::new();
+        let mut fhandle = open_options.append($append).create_new(!$append).write(true).open($fname).unwrap();
+        writeln!(fhandle, $($contents),+).unwrap();
+    };
+}
+
+/// Perform minimal setup (providing a skeleton) to start solving a new
+/// problem.
+///
+/// * `problem_number`
+fn add_skels(problem_number: usize) {
+    let url = "https://projecteuler.net/minimal=problems";
+    let output = std::process::Command::new("curl").arg(url).output().unwrap();
+    let output = std::str::from_utf8(&output.stdout).unwrap();
+    let line = output.lines().nth(problem_number).unwrap();
+    let title = line.split("##").nth(1).unwrap();
+    let title = title
+        .chars()
+        .filter_map(|c| match c {
+            '0'..='9' | 'A'..='Z' | 'a'..='z' => Some(c.to_ascii_lowercase()),
+            ' ' | '-' | '_' => Some('_'),
+            _ => None,
+        })
+        .collect::<String>();
+
+    add_skel!(
+        &format!("src/solutions/{}.rs", title),
+        false,
+        "pub fn solve()->i64{{0}}"
+    );
+    add_skel!("src/solutions.rs", true, "pub mod {};", title);
+    add_skel!(
+        "README.md",
+        true,
+        "|[{}]({})|[`{}.rs`](src/solutions/{}.rs)|",
+        problem_number,
+        url,
+        title,
+        title
+    );
+    add_skel!("src/main.rs", true, "        {} => {}::solve,", problem_number, title);
+    std::process::Command::new("git")
+        .args(["checkout", "-b", &format!("p{}", problem_number)])
+        .output()
+        .unwrap();
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() <= 1 {
         solve_and_time_all();
         return;
     }
+    // If a negative number is provided, add skeleton code for that problem.
+    // This is a convenience for me, and not the expected usage.
+    if args[1].starts_with('-') {
+        if let Ok(problem_number) = args[1][1..].parse() {
+            add_skels(problem_number);
+            return;
+        }
+    }
     for arg in &args[1..] {
-        match arg.parse() {
-            Ok(problem_number) if solve_and_time_one(problem_number) => (),
-            _ => eprintln!(
-                "Problem {} does not exist or its solution is not implemented.",
-                arg
-            ),
+        if !arg.parse().is_ok_and(solve_and_time_one) {
+            eprintln!("Problem {} does not exist or its solution is not implemented.", arg);
         }
     }
 }

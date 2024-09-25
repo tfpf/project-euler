@@ -6,7 +6,7 @@ use crate::utils;
 /// * `outer_end`
 /// * `inner_end`
 /// * `inner_end`
-/// * `products` - Set the put the products in. (To avoid repetition.)
+/// * `products` Set the put the products in. (To avoid repetition.)
 fn search(
     outer_begin: i64,
     outer_end: i64,
