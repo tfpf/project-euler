@@ -50,6 +50,7 @@ pub mod ordered_fractions;
 pub mod pandigital_multiples;
 pub mod pandigital_prime;
 pub mod pandigital_products;
+pub mod path_sum_three_ways;
 pub mod path_sum_two_ways;
 pub mod pentagon_numbers;
 pub mod permuted_multiples;

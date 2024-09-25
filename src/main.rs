@@ -85,6 +85,7 @@ fn solve_and_time_one(problem_number: usize) -> bool {
         77 => prime_summations::solve,
         78 => coin_partitions::solve,
         81 => path_sum_two_ways::solve,
+        82 => path_sum_three_ways::solve,
         85 => counting_rectangles::solve,
         87 => prime_power_triples::solve,
         92 => square_digit_chains::solve,
