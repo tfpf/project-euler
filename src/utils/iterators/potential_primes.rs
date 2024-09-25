@@ -3,7 +3,7 @@
 pub struct PotentialPrimes {
     limit: i64,
     num: i64,
-    offset: std::iter::Cycle<std::array::IntoIter<i64, 8>>,
+    offset: Box<dyn Iterator<Item = i64>>,
 }
 
 impl PotentialPrimes {
@@ -11,7 +11,7 @@ impl PotentialPrimes {
         PotentialPrimes {
             limit,
             num: 1,
-            offset: [6, 4, 2, 4, 2, 4, 6, 2].into_iter().cycle(),
+            offset: Box::new([6, 4, 2, 4, 2, 4, 6, 2].into_iter().cycle()),
         }
     }
 }

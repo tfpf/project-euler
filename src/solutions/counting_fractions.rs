@@ -5,7 +5,7 @@ pub fn solve() -> i64 {
         if totients[num] == num as i64 {
             // This number is prime. The totient of each of its multiples will
             // contain the term
-            //     1/(1 - num)
+            //     1 - 1/num
             // in its product expression. Instead of multiply-assigning that
             // term, we use an equivalent subtract-assign.
             for multiple in (num..totients.len()).step_by(num) {

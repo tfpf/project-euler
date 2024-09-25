@@ -10,12 +10,12 @@ fn largest_prime_factor(mut num: i64) -> i64 {
             if potential_prime > num {
                 None
             } else if num % potential_prime != 0 {
-                // Dummy result so that the loop continues looking for factors and
-                // does not terminate.
+                // Dummy result so that the loop continues looking for factors
+                // and does not terminate.
                 Some(0)
             } else {
-                // Found a potential prime factor. Eliminate it. Doing this ensures
-                // that all factors found are actually prime factors.
+                // Found a potential prime factor. Eliminate it. Doing this
+                // ensures that all factors found are actually prime factors.
                 while num % potential_prime == 0 {
                     num /= potential_prime;
                 }
